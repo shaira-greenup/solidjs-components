@@ -338,7 +338,7 @@ export default function MarkdownEditor() {
       <div class="max-w-7xl mx-auto">
         <div class="mb-6">
           <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-            Advanced Markdown Editor (Only supports light mode)
+            Advanced Markdown Editor
           </h1>
           <p class="text-gray-600 dark:text-gray-400">
             A full-featured WYSIWYG editor with markdown support and live
