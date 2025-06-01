@@ -171,7 +171,6 @@ export default function NavTree() {
       font-sans
       outline-none"
     >
-      <h1>Hi</h1>
       <div
         ref={tree_ref}
         class="wb-skeleton wb-initializing wb-fade-expander wb-no-select outline-none"
