@@ -9,6 +9,7 @@ export default function Nav() {
           { href: "/", label: "Home" },
           { href: "/about", label: "About" },
           { href: "/splitter", label: "Splitter" },
+          { href: "/layout", label: "Layout" },
         ].map((item) => (
           <NavItem href={item.href}>{item.label}</NavItem>
         ))}

@@ -9,8 +9,10 @@
   "dependencies": {
     "@corvu/resizable": "^0.2.5",
     "@corvu/tailwind": "^0.1.7",
+    "@fortawesome/fontawesome-free": "^6.7.2",
     "@solidjs/router": "^0.15.0",
     "@solidjs/start": "^1.1.0",
+    "bootstrap-icons": "^1.13.1",
     "corvu": "^0.7.2",
     "solid-js": "^1.9.5",
     "vinxi": "^0.5.3",
