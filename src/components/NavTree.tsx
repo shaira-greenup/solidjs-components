@@ -54,6 +54,11 @@ const data = [
             content: "Example of a Slider",
             link: "slider_example",
           },
+          {
+            title: "KaTeX",
+            content: "Example of KaTeX",
+            link: "katex",
+          },
         ],
       },
     ],
