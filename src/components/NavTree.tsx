@@ -81,22 +81,59 @@ const data = [
   },
 
   {
-    title: "Datatables",
+    title: "DataTables",
     expanded: true,
     children: [
       {
-        title: "Tanstack",
+        title: "TanStack",
         expanded: true,
         children: [
           {
-            title: "Simple",
-            content: "Example of Tanstack Sidebar",
-            link: "datatable",
+            title: "In Place",
+            expanded: true,
+            children: [
+              {
+                title: "Simple",
+                content: "Example of Tanstack Sidebar",
+                link: "datatable",
+              },
+              {
+                title: "Sortable",
+                content: "Example of Tanstack Sidebar",
+                link: "datatable_sortable",
+              },
+              {
+                title: "Paginated",
+                content: "Example of Tanstack Sidebar",
+                link: "datatable_paginated",
+              },
+            ],
           },
           {
-            title: "Sortable",
-            content: "Example of Tanstack Sidebar",
-            link: "datatable_sortable",
+            title: "Component",
+            expanded: true,
+            children: [
+              {
+                title: "Paginated Using Component",
+                content: "Example of Tanstack Sidebar",
+                link: "datatable_component_examples/datatable_paginated",
+              },
+              {
+                title: "Dynamic",
+                content: "Example of Tanstack Sidebar",
+                link: "datatable_paginated",
+              },
+              {
+                title: "SQLite",
+                content: "Example of Tanstack Sidebar",
+                link: "datatable_paginated",
+              },
+              {
+                title: "With Chart",
+                content: "Example of Tanstack Sidebar",
+                link: "datatable_paginated",
+              },
+            ],
           },
         ],
       },
