@@ -1,8 +1,11 @@
 import { ColumnDef } from "@tanstack/solid-table";
 import { createSignal, createMemo } from "solid-js";
+import { ChartConfiguration } from "chart.js";
 import KaTeX from "~/components/KaTeX";
 import DataTable from "~/components/DataTable";
 import Slider from "~/components/Slider";
+import ChartComponent from "~/components/Chart";
+import Card from "~/components/Card";
 
 /**
  * Represents a mathematical data point with calculated values
@@ -196,6 +199,107 @@ function ControlPanel(props: {
 }
 
 /**
+ * Chart component that visualizes the mathematical functions
+ */
+function MathematicalChart(props: {
+  data: () => MathematicalDataPoint[];
+  xScale: number;
+  freq1: number;
+  freq2: number;
+  freq3: number;
+  decay: number;
+}) {
+  const chartConfig = createMemo((): ChartConfiguration => {
+    const dataPoints = props.data();
+    
+    // Sample data for chart (limit to reasonable number of points for performance)
+    const maxPoints = Math.min(dataPoints.length, 200);
+    const step = Math.max(1, Math.floor(dataPoints.length / maxPoints));
+    const sampledData = dataPoints.filter((_, i) => i % step === 0);
+    
+    // Extract raw mathematical values for plotting
+    const chartData = sampledData.map((point, i) => {
+      const actualIndex = i * step;
+      const x = actualIndex * props.xScale;
+      const y = Math.sin(x * props.freq1) * Math.cos(x * props.freq2);
+      const z = Math.exp(-x * props.decay) * Math.sin(x * props.freq3);
+      
+      return {
+        x: x,
+        y: y,
+        z: z,
+        index: actualIndex
+      };
+    });
+
+    return {
+      type: "line",
+      data: {
+        labels: chartData.map(d => d.index.toString()),
+        datasets: [
+          {
+            label: "Y Function: sin(x×f1) × cos(x×f2)",
+            data: chartData.map(d => d.y),
+            borderColor: "rgb(59, 130, 246)",
+            backgroundColor: "rgba(59, 130, 246, 0.1)",
+            tension: 0.4,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+          },
+          {
+            label: "Z Function: e^(-x×decay) × sin(x×f3)",
+            data: chartData.map(d => d.z),
+            borderColor: "rgb(239, 68, 68)",
+            backgroundColor: "rgba(239, 68, 68, 0.1)",
+            tension: 0.4,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        animation: false,
+        interaction: {
+          intersect: false,
+          mode: 'index',
+        },
+        plugins: {
+          title: {
+            display: true,
+            text: "Mathematical Functions Visualization",
+          },
+          legend: {
+            display: true,
+            position: 'top',
+          },
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Data Point Index',
+            },
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Function Value',
+            },
+          },
+        },
+      },
+    };
+  });
+
+  return (
+    <Card title="Function Visualization" className="mb-6">
+      <ChartComponent chartConfig={chartConfig()} className="h-96" />
+    </Card>
+  );
+}
+
+/**
  * Main application component - Dynamic Mathematical Data Table with Interactive Controls
  */
 function MathematicalDataTableApp() {
@@ -231,10 +335,10 @@ function MathematicalDataTableApp() {
     <div class="p-6 max-w-7xl mx-auto">
       <div class="mb-6">
         <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          Dynamic Mathematical Data Table
+          Dynamic Mathematical Data Table with Chart
         </h1>
         <p class="text-gray-600 dark:text-gray-400">
-          Adjust the mathematical parameters below to see real-time changes in the generated data.
+          Adjust the mathematical parameters below to see real-time changes in both the chart and data table.
         </p>
       </div>
 
@@ -251,6 +355,15 @@ function MathematicalDataTableApp() {
         setFreq3={setFreq3}
         decay={decay}
         setDecay={setDecay}
+      />
+
+      <MathematicalChart
+        data={data}
+        xScale={xScale()}
+        freq1={freq1()}
+        freq2={freq2()}
+        freq3={freq3()}
+        decay={decay()}
       />
 
       <DataTable
