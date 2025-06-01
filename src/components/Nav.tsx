@@ -1,4 +1,4 @@
-import { JSXElement, Show } from "solid-js";
+import { JSXElement, Show, onMount, onCleanup } from "solid-js";
 
 interface NavProps {
   sidebarOpen: () => boolean;
@@ -19,6 +19,26 @@ function MenuIcon(): JSXElement {
 }
 
 export default function Nav(props: NavProps) {
+  // Add keyboard shortcut to open sidebar on mobile
+  onMount(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Ctrl+B (or Cmd+B on Mac) to toggle sidebar on mobile
+      if ((event.ctrlKey || event.metaKey) && event.key === 'b') {
+        // Only toggle if we're in mobile view (sidebar would be hidden)
+        if (window.innerWidth < 1024) {
+          event.preventDefault();
+          props.toggleSidebar();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    
+    onCleanup(() => {
+      document.removeEventListener("keydown", handleKeyDown);
+    });
+  });
+
   const MenuButton = (): JSXElement => {
     return (
       <button
