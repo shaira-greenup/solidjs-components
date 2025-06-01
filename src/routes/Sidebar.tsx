@@ -1,4 +1,3 @@
-
 import { A, useLocation } from "@solidjs/router";
 import type { JSX } from "solid-js";
 import { Show } from "solid-js";
@@ -111,7 +110,7 @@ export default function Sidebar(props: SidebarProps) {
   // When true, the sidebar will inherit the navbar height from app.css
   // We don't want that for the current design
   const isUnderNavbar = false;
-  const enableBackgroundBlur = true;
+  const enableBackgroundBlur = false;
 
   return (
     <>
@@ -138,7 +137,7 @@ export default function Sidebar(props: SidebarProps) {
           <div class="flex flex-1 flex-col pb-4 overflow-y-auto">
             {/* mt-2 pushes the content down a little bit */}
             <nav class="mt-4 flex-1 px-2 space-y-1">
-            <NavTree/>
+              <NavTree />
             </nav>
           </div>
         </div>
