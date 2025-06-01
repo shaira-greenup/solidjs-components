@@ -8,6 +8,7 @@ import {
   Table,
 } from "@tanstack/solid-table";
 import { createSignal, For, onMount, onCleanup } from "solid-js";
+import { isServer } from "solid-js/web";
 import KaTeX from "../../components/KaTeX";
 
 /**
@@ -305,11 +306,15 @@ function PaginationControls(props: {
   };
 
   onMount(() => {
-    document.addEventListener('keydown', handleKeyDown);
+    if (!isServer) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
   });
 
   onCleanup(() => {
-    document.removeEventListener('keydown', handleKeyDown);
+    if (!isServer && typeof document !== 'undefined') {
+      document.removeEventListener('keydown', handleKeyDown);
+    }
   });
 
   return (
