@@ -109,11 +109,10 @@ function App() {
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                           {header.isPlaceholder ? null : (
                             <div
-                              class={`flex items-center space-x-1 ${
-                                header.column.getCanSort()
-                                  ? "cursor-pointer select-none hover:text-gray-700 dark:hover:text-gray-100"
-                                  : ""
-                              }`}
+                              classList={{
+                                "flex items-center space-x-1": true,
+                                "cursor-pointer select-none hover:text-gray-700 dark:hover:text-gray-100": header.column.getCanSort()
+                              }}
                               onClick={header.column.getToggleSortingHandler()}
                             >
                               <span>
