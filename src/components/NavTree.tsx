@@ -10,132 +10,32 @@ import { Wunderbaum } from "wunderbaum";
 
 const data = [
   {
-    title: "📝 My Notes",
+    title: "Core Content",
     expanded: true,
     children: [
       {
-        title: "📄 Meeting Notes",
+        title: "Components",
+        expanded: true,
         children: [
           {
-            title: "Daily Standup - Jan 15",
-            content: "Discussed project updates and blockers.",
+            title: "Splitter",
+            content: "A Splitter like the Qt Splitter",
+            link: "splitter",
           },
           {
-            title: "Project Review - Jan 12",
-            content: "Reviewed project milestones and feedback.",
+            title: "Layout",
+            content: "A Layout Example",
+            link: "layout",
           },
           {
-            title: "Sprint Planning - Jan 10",
-            content: "Planned tasks for the upcoming sprint.",
+            title: "Home",
+            content: "Home Page",
+            link: "home",
           },
           {
-            title: "Client Call - Jan 8",
-            content: "Discussed client requirements and deliverables.",
-          },
-        ],
-      },
-      {
-        title: "💡 Ideas",
-        children: [
-          {
-            title: "App Feature Concepts",
-            content: "Feature ideas for enhancing user engagement.",
-          },
-          {
-            title: "Design Improvements",
-            content: "Potential UI/UX improvements based on feedback.",
-          },
-          {
-            title: "Automation Tools",
-            content: "Explorations into automating repetitive tasks.",
-          },
-        ],
-      },
-      {
-        title: "🛠 Troubleshooting",
-        children: [
-          {
-            title: "Debugging Tips",
-            content: "Common debugging techniques and tools.",
-          },
-          {
-            title: "Common Error Messages",
-            content: "Solutions for frequently occurring errors.",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    title: "📚 Resources",
-    expanded: false,
-    children: [
-      {
-        title: "Documentation Links",
-        content: "Links to official docs for frameworks and tools.",
-      },
-      {
-        title: "Code Snippets",
-        content: "Reusable code snippets for various programming tasks.",
-      },
-      {
-        title: "Tutorials",
-        content: "List of tutorials for learning new technologies.",
-      },
-      {
-        title: "Books",
-        content: "Recommendations for tech-related books to read.",
-      },
-    ],
-  },
-  {
-    title: "✅ Tasks",
-    expanded: false,
-    children: [
-      {
-        title: "Complete project setup",
-        content: "Setup project environment and dependencies.",
-      },
-      {
-        title: "Review pull requests",
-        content: "Ensure code quality and functionality.",
-      },
-      {
-        title: "Update documentation",
-        content: "Revise project documentation with recent changes.",
-      },
-      {
-        title: "Test new features",
-        content: "Conduct tests to ensure new features work as intended.",
-      },
-    ],
-  },
-  {
-    title: "📈 Personal Development",
-    children: [
-      {
-        title: "Learning Goals",
-        children: [
-          {
-            title: "Master TypeScript",
-            content: "Enhance skills in TypeScript by mid-year.",
-          },
-          {
-            title: "Contribute to Open Source",
-            content: "Aim to contribute to at least two projects.",
-          },
-        ],
-      },
-      {
-        title: "Career Goals",
-        children: [
-          {
-            title: "Prepare for Certification",
-            content: "Study for cloud certification exams.",
-          },
-          {
-            title: "Networking",
-            content: "Attend meetups and conferences regularly.",
+            title: "About",
+            content: "About Page",
+            link: "about",
           },
         ],
       },
@@ -143,7 +43,7 @@ const data = [
   },
 ];
 
-export default function Home() {
+export default function NavTree() {
   let tree_ref!: HTMLDivElement;
   let treeInstance: Wunderbaum | null = null;
 
@@ -212,7 +112,10 @@ export default function Home() {
         e.tree.setFocus();
       },
       activate: (e) => {
-        console.log(`Opened: ${e.node.title}`);
+        // alert(`Opened: ${e.node.title}`);
+        if (e.node.data?.link) {
+          window.location.href = e.node.data.link;
+        }
       },
       keydown: (e: WbKeydownEventType) => {
         switch (e.event.key) {
@@ -273,7 +176,6 @@ export default function Home() {
         ref={tree_ref}
         class="wb-skeleton wb-initializing wb-fade-expander wb-no-select outline-none"
       />
-
     </div>
   );
 }

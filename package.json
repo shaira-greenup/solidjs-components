@@ -12,6 +12,7 @@
     "@fortawesome/fontawesome-free": "^6.7.2",
     "@solidjs/router": "^0.15.0",
     "@solidjs/start": "^1.1.0",
+    "@tailwindcss/forms": "^0.5.10",
     "bootstrap-icons": "^1.13.1",
     "corvu": "^0.7.2",
     "solid-js": "^1.9.5",
