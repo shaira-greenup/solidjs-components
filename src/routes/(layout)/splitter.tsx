@@ -57,7 +57,7 @@ function SkeletonThree() {
   );
 }
 
-export default function Home() {
+export default function SplitterPage() {
   /*
  |------------------|-------------------------|
  |                  |  Top Right Panel        |
@@ -68,7 +68,7 @@ export default function Home() {
   */
 
   return (
-    <div class="size-full bg-gray-50 dark:bg-gray-900">
+    <div class="w-full h-96 bg-gray-50 dark:bg-gray-900">
       <Resizable class="size-full">
         {/* Left Panel  */}
         <Resizable.Panel

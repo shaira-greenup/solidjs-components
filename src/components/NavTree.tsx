@@ -2,6 +2,7 @@
 // npm install bootstrap-icons
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { onMount } from "solid-js";
+import { useNavigate } from "@solidjs/router";
 //  npm install --save @fortawesome/fontawesome-free
 import "@fortawesome/fontawesome-free/css/all.css";
 import { WbKeydownEventType } from "types";
@@ -46,6 +47,7 @@ const data = [
 export default function NavTree() {
   let tree_ref!: HTMLDivElement;
   let treeInstance: Wunderbaum | null = null;
+  const navigate = useNavigate();
 
   let getNode = (e: MouseEvent): WunderbaumNode | null => {
     return null;
@@ -53,7 +55,7 @@ export default function NavTree() {
 
   const onGetProperties = (e: MouseEvent) => {
     // const node: WunderbaumNode = treeInstance?.constructor.getNode(e) || null;
-    const node: WunderbaumNode = getNode(e);
+    const node: WunderbaumNode | null = getNode(e);
     if (node) {
       alert(
         `Node details: ${JSON.stringify(
@@ -114,7 +116,7 @@ export default function NavTree() {
       activate: (e) => {
         // alert(`Opened: ${e.node.title}`);
         if (e.node.data?.link) {
-          window.location.href = e.node.data.link;
+          navigate(e.node.data.link);
         }
       },
       keydown: (e: WbKeydownEventType) => {
