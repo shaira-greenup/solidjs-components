@@ -102,7 +102,7 @@ function MathematicalEquationsHeader() {
           <KaTeX math="z = e^{-0.05x} \times \sin(2x)" />
         </div>
       </div>
-      
+
       <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
         <h3 class="text-sm font-medium text-gray-900 dark:text-white mb-2">
           Keyboard Shortcuts
@@ -232,7 +232,7 @@ function DataTableFooter(props: { table: Table<MathematicalDataPoint> }) {
 /**
  * Pagination controls component with keyboard navigation
  */
-function PaginationControls(props: { 
+function PaginationControls(props: {
   table: Table<MathematicalDataPoint>;
   onRerender: () => void;
 }) {
@@ -242,7 +242,7 @@ function PaginationControls(props: {
   const handleKeyDown = (event: KeyboardEvent) => {
     // Prevent default behavior for navigation keys
     const navigationKeys = ['ArrowLeft', 'ArrowRight', 'Home', 'End'];
-    if (navigationKeys.includes(event.key) || 
+    if (navigationKeys.includes(event.key) ||
         (event.key >= '1' && event.key <= '5') ||
         event.key.toLowerCase() === 'g' ||
         event.key.toLowerCase() === 'r') {
@@ -306,6 +306,12 @@ function PaginationControls(props: {
   };
 
   onMount(() => {
+    // NOTE the isServer test IS REQUIRED regardless of onMount
+    // Otherwise it will crash
+    // onMount is not sufficient because the code inside onMount still executes
+    // during SSR even though it's wrapped in onMount, and document is undefined
+    // on the server, so we need the explicit isServer check to prevent access
+    // to browser-only APIs like document.addEventListener
     if (!isServer) {
       document.addEventListener('keydown', handleKeyDown);
     }
@@ -325,7 +331,7 @@ function PaginationControls(props: {
           {table.getPageCount()} ({table.getFilteredRowModel().rows.length} total rows)
         </span>
       </div>
-      
+
       <div class="flex items-center space-x-2">
         <button
           onClick={() => table.setPageIndex(0)}
@@ -335,7 +341,7 @@ function PaginationControls(props: {
         >
           {"<<"}
         </button>
-        
+
         <button
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
@@ -344,7 +350,7 @@ function PaginationControls(props: {
         >
           {"<"}
         </button>
-        
+
         <button
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
@@ -353,7 +359,7 @@ function PaginationControls(props: {
         >
           {">"}
         </button>
-        
+
         <button
           onClick={() => table.setPageIndex(table.getPageCount() - 1)}
           disabled={!table.getCanNextPage()}
@@ -362,7 +368,7 @@ function PaginationControls(props: {
         >
           {">>"}
         </button>
-        
+
         <select
           value={table.getState().pagination.pageSize}
           onChange={(e) => table.setPageSize(Number(e.target.value))}
@@ -375,7 +381,7 @@ function PaginationControls(props: {
             </option>
           ))}
         </select>
-        
+
         <button
           onClick={() => {
             const pageInput = prompt(
@@ -434,7 +440,7 @@ function SortableDataTable(props: {
       </div>
 
       <PaginationControls table={table} onRerender={props.onRerender} />
-      
+
       <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
         <button
           onClick={props.onRerender}
