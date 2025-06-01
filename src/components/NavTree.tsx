@@ -31,7 +31,7 @@ const data = [
           {
             title: "Home",
             content: "Home Page",
-            link: "home",
+            link: "/",
           },
           {
             title: "About",
