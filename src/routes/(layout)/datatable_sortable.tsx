@@ -1,6 +1,7 @@
 import {
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
   ColumnDef,
   createSolidTable,
 } from '@tanstack/solid-table'
@@ -47,6 +48,7 @@ const defaultColumns: ColumnDef<Person>[] = [
     accessorKey: 'firstName',
     cell: info => info.getValue(),
     footer: info => info.column.id,
+    enableSorting: true,
   },
   {
     accessorFn: row => row.lastName,
@@ -54,26 +56,31 @@ const defaultColumns: ColumnDef<Person>[] = [
     cell: info => <i>{info.getValue<string>()}</i>,
     header: () => <span>Last Name</span>,
     footer: info => info.column.id,
+    enableSorting: true,
   },
   {
     accessorKey: 'age',
     header: () => 'Age',
     footer: info => info.column.id,
+    enableSorting: true,
   },
   {
     accessorKey: 'visits',
     header: () => <span>Visits</span>,
     footer: info => info.column.id,
+    enableSorting: true,
   },
   {
     accessorKey: 'status',
     header: 'Status',
     footer: info => info.column.id,
+    enableSorting: true,
   },
   {
     accessorKey: 'progress',
     header: 'Profile Progress',
     footer: info => info.column.id,
+    enableSorting: true,
   },
 ]
 
@@ -87,6 +94,7 @@ function App() {
     },
     columns: defaultColumns,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
   })
 
   return (
@@ -105,12 +113,29 @@ function App() {
                     <For each={headerGroup.headers}>
                       {header => (
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
+                          {header.isPlaceholder ? null : (
+                            <div
+                              class={`flex items-center space-x-1 ${
+                                header.column.getCanSort() ? 'cursor-pointer select-none hover:text-gray-700 dark:hover:text-gray-100' : ''
+                              }`}
+                              onClick={header.column.getToggleSortingHandler()}
+                            >
+                              <span>
+                                {flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                                )}
+                              </span>
+                              {header.column.getCanSort() && (
+                                <span class="text-gray-400">
+                                  {{
+                                    asc: '↑',
+                                    desc: '↓',
+                                  }[header.column.getIsSorted() as string] ?? '↕'}
+                                </span>
                               )}
+                            </div>
+                          )}
                         </th>
                       )}
                     </For>

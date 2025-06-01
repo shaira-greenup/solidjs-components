@@ -75,20 +75,34 @@ const data = [
             content: "Example of Tailwind Sidebar",
             link: "tailwind_sidebar",
           },
+        ],
+      },
+    ],
+  },
+
+  {
+    title: "Datatables",
+    expanded: true,
+    children: [
+      {
+        title: "Tanstack",
+        expanded: true,
+        children: [
           {
-            title: "Tanstack Datatable",
+            title: "Simple",
             content: "Example of Tanstack Sidebar",
             link: "datatable",
           },
           {
-            title: "(TODO) SQLite Tanstack DataTable",
+            title: "Sortable",
             content: "Example of Tanstack Sidebar",
-            link: "datatable",
+            link: "datatable_sortable",
           },
         ],
       },
     ],
   },
+
   {
     title: "Compositional Content",
     expanded: true,
