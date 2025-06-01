@@ -1,155 +1,132 @@
 @import "tailwindcss";
 
+body {
+  background: var(--color-base-100);
+  color: var(--color-text-primary);
+}
+
 :root {
-    --background-rgb: 214, 219, 220;
-    --foreground-rgb: 0, 0, 0;
+  /* Light theme (default) */
+  color-scheme: light;
+
+  /* Base colors */
+  --color-base-100: oklch(98% 0.02 240);
+  --color-base-200: oklch(95% 0.03 240);
+  --color-base-300: oklch(92% 0.04 240);
+  --color-base-content: oklch(20% 0.05 240);
+
+  /* Primary colors */
+  --color-primary: oklch(55% 0.3 240);
+  --color-primary-content: oklch(98% 0.01 240);
+
+  /* Secondary colors */
+  --color-secondary: oklch(70% 0.25 200);
+  --color-secondary-content: oklch(98% 0.01 200);
+
+  /* Accent colors */
+  --color-accent: oklch(65% 0.25 160);
+  --color-accent-content: oklch(98% 0.01 160);
+
+  /* Neutral colors */
+  --color-neutral: oklch(50% 0.05 240);
+  --color-neutral-content: oklch(98% 0.01 240);
+
+  /* State colors */
+  --color-info: oklch(70% 0.2 220);
+  --color-info-content: oklch(98% 0.01 220);
+  --color-success: oklch(65% 0.25 140);
+  --color-success-content: oklch(98% 0.01 140);
+  --color-warning: oklch(80% 0.25 80);
+  --color-warning-content: oklch(20% 0.05 80);
+  --color-error: oklch(65% 0.3 30);
+  --color-error-content: oklch(98% 0.01 30);
+
+  /* Border radius */
+  --radius-selector: 1rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+
+  /* Base sizes */
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --font-size-base: 0.875rem;
+  --line-height-base: 1.5;
+
+  /* Layout dimensions */
+  --navbar-height: 4rem;
+  --navbar-padding-x: 1rem;
+  --navbar-padding-y: 0.5rem;
+  --sidebar-width: 16rem;
+
+  /* Border size */
+  --border: 1px;
+
+  /* Effects */
+  --depth: 1;
+  --noise: 0;
+
+  /* Conventional UI colors */
+  --color-text-primary: oklch(20% 0.05 240); /* Dark text for primary content */
+  --color-text-secondary: oklch(
+    40% 0.04 240
+  ); /* Lighter text for secondary content */
+  --color-text-muted: oklch(60% 0.03 240); /* Muted text for subtle content */
+  --color-link: oklch(50% 0.25 220); /* Blue link color */
+  --color-link-hover: oklch(45% 0.3 220); /* Darker blue on hover */
+  --color-heading: oklch(25% 0.06 240); /* Slightly darker for headings */
+
+  /* Legacy variables for backward compatibility */
+  --background-rgb: 95% 0.03 240;
+  --foreground-rgb: oklch(20% 0.05 240);
 }
 
 @media (prefers-color-scheme: dark) {
-    :root {
-        --background-rgb: 0, 0, 0;
-        --foreground-rgb: 255, 255, 255;
-    }
+  :root:not(.light) {
+    /* Dark theme based on Catppuccin Mocha */
+    color-scheme: dark;
+
+    /* Base colors - Catppuccin Mocha base palette */
+    --color-base-100: #1e1e2e; /* base */
+    --color-base-200: #181825; /* mantle */
+    --color-base-300: #11111b; /* crust */
+    --color-base-content: #cdd6f4; /* text */
+
+    /* Primary colors - Catppuccin Lavender */
+    --color-primary: #b4befe; /* lavender */
+    --color-primary-content: #1e1e2e;
+
+    /* Secondary colors - Catppuccin Mauve */
+    --color-secondary: #cba6f7; /* mauve */
+    --color-secondary-content: #1e1e2e;
+
+    /* Accent colors - Catppuccin Sapphire */
+    --color-accent: #74c7ec; /* sapphire */
+    --color-accent-content: #1e1e2e;
+
+    /* Neutral colors - Catppuccin Surface */
+    --color-neutral: #313244; /* surface0 */
+    --color-neutral-content: #cdd6f4; /* text */
+
+    /* State colors */
+    --color-info: #89b4fa; /* blue */
+    --color-info-content: #1e1e2e;
+    --color-success: #a6e3a1; /* green */
+    --color-success-content: #1e1e2e;
+    --color-warning: #f9e2af; /* yellow */
+    --color-warning-content: #1e1e2e;
+    --color-error: #f38ba8; /* pink */
+    --color-error-content: #1e1e2e;
+
+    /* Conventional UI colors - Dark theme */
+    --color-text-primary: #cdd6f4; /* Light text for primary content */
+    --color-text-secondary: #a6adc8; /* Secondary text */
+    --color-text-muted: #6c7086; /* Muted text */
+    --color-link: #89b4fa; /* Blue link color */
+    --color-link-hover: #74c7ec; /* Lighter blue on hover */
+    --color-heading: #f2f2f2; /* Light heading color */
+  }
 }
 
-body {
-    background: rgb(var(--background-rgb));
-    color: rgb(var(--foreground-rgb));
-}
+@import "./styles/wunderbaum.css";
+@import "./styles/sidebar.css";
 
-@theme {
-    --color-corvu-text: #180f24;
-    --color-corvu-bg: #f3f1fe;
-    --color-corvu-100: #e6e2fd;
-    --color-corvu-200: #d4cbfb;
-    --color-corvu-300: #bcacf6;
-    --color-corvu-400: #a888f1;
-
-    --animate-expand: expand 250ms cubic-bezier(0.32, 0.72, 0, 0.75);
-    --animate-collapse: collapse 250ms cubic-bezier(0.32, 0.72, 0, 0.75);
-    --animate-caret-blink: caret-blink 1.25s ease-out infinite;
-    --animate-in: enter 150ms ease;
-    --animate-out: exit 150ms ease;
-
-    @keyframes expand {
-        0% {
-            height: 0px;
-        }
-        100% {
-            height: var(--corvu-disclosure-content-height);
-        }
-    }
-
-    @keyframes collapse {
-        0% {
-            height: var(--corvu-disclosure-content-height);
-        }
-        100% {
-            height: 0px;
-        }
-    }
-
-    @keyframes caret-blink {
-        0%,
-        70%,
-        100% {
-            opacity: 0;
-        }
-        20%,
-        50% {
-            opacity: 1;
-        }
-    }
-
-    @keyframes enter {
-        from {
-            opacity: var(--tw-enter-opacity, 1);
-            transform: translate3d(
-                    var(--tw-enter-translate-x, 0),
-                    var(--tw-enter-translate-y, 0),
-                    0
-                )
-                scale3d(
-                    var(--tw-enter-scale, 1),
-                    var(--tw-enter-scale, 1),
-                    var(--tw-enter-scale, 1)
-                );
-        }
-    }
-
-    @keyframes exit {
-        to {
-            opacity: var(--tw-exit-opacity, 1);
-            transform: translate3d(
-                    var(--tw-exit-translate-x, 0),
-                    var(--tw-exit-translate-y, 0),
-                    0
-                )
-                scale3d(
-                    var(--tw-exit-scale, 1),
-                    var(--tw-exit-scale, 1),
-                    var(--tw-exit-scale, 1)
-                );
-        }
-    }
-}
-
-@utility fade-in-* {
-    --tw-enter-opacity: --value(percentage, ratio);
-}
-@utility fade-out-* {
-    --tw-exit-opacity: --value(percentage, ratio);
-}
-
-@utility zoom-in-* {
-    --tw-enter-scale: --value(percentage, ratio);
-}
-@utility zoom-out-* {
-    --tw-exit-scale: --value(percentage, ratio);
-}
-
-@utility slide-in-from-top-* {
-    --tw-enter-translate-y: calc(--value(percentage) * -1);
-    --tw-enter-translate-y: calc(--value(ratio) * -100%);
-    --tw-enter-translate-y: calc(--value(integer) * var(--spacing) * -1);
-}
-@utility slide-in-from-bottom-* {
-    --tw-enter-translate-y: --value(percentage);
-    --tw-enter-translate-y: calc(--value(ratio) * 100%);
-    --tw-enter-translate-y: calc(--value(integer) * var(--spacing));
-}
-
-@utility slide-out-to-top-* {
-    --tw-exit-translate-y: calc(--value(percentage) * -1);
-    --tw-exit-translate-y: calc(--value(ratio) * -100%);
-    --tw-exit-translate-y: calc(--value(integer) * var(--spacing) * -1);
-}
-@utility slide-out-to-bottom-* {
-    --tw-exit-translate-y: --value(percentage);
-    --tw-exit-translate-y: calc(--value(ratio) * 100%);
-    --tw-exit-translate-y: calc(--value(integer) * var(--spacing));
-}
-
-@plugin '@tailwindcss/forms';
-
-@import "tailwindcss";
-
-:root {
-    --background-rgb: 214, 219, 220;
-    --foreground-rgb: 0, 0, 0;
-    --wb-icon-opacity: 0.7;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background-rgb: 0, 0, 0;
-        --foreground-rgb: 255, 255, 255;
-    }
-}
-
-body {
-    background: rgb(var(--background-rgb));
-    color: rgb(var(--foreground-rgb));
-}
-
-@import "./wunderbaum.css";

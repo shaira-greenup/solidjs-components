@@ -1,42 +1,40 @@
-import Resizable from "@corvu/resizable";
-import { JSX } from "solid-js";
+import { createSignal, JSX, onMount } from "solid-js";
+import Nav from "./Nav";
+import Sidebar from "~/routes/Sidebar";
 
 interface LayoutProps {
-  sidebar: JSX.Element;
   children: JSX.Element;
 }
 
 export default function Layout(props: LayoutProps) {
-  return (
-    <div class="h-screen bg-gray-50 dark:bg-gray-900">
-      <Resizable class="size-full">
-        {/* Left Sidebar */}
-        <Resizable.Panel
-          initialSize={0.25}
-          minSize={0.15}
-          maxSize={0.4}
-          class="bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-sm"
-        >
-          {props.sidebar}
-        </Resizable.Panel>
-        
-        {/* Resizer Handle */}
-        <Resizable.Handle
-          aria-label="Resize sidebar"
-          class="group basis-1 hover:basis-2 bg-gray-200 dark:bg-gray-700 hover:bg-blue-300 dark:hover:bg-blue-600 transition-all duration-200 cursor-col-resize"
-        >
-          <div class="size-full relative before:absolute before:inset-0 before:-inset-x-2 before:content-['']" />
-        </Resizable.Handle>
+  const SIDEBAR_TRIGGER_WIDTH = 1024;
+  const [sidebarOpen, setSidebarOpen] = createSignal(false);
 
-        {/* Main Content Area */}
-        <Resizable.Panel
-          initialSize={0.75}
-          minSize={0.6}
-          class="bg-white dark:bg-gray-800"
-        >
-          {props.children}
-        </Resizable.Panel>
-      </Resizable>
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen());
+
+  // Close sidebar on window resize to desktop
+  onMount(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= SIDEBAR_TRIGGER_WIDTH) {
+        setSidebarOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  });
+
+  return (
+    <div class="min-h-screen bg-[--color-base-100]">
+      <Sidebar isOpen={sidebarOpen} toggle={toggleSidebar} />
+
+      <div class="lg:ml-64">
+        <Nav sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+
+        <main class="flex-1 overflow-x-hidden">
+          <div class="p-6">{props.children}</div>
+        </main>
+      </div>
     </div>
   );
 }

@@ -11,7 +11,7 @@ interface CardProps extends ParentProps {
 export default function Card(props: CardProps) {
   return (
     <div
-      class={`overflow-hidden rounded-lg bg-[var(--color-base-100)] shadow ${props.className || ""}`}
+      class={`overflow-hidden rounded-lg bg-[var(--color-base-200)] shadow ${props.className || ""}`}
     >
       {props.title && (
         <div
