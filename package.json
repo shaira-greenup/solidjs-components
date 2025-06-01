@@ -15,6 +15,7 @@
     "@tailwindcss/forms": "^0.5.10",
     "bootstrap-icons": "^1.13.1",
     "chart.js": "^4.4.9",
+    "ckeditor5": "^45.1.0",
     "corvu": "^0.7.2",
     "katex": "^0.16.22",
     "solid-js": "^1.9.5",

@@ -59,6 +59,17 @@ const data = [
             content: "Example of KaTeX",
             link: "katex",
           },
+          {
+            title: "CK Editor 5",
+            content: "Example of CK Editor",
+            link: "ckeditor",
+          },
+
+          {
+            title: "Full Calendar io",
+            content: "Example of Full Calendar IO",
+            link: "calendar",
+          },
         ],
       },
     ],
