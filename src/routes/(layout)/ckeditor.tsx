@@ -1,6 +1,7 @@
-import { createSignal, onMount, Show } from "solid-js";
+import { createSignal, onMount, Show, createEffect, onCleanup } from "solid-js";
 // import "../../../node_modules/ckeditor5/dist/ckeditor5.css";
 import "ckeditor5/ckeditor5.css";
+import "../../styles/ckeditor-dark.css";
 
 
 function Card(props: { title: string; children: any; class?: string }) {
@@ -38,10 +39,39 @@ function MarkdownSource(props: { content: string }) {
 
 export default function MarkdownEditor() {
   let editorRef!: HTMLDivElement;
+  let editorContainerRef!: HTMLDivElement;
   const [isMounted, setIsMounted] = createSignal(false);
   const [content, setContent] = createSignal("");
   const [markdownContent, setMarkdownContent] = createSignal("");
   const [showPreview, setShowPreview] = createSignal(true);
+  const [isDarkMode, setIsDarkMode] = createSignal(false);
+
+  // Set up dark mode detection
+  onMount(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    setIsDarkMode(mediaQuery.matches);
+    
+    const handleChange = (e: MediaQueryListEvent) => {
+      setIsDarkMode(e.matches);
+    };
+    
+    mediaQuery.addEventListener('change', handleChange);
+    
+    onCleanup(() => {
+      mediaQuery.removeEventListener('change', handleChange);
+    });
+  });
+
+  // Apply dark mode class to editor container
+  createEffect(() => {
+    if (editorContainerRef) {
+      if (isDarkMode()) {
+        editorContainerRef.classList.add('ck-dark-theme');
+      } else {
+        editorContainerRef.classList.remove('ck-dark-theme');
+      }
+    }
+  });
 
   onMount(async () => {
     setIsMounted(true);
@@ -339,7 +369,9 @@ export default function MarkdownEditor() {
           >
             <Card title="Editor" class="min-h-96">
               <div class="prose">
-                <div ref={editorRef} class="prose max-w-none"></div>
+                <div ref={editorContainerRef} class={isDarkMode() ? 'ck-dark-theme' : ''}>
+                  <div ref={editorRef} class="prose max-w-none"></div>
+                </div>
               </div>
             </Card>
 
