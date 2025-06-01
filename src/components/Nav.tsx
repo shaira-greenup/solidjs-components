@@ -44,6 +44,7 @@ export default function Nav(props: NavProps) {
       <button
         onClick={props.toggleSidebar}
         class="p-2 rounded-[var(--radius-field)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-base-200)] transition-colors lg:hidden"
+        title="Toggle sidebar (Ctrl+B)"
       >
         <MenuIcon />
       </button>
