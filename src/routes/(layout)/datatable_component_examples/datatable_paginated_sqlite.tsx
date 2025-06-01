@@ -1,72 +1,81 @@
 import { ColumnDef } from "@tanstack/solid-table";
-import { createSignal } from "solid-js";
+import { createSignal, createResource, Suspense } from "solid-js";
 import KaTeX from "~/components/KaTeX";
 import DataTable from "~/components/DataTable";
 
 /**
- * Represents a mathematical data point with calculated values
+ * Represents an iris data point from the database
  */
-type MathematicalDataPoint = {
-  firstName: string; // Point identifier
-  age: number; // X value (scaled)
-  visits: number; // Y value (calculated from sin/cos)
-  status: string; // Z status (positive/negative/zero)
-  progress: number; // Z magnitude (absolute value)
+type IrisDataPoint = {
+  sepal_length: number;
+  sepal_width: number;
+  petal_length: number;
+  petal_width: number;
+  species: string;
 };
 
 /**
- * Generates mathematical data points using trigonometric functions
- * Equations: x = i × 0.1, y = sin(x) × cos(0.5x), z = e^(-0.05x) × sin(2x)
+ * Server-side function to read iris data from SQLite database
  */
-function generateMathematicalData(): MathematicalDataPoint[] {
-  return Array.from({ length: 500 }, (_, i) => {
-    const x = i * 0.1;
-    const y = Math.sin(x) * Math.cos(x * 0.5);
-    const z = Math.exp(-x * 0.05) * Math.sin(x * 2);
-
-    return {
-      firstName: `Point${i + 1}`,
-      age: Math.round(x * 10) % 100,
-      visits: Math.round(Math.abs(y * 100)),
-      status: z > 0 ? "Positive" : z < 0 ? "Negative" : "Zero",
-      progress: Math.round(Math.abs(z * 100)),
-    };
-  });
+async function fetchIrisData(): Promise<IrisDataPoint[]> {
+  "use server";
+  
+  const Database = require("better-sqlite3");
+  const path = require("path");
+  
+  try {
+    const dbPath = path.resolve("src/data/iris.db");
+    const db = new Database(dbPath, { readonly: true });
+    
+    const stmt = db.prepare("SELECT * FROM iris");
+    const rows = stmt.all();
+    
+    db.close();
+    
+    return rows as IrisDataPoint[];
+  } catch (error) {
+    console.error("Error reading iris database:", error);
+    return [];
+  }
 }
 
 /**
- * Column definitions for the mathematical data table
+ * Column definitions for the iris data table
  */
-function createTableColumns(): ColumnDef<MathematicalDataPoint>[] {
+function createTableColumns(): ColumnDef<IrisDataPoint>[] {
   return [
     {
-      accessorKey: "firstName",
-      header: () => <span>Point ID</span>,
+      accessorKey: "sepal_length",
+      header: () => <span>Sepal Length</span>,
+      cell: (info) => Number(info.getValue()).toFixed(1),
+      footer: (info) => info.column.id,
+      enableSorting: true,
+    },
+    {
+      accessorKey: "sepal_width",
+      header: () => <span>Sepal Width</span>,
+      cell: (info) => Number(info.getValue()).toFixed(1),
+      footer: (info) => info.column.id,
+      enableSorting: true,
+    },
+    {
+      accessorKey: "petal_length",
+      header: () => <span>Petal Length</span>,
+      cell: (info) => Number(info.getValue()).toFixed(1),
+      footer: (info) => info.column.id,
+      enableSorting: true,
+    },
+    {
+      accessorKey: "petal_width",
+      header: () => <span>Petal Width</span>,
+      cell: (info) => Number(info.getValue()).toFixed(1),
+      footer: (info) => info.column.id,
+      enableSorting: true,
+    },
+    {
+      accessorKey: "species",
+      header: () => <span>Species</span>,
       cell: (info) => info.getValue(),
-      footer: (info) => info.column.id,
-      enableSorting: true,
-    },
-    {
-      accessorKey: "age",
-      header: () => "X Value",
-      footer: (info) => info.column.id,
-      enableSorting: true,
-    },
-    {
-      accessorKey: "visits",
-      header: () => <span>Y Value</span>,
-      footer: (info) => info.column.id,
-      enableSorting: true,
-    },
-    {
-      accessorKey: "status",
-      header: "Z Status",
-      footer: (info) => info.column.id,
-      enableSorting: true,
-    },
-    {
-      accessorKey: "progress",
-      header: "Z Magnitude",
       footer: (info) => info.column.id,
       enableSorting: true,
     },
@@ -74,48 +83,64 @@ function createTableColumns(): ColumnDef<MathematicalDataPoint>[] {
 }
 
 /**
- * Mathematical equations header content
+ * Iris dataset information header content
  */
-function MathematicalEquationsContent() {
+function IrisDatasetContent() {
   return (
     <div class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
       <div class="flex items-center space-x-4">
-        <span class="font-medium">Equations:</span>
-        <KaTeX math="x = i \times 0.1" />
+        <span class="font-medium">Dataset:</span>
+        <span>The famous Iris flower dataset by Ronald Fisher (1936)</span>
       </div>
       <div class="flex items-center space-x-4 ml-16">
-        <KaTeX math="y = \sin(x) \times \cos(0.5x)" />
+        <span>Contains measurements of 150 iris flowers from 3 species</span>
       </div>
       <div class="flex items-center space-x-4 ml-16">
-        <KaTeX math="z = e^{-0.05x} \times \sin(2x)" />
+        <span>Species: Setosa, Versicolor, and Virginica</span>
+      </div>
+      <div class="flex items-center space-x-4 ml-16">
+        <span>Measurements: Sepal length/width and Petal length/width (in cm)</span>
       </div>
     </div>
   );
 }
 
 /**
- * Main application component - Mathematical Data Table with Sorting and Pagination
+ * Main application component - Iris Dataset Table with SQLite data
  */
-function MathematicalDataTableApp() {
-  const [data, setData] = createSignal(generateMathematicalData());
-  const handleRerender = () => setData(generateMathematicalData());
+function IrisDataTableApp() {
+  const [irisData] = createResource(fetchIrisData);
+  
+  const handleRerender = () => {
+    // Refetch data from database
+    irisData.refetch();
+  };
 
   return (
     <div class="p-6 max-w-6xl mx-auto">
-      <DataTable
-        data={data}
-        columns={createTableColumns()}
-        title="Mathematical Data Points"
-        headerContent={<MathematicalEquationsContent />}
-        onRerender={handleRerender}
-        enableSorting={true}
-        enablePagination={true}
-        enableKeyboardNavigation={true}
-        initialPageSize={20}
-        pageSizeOptions={[10, 20, 30, 40, 50]}
-      />
+      <Suspense fallback={
+        <div class="flex items-center justify-center h-64">
+          <div class="text-lg text-gray-600 dark:text-gray-400">
+            Loading iris dataset from database...
+          </div>
+        </div>
+      }>
+        <DataTable
+          data={() => irisData() || []}
+          columns={createTableColumns()}
+          title="Iris Dataset from SQLite Database"
+          description="Classic machine learning dataset loaded from SQLite database"
+          headerContent={<IrisDatasetContent />}
+          onRerender={handleRerender}
+          enableSorting={true}
+          enablePagination={true}
+          enableKeyboardNavigation={true}
+          initialPageSize={20}
+          pageSizeOptions={[10, 20, 30, 40, 50]}
+        />
+      </Suspense>
     </div>
   );
 }
 
-export default MathematicalDataTableApp;
+export default IrisDataTableApp;
