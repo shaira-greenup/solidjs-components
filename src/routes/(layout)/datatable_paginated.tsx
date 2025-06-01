@@ -7,7 +7,7 @@ import {
   getPaginationRowModel,
   Table,
 } from "@tanstack/solid-table";
-import { createSignal, For } from "solid-js";
+import { createSignal, For, onMount, onCleanup } from "solid-js";
 import KaTeX from "../../components/KaTeX";
 
 /**
@@ -81,7 +81,7 @@ function createTableColumns(): ColumnDef<MathematicalDataPoint>[] {
 }
 
 /**
- * Header component displaying the mathematical equations used to generate data
+ * Header component displaying the mathematical equations and keyboard shortcuts
  */
 function MathematicalEquationsHeader() {
   return (
@@ -99,6 +99,25 @@ function MathematicalEquationsHeader() {
         </div>
         <div class="flex items-center space-x-4 ml-16">
           <KaTeX math="z = e^{-0.05x} \times \sin(2x)" />
+        </div>
+      </div>
+      
+      <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+        <h3 class="text-sm font-medium text-gray-900 dark:text-white mb-2">
+          Keyboard Shortcuts
+        </h3>
+        <div class="grid grid-cols-2 gap-4 text-xs text-gray-600 dark:text-gray-400">
+          <div class="space-y-1">
+            <div><kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">←</kbd> Previous page</div>
+            <div><kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">→</kbd> Next page</div>
+            <div><kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">Home</kbd> First page</div>
+            <div><kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">End</kbd> Last page</div>
+          </div>
+          <div class="space-y-1">
+            <div><kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">1-5</kbd> Set page size (10-50)</div>
+            <div><kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">G</kbd> Go to page (prompt)</div>
+            <div><kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">R</kbd> Rerender data</div>
+          </div>
         </div>
       </div>
     </div>
@@ -210,10 +229,88 @@ function DataTableFooter(props: { table: Table<MathematicalDataPoint> }) {
 }
 
 /**
- * Pagination controls component
+ * Pagination controls component with keyboard navigation
  */
-function PaginationControls(props: { table: Table<MathematicalDataPoint> }) {
+function PaginationControls(props: { 
+  table: Table<MathematicalDataPoint>;
+  onRerender: () => void;
+}) {
   const { table } = props;
+
+  // Handle keyboard navigation
+  const handleKeyDown = (event: KeyboardEvent) => {
+    // Prevent default behavior for navigation keys
+    const navigationKeys = ['ArrowLeft', 'ArrowRight', 'Home', 'End'];
+    if (navigationKeys.includes(event.key) || 
+        (event.key >= '1' && event.key <= '5') ||
+        event.key.toLowerCase() === 'g' ||
+        event.key.toLowerCase() === 'r') {
+      event.preventDefault();
+    }
+
+    switch (event.key) {
+      case 'ArrowLeft':
+        if (table.getCanPreviousPage()) {
+          table.previousPage();
+        }
+        break;
+      case 'ArrowRight':
+        if (table.getCanNextPage()) {
+          table.nextPage();
+        }
+        break;
+      case 'Home':
+        if (table.getCanPreviousPage()) {
+          table.setPageIndex(0);
+        }
+        break;
+      case 'End':
+        if (table.getCanNextPage()) {
+          table.setPageIndex(table.getPageCount() - 1);
+        }
+        break;
+      case '1':
+        table.setPageSize(10);
+        break;
+      case '2':
+        table.setPageSize(20);
+        break;
+      case '3':
+        table.setPageSize(30);
+        break;
+      case '4':
+        table.setPageSize(40);
+        break;
+      case '5':
+        table.setPageSize(50);
+        break;
+      case 'g':
+      case 'G':
+        const pageInput = prompt(
+          `Go to page (1-${table.getPageCount()}):`,
+          String(table.getState().pagination.pageIndex + 1)
+        );
+        if (pageInput) {
+          const pageNumber = parseInt(pageInput, 10);
+          if (pageNumber >= 1 && pageNumber <= table.getPageCount()) {
+            table.setPageIndex(pageNumber - 1);
+          }
+        }
+        break;
+      case 'r':
+      case 'R':
+        props.onRerender();
+        break;
+    }
+  };
+
+  onMount(() => {
+    document.addEventListener('keydown', handleKeyDown);
+  });
+
+  onCleanup(() => {
+    document.removeEventListener('keydown', handleKeyDown);
+  });
 
   return (
     <div class="flex items-center justify-between px-6 py-4 border-t border-gray-200 dark:border-gray-700">
@@ -229,6 +326,7 @@ function PaginationControls(props: { table: Table<MathematicalDataPoint> }) {
           onClick={() => table.setPageIndex(0)}
           disabled={!table.getCanPreviousPage()}
           class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+          title="First page (Home)"
         >
           {"<<"}
         </button>
@@ -237,6 +335,7 @@ function PaginationControls(props: { table: Table<MathematicalDataPoint> }) {
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
           class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+          title="Previous page (←)"
         >
           {"<"}
         </button>
@@ -245,6 +344,7 @@ function PaginationControls(props: { table: Table<MathematicalDataPoint> }) {
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
           class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+          title="Next page (→)"
         >
           {">"}
         </button>
@@ -253,6 +353,7 @@ function PaginationControls(props: { table: Table<MathematicalDataPoint> }) {
           onClick={() => table.setPageIndex(table.getPageCount() - 1)}
           disabled={!table.getCanNextPage()}
           class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+          title="Last page (End)"
         >
           {">>"}
         </button>
@@ -261,6 +362,7 @@ function PaginationControls(props: { table: Table<MathematicalDataPoint> }) {
           value={table.getState().pagination.pageSize}
           onChange={(e) => table.setPageSize(Number(e.target.value))}
           class="px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+          title="Page size (1-5 keys)"
         >
           {[10, 20, 30, 40, 50].map((pageSize) => (
             <option key={pageSize} value={pageSize}>
@@ -268,6 +370,25 @@ function PaginationControls(props: { table: Table<MathematicalDataPoint> }) {
             </option>
           ))}
         </select>
+        
+        <button
+          onClick={() => {
+            const pageInput = prompt(
+              `Go to page (1-${table.getPageCount()}):`,
+              String(table.getState().pagination.pageIndex + 1)
+            );
+            if (pageInput) {
+              const pageNumber = parseInt(pageInput, 10);
+              if (pageNumber >= 1 && pageNumber <= table.getPageCount()) {
+                table.setPageIndex(pageNumber - 1);
+              }
+            }
+          }}
+          class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+          title="Go to page (G)"
+        >
+          Go to...
+        </button>
       </div>
     </div>
   );
@@ -307,12 +428,13 @@ function SortableDataTable(props: {
         </table>
       </div>
 
-      <PaginationControls table={table} />
+      <PaginationControls table={table} onRerender={props.onRerender} />
       
       <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
         <button
           onClick={props.onRerender}
           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+          title="Rerender data (R)"
         >
           Rerender
         </button>
