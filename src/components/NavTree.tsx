@@ -1,8 +1,8 @@
 // import { Wunderbaum } from "wunderbaum";
 // npm install bootstrap-icons
+import { useNavigate } from "@solidjs/router";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { onMount } from "solid-js";
-import { useNavigate } from "@solidjs/router";
 //  npm install --save @fortawesome/fontawesome-free
 import "@fortawesome/fontawesome-free/css/all.css";
 import { WbKeydownEventType } from "types";
@@ -74,6 +74,16 @@ const data = [
             title: "Tailwind Sidebar",
             content: "Example of Tailwind Sidebar",
             link: "tailwind_sidebar",
+          },
+          {
+            title: "Tanstack Datatable",
+            content: "Example of Tanstack Sidebar",
+            link: "datatable",
+          },
+          {
+            title: "(TODO) SQLite Tanstack DataTable",
+            content: "Example of Tanstack Sidebar",
+            link: "datatable",
           },
         ],
       },
