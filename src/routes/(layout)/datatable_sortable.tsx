@@ -14,10 +14,10 @@ import KaTeX from "../../components/KaTeX";
  */
 type MathematicalDataPoint = {
   firstName: string; // Point identifier
-  age: number;       // X value (scaled)
-  visits: number;    // Y value (calculated from sin/cos)
-  status: string;    // Z status (positive/negative/zero)
-  progress: number;  // Z magnitude (absolute value)
+  age: number; // X value (scaled)
+  visits: number; // Y value (calculated from sin/cos)
+  status: string; // Z status (positive/negative/zero)
+  progress: number; // Z magnitude (absolute value)
 };
 
 /**
@@ -109,30 +109,27 @@ function MathematicalEquationsHeader() {
  */
 function SortableColumnHeader(props: { header: any }) {
   const { header } = props;
-  
+
   return (
     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
       {header.isPlaceholder ? null : (
         <div
           classList={{
             "flex items-center space-x-1": true,
-            "cursor-pointer select-none hover:text-gray-700 dark:hover:text-gray-100": header.column.getCanSort()
+            "cursor-pointer select-none hover:text-gray-700 dark:hover:text-gray-100":
+              header.column.getCanSort(),
           }}
           onClick={header.column.getToggleSortingHandler()}
         >
           <span>
-            {flexRender(
-              header.column.columnDef.header,
-              header.getContext(),
-            )}
+            {flexRender(header.column.columnDef.header, header.getContext())}
           </span>
           {header.column.getCanSort() && (
             <span class="text-gray-400">
               {{
                 asc: "↑",
                 desc: "↓",
-              }[header.column.getIsSorted() as string] ??
-                "↕"}
+              }[header.column.getIsSorted() as string] ?? "↕"}
             </span>
           )}
         </div>
@@ -172,10 +169,7 @@ function DataTableBody(props: { table: Table<MathematicalDataPoint> }) {
             <For each={row.getVisibleCells()}>
               {(cell) => (
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                  {flexRender(
-                    cell.column.columnDef.cell,
-                    cell.getContext(),
-                  )}
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               )}
             </For>
@@ -217,9 +211,9 @@ function DataTableFooter(props: { table: Table<MathematicalDataPoint> }) {
 /**
  * Complete sortable data table component
  */
-function SortableDataTable(props: { 
-  data: () => MathematicalDataPoint[], 
-  onRerender: () => void 
+function SortableDataTable(props: {
+  data: () => MathematicalDataPoint[];
+  onRerender: () => void;
 }) {
   const table = createSolidTable({
     get data() {
@@ -233,7 +227,7 @@ function SortableDataTable(props: {
   return (
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
       <MathematicalEquationsHeader />
-      
+
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <DataTableHeader table={table} />
