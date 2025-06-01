@@ -1,8 +1,11 @@
+import { useLocation } from "@solidjs/router";
 import { ChartConfiguration } from "chart.js";
-import { createSignal, createMemo } from "solid-js";
+import { createSignal, createMemo, Suspense, createResource } from "solid-js";
 import Card from "~/components/Card";
 import ChartComponent from "~/components/Chart";
+import { DisplayContent } from "~/components/DisplayCurrentSource";
 import Slider from "~/components/Slider";
+import { readTextFileFromPath } from "~/utils/fileReader";
 
 export default function SimpleChartPage() {
   const amplitude = 50;
@@ -37,12 +40,17 @@ export default function SimpleChartPage() {
     },
   };
 
+
   return (
     <div class="container mx-auto p-4">
       <Card title="Simple Chart Example">
         <div class="mb-4"></div>
         <ChartComponent chartConfig={chartConfig} />
       </Card>
+      <Card>
+        <DisplayContent />
+      </Card>
     </div>
   );
 }
+
