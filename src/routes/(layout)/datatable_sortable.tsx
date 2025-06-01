@@ -6,6 +6,7 @@ import {
   getSortedRowModel,
 } from "@tanstack/solid-table";
 import { createSignal, For } from "solid-js";
+import KaTeX from "../../components/KaTeX";
 
 type Person = {
   firstName: string;
@@ -80,9 +81,21 @@ function App() {
     <div class="p-6 max-w-6xl mx-auto">
       <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-          <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
+          <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
             Mathematical Data Points
           </h2>
+          <div class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+            <div class="flex items-center space-x-4">
+              <span class="font-medium">Equations:</span>
+              <KaTeX math="x = i \times 0.1" />
+            </div>
+            <div class="flex items-center space-x-4 ml-16">
+              <KaTeX math="y = \sin(x) \times \cos(0.5x)" />
+            </div>
+            <div class="flex items-center space-x-4 ml-16">
+              <KaTeX math="z = e^{-0.05x} \times \sin(2x)" />
+            </div>
+          </div>
         </div>
 
         <div class="overflow-x-auto">
