@@ -131,7 +131,7 @@ const data = [
               {
                 title: "SQLite",
                 content: "Example of Tanstack Sidebar",
-                link: "datatable_component_examples/datatable_paginated",
+                link: "datatable_component_examples/datatable_paginated_sqlite",
               },
             ],
           },
