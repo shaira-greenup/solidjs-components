@@ -11,6 +11,22 @@ import { Wunderbaum } from "wunderbaum";
 
 const data = [
   {
+    title: "Navigation",
+    expanded: true,
+    children: [
+      {
+        title: "Home",
+        content: "Home Page",
+        link: "/",
+      },
+      {
+        title: "About",
+        content: "About Page",
+        link: "about",
+      },
+    ],
+  },
+  {
     title: "Core Content",
     expanded: true,
     children: [
@@ -29,16 +45,22 @@ const data = [
             link: "layout",
           },
           {
-            title: "Home",
-            content: "Home Page",
-            link: "/",
-          },
-          {
-            title: "About",
-            content: "About Page",
-            link: "about",
+            title: "Chart",
+            content: "Example of a Chart",
+            link: "static_chart",
           },
         ],
+      },
+    ],
+  },
+  {
+    title: "Compositional Content",
+    expanded: true,
+    children: [
+      {
+        title: "Dynamic Chart",
+        content: "Example of a Chart",
+        link: "dynamicChart",
       },
     ],
   },
