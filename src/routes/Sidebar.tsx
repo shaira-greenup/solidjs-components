@@ -1,6 +1,6 @@
 import { A, useLocation } from "@solidjs/router";
 import type { JSX } from "solid-js";
-import { Show } from "solid-js";
+import { Show, onMount, onCleanup } from "solid-js";
 import NavTree from "~/components/NavTree";
 
 interface SidebarProps {
@@ -112,6 +112,24 @@ export default function Sidebar(props: SidebarProps) {
   const isUnderNavbar = false;
   const enableBackgroundBlur = false;
   const closeOnItemClick = false;
+
+  // Handle escape key to close sidebar on mobile
+  onMount(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && props.isOpen()) {
+        // Only close if we're in mobile view (sidebar is overlay)
+        if (window.innerWidth < 1024) {
+          props.toggle();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    
+    onCleanup(() => {
+      document.removeEventListener("keydown", handleKeyDown);
+    });
+  });
 
   return (
     <>
