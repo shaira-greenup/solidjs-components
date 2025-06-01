@@ -111,12 +111,16 @@ export default function Sidebar(props: SidebarProps) {
   // When true, the sidebar will inherit the navbar height from app.css
   // We don't want that for the current design
   const isUnderNavbar = false;
+  const enableBackgroundBlur = true;
 
   return (
     <>
       <Show when={props.isOpen()}>
         <div
-          class="fixed inset-0 bg-[var(--color-neutral)]/50 backdrop-blur-sm z-40 lg:hidden"
+          classList={{
+            "fixed inset-0 bg-[var(--color-neutral)]/50 z-40 lg:hidden": true,
+            "backdrop-blur-sm": enableBackgroundBlur,
+          }}
           onClick={props.toggle}
         />
       </Show>
