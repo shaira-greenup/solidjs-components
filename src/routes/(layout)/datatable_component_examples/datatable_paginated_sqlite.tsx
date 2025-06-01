@@ -21,11 +21,11 @@ type IrisDataPoint = {
 const fetchIrisData = cache(async (): Promise<IrisDataPoint[]> => {
   "use server";
   
-  const Database = require("better-sqlite3");
-  const path = require("path");
+  const { default: Database } = await import("better-sqlite3");
+  const { resolve } = await import("path");
   
   try {
-    const dbPath = path.resolve("src/data/iris.db");
+    const dbPath = resolve("src/data/iris.db");
     const db = new Database(dbPath, { readonly: true });
     
     const stmt = db.prepare("SELECT * FROM iris");
