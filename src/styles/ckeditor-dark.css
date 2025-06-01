@@ -1,66 +1,74 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Map CKEditor content to Tailwind prose styles */
+.ck-content {
+    @apply prose prose-gray dark:prose-invert max-w-none;
+}
 /* CKEditor 5 Dark Theme */
 .ck-dark-theme {
-  --ck-color-base-background: #1f2937;
-  --ck-color-base-foreground: #374151;
-  --ck-color-focus-border: #3b82f6;
-  --ck-color-text: #f9fafb;
-  --ck-color-shadow-drop: rgba(0, 0, 0, 0.3);
-  --ck-color-shadow-inner: rgba(0, 0, 0, 0.2);
-  --ck-color-button-default-background: transparent;
-  --ck-color-button-default-hover-background: #374151;
-  --ck-color-button-on-background: #4b5563;
-  --ck-color-button-on-hover-background: #6b7280;
-  --ck-color-dropdown-panel-background: #374151;
-  --ck-color-dropdown-panel-border: #4b5563;
-  --ck-color-input-background: #374151;
-  --ck-color-input-border: #4b5563;
-  --ck-color-list-background: #374151;
-  --ck-color-list-button-hover-background: #4b5563;
-  --ck-color-list-button-on-background: #6b7280;
-  --ck-color-panel-background: #374151;
-  --ck-color-panel-border: #4b5563;
-  --ck-color-toolbar-background: #1f2937;
-  --ck-color-toolbar-border: #374151;
-  --ck-color-tooltip-background: #111827;
-  --ck-color-tooltip-text: #f9fafb;
-  --ck-color-engine-placeholder-text: #9ca3af;
-  --ck-color-upload-bar-background: #3b82f6;
-  --ck-color-link-default: #60a5fa;
-  --ck-color-link-selected-background: rgba(96, 165, 250, 0.3);
+    --ck-color-base-background: #1f2937;
+    --ck-color-base-foreground: #374151;
+    --ck-color-focus-border: #3b82f6;
+    --ck-color-text: #f9fafb;
+    --ck-color-shadow-drop: rgba(0, 0, 0, 0.3);
+    --ck-color-shadow-inner: rgba(0, 0, 0, 0.2);
+    --ck-color-button-default-background: transparent;
+    --ck-color-button-default-hover-background: #374151;
+    --ck-color-button-on-background: #4b5563;
+    --ck-color-button-on-hover-background: #6b7280;
+    --ck-color-dropdown-panel-background: #374151;
+    --ck-color-dropdown-panel-border: #4b5563;
+    --ck-color-input-background: #374151;
+    --ck-color-input-border: #4b5563;
+    --ck-color-list-background: #374151;
+    --ck-color-list-button-hover-background: #4b5563;
+    --ck-color-list-button-on-background: #6b7280;
+    --ck-color-panel-background: #374151;
+    --ck-color-panel-border: #4b5563;
+    --ck-color-toolbar-background: #1f2937;
+    --ck-color-toolbar-border: #374151;
+    --ck-color-tooltip-background: #111827;
+    --ck-color-tooltip-text: #f9fafb;
+    --ck-color-engine-placeholder-text: #9ca3af;
+    --ck-color-upload-bar-background: #3b82f6;
+    --ck-color-link-default: #60a5fa;
+    --ck-color-link-selected-background: rgba(96, 165, 250, 0.3);
 }
 
+
 .ck-dark-theme .ck-editor__editable {
-  background-color: var(--ck-color-base-background);
-  color: var(--ck-color-text);
-  border-color: var(--ck-color-base-foreground);
+    background-color: var(--ck-color-base-background);
+    color: var(--ck-color-text);
+    border-color: var(--ck-color-base-foreground);
 }
 
 .ck-dark-theme .ck-toolbar {
-  background-color: var(--ck-color-toolbar-background);
-  border-color: var(--ck-color-toolbar-border);
+    background-color: var(--ck-color-toolbar-background);
+    border-color: var(--ck-color-toolbar-border);
 }
 
 .ck-dark-theme .ck-button {
-  color: var(--ck-color-text);
+    color: var(--ck-color-text);
 }
 
 .ck-dark-theme .ck-button:not(.ck-disabled):hover {
-  background-color: var(--ck-color-button-default-hover-background);
+    background-color: var(--ck-color-button-default-hover-background);
 }
 
 .ck-dark-theme .ck-button.ck-on {
-  background-color: var(--ck-color-button-on-background);
+    background-color: var(--ck-color-button-on-background);
 }
 
 .ck-dark-theme .ck-dropdown__panel {
-  background-color: var(--ck-color-dropdown-panel-background);
-  border-color: var(--ck-color-dropdown-panel-border);
+    background-color: var(--ck-color-dropdown-panel-background);
+    border-color: var(--ck-color-dropdown-panel-border);
 }
 
 .ck-dark-theme .ck-list__item {
-  color: var(--ck-color-text);
+    color: var(--ck-color-text);
 }
 
 .ck-dark-theme .ck-list__item:hover {
-  background-color: var(--ck-color-list-button-hover-background);
+    background-color: var(--ck-color-list-button-hover-background);
 }

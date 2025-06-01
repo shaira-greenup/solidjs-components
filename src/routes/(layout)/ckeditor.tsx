@@ -1,8 +1,7 @@
-import { createSignal, onMount, Show, createEffect, onCleanup } from "solid-js";
+import { createEffect, createSignal, onCleanup, onMount, Show } from "solid-js";
 // import "../../../node_modules/ckeditor5/dist/ckeditor5.css";
 import "ckeditor5/ckeditor5.css";
 import "../../styles/ckeditor-dark.css";
-
 
 function Card(props: { title: string; children: any; class?: string }) {
   return (
@@ -48,17 +47,17 @@ export default function MarkdownEditor() {
 
   // Set up dark mode detection
   onMount(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     setIsDarkMode(mediaQuery.matches);
-    
+
     const handleChange = (e: MediaQueryListEvent) => {
       setIsDarkMode(e.matches);
     };
-    
-    mediaQuery.addEventListener('change', handleChange);
-    
+
+    mediaQuery.addEventListener("change", handleChange);
+
     onCleanup(() => {
-      mediaQuery.removeEventListener('change', handleChange);
+      mediaQuery.removeEventListener("change", handleChange);
     });
   });
 
@@ -66,9 +65,9 @@ export default function MarkdownEditor() {
   createEffect(() => {
     if (editorContainerRef) {
       if (isDarkMode()) {
-        editorContainerRef.classList.add('ck-dark-theme');
+        editorContainerRef.classList.add("ck-dark-theme");
       } else {
-        editorContainerRef.classList.remove('ck-dark-theme');
+        editorContainerRef.classList.remove("ck-dark-theme");
       }
     }
   });
@@ -369,8 +368,14 @@ export default function MarkdownEditor() {
           >
             <Card title="Editor" class="min-h-96">
               <div class="prose">
-                <div ref={editorContainerRef} class={isDarkMode() ? 'ck-dark-theme' : ''}>
-                  <div ref={editorRef} class="prose max-w-none"></div>
+                <div
+                  ref={editorContainerRef}
+                  classList={{
+                    "ck-dark-theme": isDarkMode(),
+                    prose: true,
+                  }}
+                >
+                  <div ref={editorRef} class="max-w-none"></div>
                 </div>
               </div>
             </Card>

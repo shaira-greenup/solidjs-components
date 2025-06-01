@@ -62,11 +62,11 @@ function H1(props: { children?: JSXElement }) {
 
 function CentreSideNav(props: { children?: JSXElement }) {
   return (
-    <div class="flex items-center justify-center flex-1">{props.children}</div>
+    <div class="flex items-center justify-center flex-1 min-w-0">{props.children}</div>
   );
 }
 function LeftSideNav(props: { children?: JSXElement }) {
-  return <div class="flex items-center gap-4">{props.children}</div>;
+  return <div class="flex items-center gap-4 flex-shrink-0">{props.children}</div>;
 }
 
 function RightSideNav(props: {
@@ -74,8 +74,8 @@ function RightSideNav(props: {
   userOrb?: boolean;
 }): JSXElement {
   return (
-    <div class="flex items-center gap-3">
-      <div class="hidden sm:block text-sm text-[var(--color-text-secondary)]">
+    <div class="flex items-center gap-3 flex-shrink-0 min-w-0">
+      <div class="hidden sm:block text-sm text-[var(--color-text-secondary)] truncate">
         {props.children}
       </div>
       <Show when={props.userOrb}>
