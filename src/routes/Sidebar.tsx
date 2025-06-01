@@ -111,7 +111,7 @@ export default function Sidebar(props: SidebarProps) {
   // We don't want that for the current design
   const isUnderNavbar = false;
   const enableBackgroundBlur = false;
-  const closeOnItemClick = true;
+  const closeOnItemClick = false;
 
   return (
     <>
@@ -138,7 +138,9 @@ export default function Sidebar(props: SidebarProps) {
           <div class="flex flex-1 flex-col pb-4 overflow-y-auto">
             {/* mt-2 pushes the content down a little bit */}
             <nav class="mt-4 flex-1 px-2 space-y-1">
-              <NavTree onItemClick={closeOnItemClick ? props.toggle : undefined} />
+              <NavTree
+                onItemClick={closeOnItemClick ? props.toggle : undefined}
+              />
             </nav>
           </div>
         </div>
