@@ -10,6 +10,7 @@
     "@corvu/resizable": "^0.2.5",
     "@corvu/tailwind": "^0.1.7",
     "@fortawesome/fontawesome-free": "^6.7.2",
+    "@solidjs/meta": "^0.29.4",
     "@solidjs/router": "^0.15.0",
     "@solidjs/start": "^1.1.0",
     "@tailwindcss/forms": "^0.5.10",
