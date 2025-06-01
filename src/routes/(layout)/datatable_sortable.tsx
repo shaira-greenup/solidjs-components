@@ -34,6 +34,7 @@ const defaultData: Person[] = Array.from({ length: 100 }, (_, i) => {
 const defaultColumns: ColumnDef<Person>[] = [
   {
     accessorKey: "firstName",
+    header: () => <span>Point ID</span>,
     cell: (info) => info.getValue(),
     footer: (info) => info.column.id,
     enableSorting: true,
@@ -42,31 +43,31 @@ const defaultColumns: ColumnDef<Person>[] = [
     accessorFn: (row) => row.lastName,
     id: "lastName",
     cell: (info) => <i>{info.getValue<string>()}</i>,
-    header: () => <span>Last Name</span>,
+    header: () => <span>Data Type</span>,
     footer: (info) => info.column.id,
     enableSorting: true,
   },
   {
     accessorKey: "age",
-    header: () => "Age",
+    header: () => "X Value",
     footer: (info) => info.column.id,
     enableSorting: true,
   },
   {
     accessorKey: "visits",
-    header: () => <span>Visits</span>,
+    header: () => <span>Y Value</span>,
     footer: (info) => info.column.id,
     enableSorting: true,
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: "Z Status",
     footer: (info) => info.column.id,
     enableSorting: true,
   },
   {
     accessorKey: "progress",
-    header: "Profile Progress",
+    header: "Z Magnitude",
     footer: (info) => info.column.id,
     enableSorting: true,
   },
@@ -90,7 +91,7 @@ function App() {
       <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
           <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
-            Data Table
+            Mathematical Data Points
           </h2>
         </div>
 
