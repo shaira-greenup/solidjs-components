@@ -49,6 +49,11 @@ const data = [
             content: "Example of a Chart",
             link: "static_chart",
           },
+          {
+            title: "Slider",
+            content: "Example of a Slider",
+            link: "slider_example",
+          },
         ],
       },
     ],
