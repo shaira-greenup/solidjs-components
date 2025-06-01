@@ -4,6 +4,7 @@ import {
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
+  getPaginationRowModel,
   Table,
 } from "@tanstack/solid-table";
 import { createSignal, For } from "solid-js";
@@ -25,7 +26,7 @@ type MathematicalDataPoint = {
  * Equations: x = i × 0.1, y = sin(x) × cos(0.5x), z = e^(-0.05x) × sin(2x)
  */
 function generateMathematicalData(): MathematicalDataPoint[] {
-  return Array.from({ length: 100 }, (_, i) => {
+  return Array.from({ length: 500 }, (_, i) => {
     const x = i * 0.1;
     const y = Math.sin(x) * Math.cos(x * 0.5);
     const z = Math.exp(-x * 0.05) * Math.sin(x * 2);
@@ -209,7 +210,71 @@ function DataTableFooter(props: { table: Table<MathematicalDataPoint> }) {
 }
 
 /**
- * Complete sortable data table component
+ * Pagination controls component
+ */
+function PaginationControls(props: { table: Table<MathematicalDataPoint> }) {
+  const { table } = props;
+
+  return (
+    <div class="flex items-center justify-between px-6 py-4 border-t border-gray-200 dark:border-gray-700">
+      <div class="flex items-center space-x-2">
+        <span class="text-sm text-gray-700 dark:text-gray-300">
+          Page {table.getState().pagination.pageIndex + 1} of{" "}
+          {table.getPageCount()} ({table.getFilteredRowModel().rows.length} total rows)
+        </span>
+      </div>
+      
+      <div class="flex items-center space-x-2">
+        <button
+          onClick={() => table.setPageIndex(0)}
+          disabled={!table.getCanPreviousPage()}
+          class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+        >
+          {"<<"}
+        </button>
+        
+        <button
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+          class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+        >
+          {"<"}
+        </button>
+        
+        <button
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+          class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+        >
+          {">"}
+        </button>
+        
+        <button
+          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+          disabled={!table.getCanNextPage()}
+          class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+        >
+          {">>"}
+        </button>
+        
+        <select
+          value={table.getState().pagination.pageSize}
+          onChange={(e) => table.setPageSize(Number(e.target.value))}
+          class="px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+        >
+          {[10, 20, 30, 40, 50].map((pageSize) => (
+            <option key={pageSize} value={pageSize}>
+              Show {pageSize}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Complete sortable and paginated data table component
  */
 function SortableDataTable(props: {
   data: () => MathematicalDataPoint[];
@@ -222,6 +287,12 @@ function SortableDataTable(props: {
     columns: createTableColumns(),
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: {
+        pageSize: 20,
+      },
+    },
   });
 
   return (
@@ -236,6 +307,8 @@ function SortableDataTable(props: {
         </table>
       </div>
 
+      <PaginationControls table={table} />
+      
       <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
         <button
           onClick={props.onRerender}
@@ -249,7 +322,7 @@ function SortableDataTable(props: {
 }
 
 /**
- * Main application component - Mathematical Data Table with Sorting
+ * Main application component - Mathematical Data Table with Sorting and Pagination
  */
 function MathematicalDataTableApp() {
   const [data, setData] = createSignal(generateMathematicalData());
