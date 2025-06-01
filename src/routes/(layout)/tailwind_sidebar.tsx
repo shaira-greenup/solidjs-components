@@ -35,6 +35,72 @@ export default function TailwindSidebar() {
           </div>
         </Card>
 
+        <Card title="How to Use This in Your Own Project">
+          <div class="text-[var(--color-base-content)] space-y-4">
+            <div>
+              <h4 class="font-semibold mb-2">1. Clone the Source</h4>
+              <p class="mb-2">First, clone this repository to get access to the sidebar components.</p>
+            </div>
+            
+            <div>
+              <h4 class="font-semibold mb-2">2. Set up your app.tsx</h4>
+              <p class="mb-2">Configure your main app file like this (see <a href="https://docs.solidjs.com/solid-router/concepts/layouts" class="text-blue-600 hover:underline" target="_blank">SolidJS Router layouts documentation</a>):</p>
+              <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto">
+                <pre class="text-sm"><code>{`import { Router } from "@solidjs/router";
+import { FileRoutes } from "@solidjs/start/router";
+import { Suspense } from "solid-js";
+import "./app.css";
+
+export default function App() {
+  return (
+    <Router
+      root={props => (
+        <Suspense>{props.children}</Suspense>
+      )}
+    >
+      <FileRoutes />
+    </Router>
+  );
+}`}</code></pre>
+              </div>
+            </div>
+            
+            <div>
+              <h4 class="font-semibold mb-2">3. Copy Required Files</h4>
+              <p class="mb-2">Migrate the following files into your project:</p>
+              <ul class="list-disc list-inside space-y-1 ml-4">
+                <li><code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">src/components/Layout.tsx</code></li>
+                <li><code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">src/routes/Sidebar.tsx</code></li>
+                <li><code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">src/components/Nav.tsx</code></li>
+                <li><code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">src/components/NavTree.tsx</code></li>
+                <li><code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">src/utils/keybindings.ts</code></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 class="font-semibold mb-2">4. Copy Required Styles</h4>
+              <p class="mb-2">Also copy these CSS files for proper styling:</p>
+              <ul class="list-disc list-inside space-y-1 ml-4">
+                <li><code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">src/styles/sidebar.css</code></li>
+                <li><code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">src/styles/wunderbaum.css</code></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 class="font-semibold mb-2">5. Install Dependencies</h4>
+              <p class="mb-2">Make sure you have the required dependencies installed:</p>
+              <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+                <pre class="text-sm"><code>pnpm add @solidjs/router solid-js</code></pre>
+              </div>
+            </div>
+            
+            <div>
+              <h4 class="font-semibold mb-2">6. Create Layout Route</h4>
+              <p class="mb-2">Create a layout route file similar to <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">src/routes/(layout).tsx</code> to wrap your pages with the sidebar layout.</p>
+            </div>
+          </div>
+        </Card>
+
         <Card title="Implementation Details">
           <div class="text-[var(--color-base-content)] space-y-4">
             <div>
