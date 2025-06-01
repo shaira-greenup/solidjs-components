@@ -1,4 +1,5 @@
 import { JSXElement, Show, onMount, onCleanup } from "solid-js";
+import { isSidebarToggleKey, SIDEBAR_TOGGLE_TOOLTIP } from "~/utils/keybindings";
 
 interface NavProps {
   sidebarOpen: () => boolean;
@@ -22,8 +23,7 @@ export default function Nav(props: NavProps) {
   // Add keyboard shortcut to open sidebar on mobile
   onMount(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      // Ctrl+B (or Cmd+B on Mac) to toggle sidebar on mobile
-      if ((event.ctrlKey || event.metaKey) && event.key === 'b') {
+      if (isSidebarToggleKey(event)) {
         // Only toggle if we're in mobile view (sidebar would be hidden)
         if (window.innerWidth < 1024) {
           event.preventDefault();
@@ -44,7 +44,7 @@ export default function Nav(props: NavProps) {
       <button
         onClick={props.toggleSidebar}
         class="p-2 rounded-[var(--radius-field)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-base-200)] transition-colors lg:hidden"
-        title="Toggle sidebar (Ctrl+B)"
+        title={SIDEBAR_TOGGLE_TOOLTIP}
       >
         <MenuIcon />
       </button>

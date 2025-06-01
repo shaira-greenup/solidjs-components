@@ -2,6 +2,7 @@ import { A, useLocation } from "@solidjs/router";
 import type { JSX } from "solid-js";
 import { Show, onMount, onCleanup } from "solid-js";
 import NavTree from "~/components/NavTree";
+import { isSidebarToggleKey } from "~/utils/keybindings";
 
 interface SidebarProps {
   isOpen: () => boolean;
