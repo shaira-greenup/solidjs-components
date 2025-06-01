@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/solid-table";
 import { createSignal, createResource, Suspense } from "solid-js";
+import { action, cache } from "@solidjs/router";
 import KaTeX from "~/components/KaTeX";
 import DataTable from "~/components/DataTable";
 
@@ -17,7 +18,7 @@ type IrisDataPoint = {
 /**
  * Server-side function to read iris data from SQLite database
  */
-async function fetchIrisData(): Promise<IrisDataPoint[]> {
+const fetchIrisData = cache(async (): Promise<IrisDataPoint[]> => {
   "use server";
   
   const Database = require("better-sqlite3");
@@ -37,7 +38,7 @@ async function fetchIrisData(): Promise<IrisDataPoint[]> {
     console.error("Error reading iris database:", error);
     return [];
   }
-}
+}, "iris-data");
 
 /**
  * Column definitions for the iris data table
