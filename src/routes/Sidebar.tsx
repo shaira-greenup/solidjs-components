@@ -1,6 +1,6 @@
 import { A, useLocation } from "@solidjs/router";
 import type { JSX } from "solid-js";
-import { Show, onMount, onCleanup } from "solid-js";
+import { Show, onMount, onCleanup, createEffect } from "solid-js";
 import NavTree from "~/components/NavTree";
 import { isSidebarToggleKey } from "~/utils/keybindings";
 
@@ -107,12 +107,28 @@ function NavigationItem(props: NavigationItemProps): JSX.Element {
 
 export default function Sidebar(props: SidebarProps) {
   const location = useLocation();
+  let navTreeRef: HTMLElement | undefined;
+  
   // Should be positioned under the navbar
   // When true, the sidebar will inherit the navbar height from app.css
   // We don't want that for the current design
   const isUnderNavbar = false;
   const enableBackgroundBlur = false;
   const closeOnItemClick = false;
+
+  // Focus NavTree when sidebar opens for accessibility
+  createEffect(() => {
+    if (props.isOpen() && navTreeRef) {
+      // Use setTimeout to ensure the sidebar transition has started
+      setTimeout(() => {
+        // Focus the first focusable element within NavTree
+        const firstFocusable = navTreeRef?.querySelector(
+          'a, button, [tabindex]:not([tabindex="-1"])'
+        ) as HTMLElement;
+        firstFocusable?.focus();
+      }, 50);
+    }
+  });
 
   // Handle escape key to close sidebar on mobile
   onMount(() => {
@@ -156,7 +172,7 @@ export default function Sidebar(props: SidebarProps) {
         <div class="flex h-full flex-col">
           <div class="flex flex-1 flex-col pb-4 overflow-y-auto">
             {/* mt-2 pushes the content down a little bit */}
-            <nav class="mt-4 flex-1 px-2 space-y-1">
+            <nav class="mt-4 flex-1 px-2 space-y-1" ref={navTreeRef}>
               <NavTree
                 onItemClick={closeOnItemClick ? props.toggle : undefined}
               />
