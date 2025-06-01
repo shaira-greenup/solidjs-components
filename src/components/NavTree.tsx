@@ -121,17 +121,17 @@ const data = [
               {
                 title: "Dynamic",
                 content: "Example of Tanstack Sidebar",
-                link: "datatable_paginated",
-              },
-              {
-                title: "SQLite",
-                content: "Example of Tanstack Sidebar",
-                link: "datatable_paginated",
+                link: "datatable_component_examples/datatable_dynamic",
               },
               {
                 title: "With Chart",
                 content: "Example of Tanstack Sidebar",
-                link: "datatable_paginated",
+                link: "datatable_component_examples/datatable_dynamic_with_chart",
+              },
+              {
+                title: "SQLite",
+                content: "Example of Tanstack Sidebar",
+                link: "datatable_component_examples/datatable_paginated",
               },
             ],
           },
