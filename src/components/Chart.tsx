@@ -9,6 +9,7 @@ import {
   LineController,
   LineElement,
   PointElement,
+  ScatterController,
   Title,
   Tooltip,
 } from "chart.js";
@@ -22,6 +23,7 @@ Chart.register(
   BarController,
   LineElement,
   LineController,
+  ScatterController,
   PointElement,
   Title,
   Tooltip,

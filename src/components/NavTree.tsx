@@ -133,6 +133,11 @@ const data = [
                 content: "Example of Tanstack Sidebar",
                 link: "datatable_component_examples/datatable_paginated_sqlite",
               },
+              {
+                title: "SQLite With Chart",
+                content: "Example of Tanstack Sidebar",
+                link: "datatable_component_examples/datatable_paginated_sqlite_with_chart",
+              },
             ],
           },
         ],
