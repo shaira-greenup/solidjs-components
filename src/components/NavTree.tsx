@@ -70,6 +70,11 @@ const data = [
             content: "Example of Full Calendar IO",
             link: "calendar",
           },
+          {
+            title: "Tailwind Sidebar",
+            content: "Example of Tailwind Sidebar",
+            link: "tailwind_sidebar",
+          },
         ],
       },
     ],

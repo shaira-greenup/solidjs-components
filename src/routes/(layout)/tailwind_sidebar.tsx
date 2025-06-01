@@ -1,0 +1,64 @@
+import Card from "~/components/Card";
+
+export default function TailwindSidebar() {
+  return (
+    <main class="container mx-auto p-4">
+      <h1 class="text-3xl font-bold mb-6 text-[var(--color-base-content)]">
+        Tailwind Sidebar Example
+      </h1>
+
+      <div class="grid grid-cols-1 gap-6">
+        <Card title="Current Sidebar Implementation">
+          <p class="text-[var(--color-base-content)] mb-4">
+            This is the current sidebar implementation used in this application. 
+            It features a responsive design with mobile toggle functionality and keyboard navigation.
+          </p>
+          
+          <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+            <iframe 
+              src={window.location.origin}
+              class="w-full h-96 border-0 rounded"
+              title="Sidebar Example"
+            />
+          </div>
+          
+          <div class="mt-4 space-y-2">
+            <h3 class="text-lg font-semibold text-[var(--color-base-content)]">Features:</h3>
+            <ul class="list-disc list-inside text-[var(--color-base-content)] space-y-1">
+              <li>Responsive design with mobile-first approach</li>
+              <li>Keyboard navigation support (Ctrl+B to toggle)</li>
+              <li>Dark mode compatible</li>
+              <li>Smooth animations and transitions</li>
+              <li>Accessible focus management</li>
+              <li>Tree navigation with expandable sections</li>
+            </ul>
+          </div>
+        </Card>
+
+        <Card title="Implementation Details">
+          <div class="text-[var(--color-base-content)] space-y-4">
+            <div>
+              <h4 class="font-semibold">CSS Framework:</h4>
+              <p>Built with Tailwind CSS for utility-first styling and responsive design.</p>
+            </div>
+            
+            <div>
+              <h4 class="font-semibold">Navigation Tree:</h4>
+              <p>Uses Wunderbaum library for hierarchical navigation with custom styling.</p>
+            </div>
+            
+            <div>
+              <h4 class="font-semibold">Mobile Responsiveness:</h4>
+              <p>Collapsible sidebar on mobile devices with overlay functionality.</p>
+            </div>
+            
+            <div>
+              <h4 class="font-semibold">Keyboard Shortcuts:</h4>
+              <p>Ctrl+B toggles sidebar, Escape closes on mobile, vim-like navigation (h/j/k/l).</p>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </main>
+  );
+}
