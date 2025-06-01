@@ -79,8 +79,8 @@ function DataTableHeader<T>(props: {
   enableKeyboardNavigation?: boolean;
 }) {
   const keyboardShortcuts: KeyboardShortcut[] = [
-    { key: "←", description: "Previous page" },
-    { key: "→", description: "Next page" },
+    { key: "Alt+←", description: "Previous page" },
+    { key: "Alt+→", description: "Next page" },
     { key: "Home", description: "First page" },
     { key: "End", description: "Last page" },
     { key: "1-5", description: "Set page size (10-50)" },
@@ -242,12 +242,12 @@ function PaginationControls<T>(props: {
 
     switch (event.key) {
       case 'ArrowLeft':
-        if (table.getCanPreviousPage()) {
+        if (event.altKey && table.getCanPreviousPage()) {
           table.previousPage();
         }
         break;
       case 'ArrowRight':
-        if (table.getCanNextPage()) {
+        if (event.altKey && table.getCanNextPage()) {
           table.nextPage();
         }
         break;
@@ -333,7 +333,7 @@ function PaginationControls<T>(props: {
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
           class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-          title="Previous page (←)"
+          title="Previous page (Alt+←)"
         >
           {"<"}
         </button>
@@ -342,7 +342,7 @@ function PaginationControls<T>(props: {
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
           class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-          title="Next page (→)"
+          title="Next page (Alt+→)"
         >
           {">"}
         </button>
