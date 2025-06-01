@@ -9,7 +9,6 @@ import { createSignal, For } from "solid-js";
 
 type Person = {
   firstName: string;
-  lastName: string;
   age: number;
   visits: number;
   status: string;
@@ -23,7 +22,6 @@ const defaultData: Person[] = Array.from({ length: 100 }, (_, i) => {
 
   return {
     firstName: `Point${i + 1}`,
-    lastName: `Data`,
     age: Math.round(x * 10) % 100,
     visits: Math.round(Math.abs(y * 100)),
     status: z > 0 ? "Positive" : z < 0 ? "Negative" : "Zero",
@@ -36,14 +34,6 @@ const defaultColumns: ColumnDef<Person>[] = [
     accessorKey: "firstName",
     header: () => <span>Point ID</span>,
     cell: (info) => info.getValue(),
-    footer: (info) => info.column.id,
-    enableSorting: true,
-  },
-  {
-    accessorFn: (row) => row.lastName,
-    id: "lastName",
-    cell: (info) => <i>{info.getValue<string>()}</i>,
-    header: () => <span>Data Type</span>,
     footer: (info) => info.column.id,
     enableSorting: true,
   },
