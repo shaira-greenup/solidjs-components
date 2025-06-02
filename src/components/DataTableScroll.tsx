@@ -7,7 +7,7 @@ import {
   SortingState,
 } from "@tanstack/solid-table";
 import { createVirtualizer } from "@tanstack/solid-virtual";
-import { createSignal, createEffect, onMount, onCleanup, For, JSX } from "solid-js";
+import { createSignal, createEffect, onMount, onCleanup, For, JSX, untrack } from "solid-js";
 import { isServer } from "solid-js/web";
 
 export interface DataTableScrollConfig<T> {
@@ -153,14 +153,11 @@ export default function DataTableScroll<T>(props: DataTableScrollConfig<T>) {
 
   const table = createSolidTable(tableConfig);
 
-  // Create a reactive key that changes when sorting changes to force virtualizer updates
-  const [virtualizerKey, setVirtualizerKey] = createSignal(0);
-
-  // Create virtualizer - make it reactive to sorting changes
+  // Create virtualizer with proper reactive dependencies
   const rowVirtualizer = createVirtualizer({
     get count() {
-      // Access the key to make this reactive to sorting changes
-      virtualizerKey();
+      // Make this reactive to both data and sorting changes
+      sorting(); // Track sorting changes
       return table.getRowModel().rows.length;
     },
     getScrollElement: () => isServer ? null : tableContainerRef,
@@ -184,35 +181,21 @@ export default function DataTableScroll<T>(props: DataTableScrollConfig<T>) {
     fetchMoreOnBottomReached(e.currentTarget as HTMLDivElement);
   };
 
-  // Handle sorting changes and force virtualizer update
+  // Handle sorting changes - scroll to top when sorting changes
   createEffect(() => {
     if (isServer) return;
     
+    // Track sorting changes
     const currentSorting = sorting();
-    const rows = table.getRowModel().rows;
     
-    if (rows.length > 0) {
-      // Force virtualizer to recreate by changing the key
-      setVirtualizerKey(prev => prev + 1);
-      
-      // Use requestAnimationFrame to ensure virtualizer has updated before scrolling
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          rowVirtualizer.scrollToIndex(0, { align: 'start' });
-        });
+    // Only scroll to top if there's actually sorting applied
+    if (currentSorting.length > 0) {
+      // Use untrack to avoid creating additional reactive dependencies
+      untrack(() => {
+        // Scroll to top immediately when sorting changes
+        rowVirtualizer.scrollToIndex(0, { align: 'start' });
       });
     }
-  });
-
-  // Recreate virtualizer when key changes
-  createEffect(() => {
-    if (isServer) return;
-    
-    // Access virtualizerKey to make this reactive
-    virtualizerKey();
-    
-    // Force virtualizer to measure all items again
-    rowVirtualizer.measure();
   });
 
   // Check if we need to fetch more data on mount and after data changes (client-only)
@@ -270,7 +253,12 @@ export default function DataTableScroll<T>(props: DataTableScrollConfig<T>) {
           >
             <For each={rowVirtualizer.getVirtualItems()}>
               {(virtualRow) => {
-                const row = table.getRowModel().rows[virtualRow.index];
+                // Access the current sorted rows reactively
+                const rows = table.getRowModel().rows;
+                const row = rows[virtualRow.index];
+                
+                if (!row) return null;
+                
                 return (
                   <tr
                     data-index={virtualRow.index}
