@@ -195,11 +195,24 @@ export default function DataTableScroll<T>(props: DataTableScrollConfig<T>) {
       // Force virtualizer to recreate by changing the key
       setVirtualizerKey(prev => prev + 1);
       
-      // Scroll to top after virtualizer updates
-      setTimeout(() => {
-        rowVirtualizer.scrollToIndex(0, { align: 'start' });
-      }, 0);
+      // Use requestAnimationFrame to ensure virtualizer has updated before scrolling
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          rowVirtualizer.scrollToIndex(0, { align: 'start' });
+        });
+      });
     }
+  });
+
+  // Recreate virtualizer when key changes
+  createEffect(() => {
+    if (isServer) return;
+    
+    // Access virtualizerKey to make this reactive
+    virtualizerKey();
+    
+    // Force virtualizer to measure all items again
+    rowVirtualizer.measure();
   });
 
   // Check if we need to fetch more data on mount and after data changes (client-only)
