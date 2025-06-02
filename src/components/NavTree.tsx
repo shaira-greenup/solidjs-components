@@ -138,6 +138,11 @@ const data = [
                 content: "Example of Tanstack Sidebar",
                 link: "datatable_component_examples/datatable_paginated_sqlite_with_chart",
               },
+              {
+                title: "Virtual Scrolling Using Component",
+                content: "Example of Tanstack Sidebar",
+                link: "datatable_component_examples/datatable_virtual_scroll",
+              },
             ],
           },
         ],
