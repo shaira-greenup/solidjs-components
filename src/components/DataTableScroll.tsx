@@ -144,7 +144,7 @@ export default function DataTableScroll<T>(props: DataTableScrollConfig<T>) {
     },
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
-    manualSorting: true,
+    manualSorting: false, // Let TanStack Table handle sorting automatically
   };
 
   if (enableSorting) {
@@ -153,12 +153,17 @@ export default function DataTableScroll<T>(props: DataTableScrollConfig<T>) {
 
   const table = createSolidTable(tableConfig);
 
-  // Create virtualizer
+  // Create a reactive key that changes when sorting changes to force virtualizer updates
+  const [virtualizerKey, setVirtualizerKey] = createSignal(0);
+
+  // Create virtualizer - make it reactive to sorting changes
   const rowVirtualizer = createVirtualizer({
     get count() {
+      // Access the key to make this reactive to sorting changes
+      virtualizerKey();
       return table.getRowModel().rows.length;
     },
-    getScrollElement: () => tableContainerRef,
+    getScrollElement: () => isServer ? null : tableContainerRef,
     estimateSize: () => estimatedRowHeight,
     overscan: 5,
   });
@@ -179,19 +184,29 @@ export default function DataTableScroll<T>(props: DataTableScrollConfig<T>) {
     fetchMoreOnBottomReached(e.currentTarget as HTMLDivElement);
   };
 
-  // Scroll to top when sorting changes
+  // Handle sorting changes and force virtualizer update
   createEffect(() => {
+    if (isServer) return;
+    
     const currentSorting = sorting();
-    if (currentSorting.length > 0 && table.getRowModel().rows.length > 0) {
-      rowVirtualizer.scrollToIndex(0);
+    const rows = table.getRowModel().rows;
+    
+    if (rows.length > 0) {
+      // Force virtualizer to recreate by changing the key
+      setVirtualizerKey(prev => prev + 1);
+      
+      // Scroll to top after virtualizer updates
+      setTimeout(() => {
+        rowVirtualizer.scrollToIndex(0, { align: 'start' });
+      }, 0);
     }
   });
 
-  // Check if we need to fetch more data on mount and after data changes
+  // Check if we need to fetch more data on mount and after data changes (client-only)
   createEffect(() => {
-    if (tableContainerRef) {
-      fetchMoreOnBottomReached(tableContainerRef);
-    }
+    if (isServer || !tableContainerRef) return;
+    
+    fetchMoreOnBottomReached(tableContainerRef);
   });
 
   return (
