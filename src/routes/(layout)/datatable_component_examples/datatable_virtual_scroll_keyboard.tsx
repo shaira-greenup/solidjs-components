@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/solid-table";
-import { createSignal, createEffect } from "solid-js";
+import { createSignal, createEffect, createResource } from "solid-js";
+import { isServer } from "solid-js/web";
 import DataTableScrollKeyboard from "~/components/DataTableScrollKeyboard";
 
 /**
@@ -165,17 +166,21 @@ function VirtualScrollKeyboardDataTableApp() {
 
   const fetchSize = 50;
 
-  // Load initial data
-  createEffect(async () => {
-    setIsFetching(true);
-    try {
-      const response = await fetchData(0, fetchSize);
-      setAllData(response.data);
-      setTotalCount(response.meta.totalRowCount);
-    } catch (error) {
-      console.error("Failed to fetch initial data:", error);
-    } finally {
-      setIsFetching(false);
+  // Load initial data using createResource for proper SSR handling
+  const [initialData] = createResource(async () => {
+    if (isServer) {
+      // Return empty data for SSR to avoid hydration mismatch
+      return { data: [], meta: { totalRowCount: 10000 } };
+    }
+    return await fetchData(0, fetchSize);
+  });
+
+  // Set up data when resource loads
+  createEffect(() => {
+    const data = initialData();
+    if (data && !isServer) {
+      setAllData(data.data);
+      setTotalCount(data.meta.totalRowCount);
     }
   });
 

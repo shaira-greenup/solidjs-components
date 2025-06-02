@@ -8,6 +8,7 @@ import {
 } from "@tanstack/solid-table";
 import { createVirtualizer } from "@tanstack/solid-virtual";
 import { createSignal, createEffect, onMount, onCleanup, For, JSX } from "solid-js";
+import { isServer } from "solid-js/web";
 
 export interface DataTableScrollKeyboardConfig<T> {
   data: () => T[];
@@ -175,12 +176,12 @@ export default function DataTableScrollKeyboard<T>(props: DataTableScrollKeyboar
 
   const table = createSolidTable(tableConfig);
 
-  // Create virtualizer
+  // Create virtualizer (only on client)
   const rowVirtualizer = createVirtualizer({
     get count() {
       return table.getRowModel().rows.length;
     },
-    getScrollElement: () => tableContainerRef,
+    getScrollElement: () => isServer ? null : tableContainerRef,
     estimateSize: () => estimatedRowHeight,
     overscan: 5,
   });
@@ -198,8 +199,10 @@ export default function DataTableScrollKeyboard<T>(props: DataTableScrollKeyboar
     }
   });
 
-  // Scroll to current row when it changes
+  // Scroll to current row when it changes (client-only)
   createEffect(() => {
+    if (isServer) return;
+    
     const row = currentRow();
     if (isFocused() && row >= 0 && row < table.getRowModel().rows.length) {
       rowVirtualizer.scrollToIndex(row, { align: 'center' });
@@ -294,16 +297,20 @@ export default function DataTableScrollKeyboard<T>(props: DataTableScrollKeyboar
     }
   };
 
-  // Set up keyboard event listeners
+  // Set up keyboard event listeners (client-only)
   onMount(() => {
+    if (isServer) return;
+    
     document.addEventListener('keydown', handleKeyDown);
     onCleanup(() => {
       document.removeEventListener('keydown', handleKeyDown);
     });
   });
 
-  // Scroll to top when sorting changes
+  // Scroll to top when sorting changes (client-only)
   createEffect(() => {
+    if (isServer) return;
+    
     const currentSorting = sorting();
     if (currentSorting.length > 0 && table.getRowModel().rows.length > 0) {
       rowVirtualizer.scrollToIndex(0);
@@ -311,11 +318,11 @@ export default function DataTableScrollKeyboard<T>(props: DataTableScrollKeyboar
     }
   });
 
-  // Check if we need to fetch more data on mount and after data changes
+  // Check if we need to fetch more data on mount and after data changes (client-only)
   createEffect(() => {
-    if (tableContainerRef) {
-      fetchMoreOnBottomReached(tableContainerRef);
-    }
+    if (isServer || !tableContainerRef) return;
+    
+    fetchMoreOnBottomReached(tableContainerRef);
   });
 
   return (
