@@ -5,7 +5,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { onMount } from "solid-js";
 //  npm install --save @fortawesome/fontawesome-free
 import "@fortawesome/fontawesome-free/css/all.css";
-import { WbKeydownEventType } from "types";
+import { WbCancelableEventResultType, WbKeydownEventType } from "types";
 import { WunderbaumNode } from "wb_node";
 import { Wunderbaum } from "wunderbaum";
 
@@ -243,7 +243,7 @@ export default function NavTree() {
           navigate(e.node.data.link);
         }
       },
-      keydown: (e: WbKeydownEventType) => {
+      keydown: (e: WbKeydownEventType): WbCancelableEventResultType => {
         switch (e.event.key) {
           case "j":
             if (!e.tree.isEditingTitle()) {
