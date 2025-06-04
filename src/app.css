@@ -58,6 +58,9 @@ body {
     --navbar-padding-x: 1rem;
     --navbar-padding-y: 0.5rem;
     --sidebar-width: 16rem;
+    --sidebar-min-width: 12rem;
+    --sidebar-max-width: 24rem;
+    --resize-handle-width: 4px;
 
     /* Border size */
     --border: 1px;
@@ -132,3 +135,60 @@ body {
 
 @import "./styles/wunderbaum.css";
 @import "./styles/sidebar.css";
+
+/* Resize handle styles */
+.sidebar-resize-handle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: var(--resize-handle-width);
+    cursor: col-resize;
+    background: transparent;
+    border-right: 1px solid var(--color-base-300);
+    transition: all 0.2s ease;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-resize-handle::before {
+    content: '';
+    width: 2px;
+    height: 32px;
+    background: var(--color-text-muted);
+    border-radius: 1px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.sidebar-resize-handle:hover {
+    background-color: var(--color-primary);
+    opacity: 0.3;
+}
+
+.sidebar-resize-handle:hover::before {
+    opacity: 0.6;
+    background: var(--color-primary-content);
+}
+
+.sidebar-resize-handle.resizing {
+    background-color: var(--color-primary);
+    opacity: 0.5;
+}
+
+.sidebar-resize-handle.resizing::before {
+    opacity: 1;
+    background: var(--color-primary-content);
+}
+
+/* Prevent text selection during resize */
+.sidebar-resizing {
+    user-select: none;
+    cursor: col-resize;
+}
+
+.sidebar-resizing * {
+    cursor: col-resize !important;
+}

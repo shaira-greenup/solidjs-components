@@ -3,10 +3,12 @@ import type { JSX } from "solid-js";
 import { Show, onMount, onCleanup, createEffect } from "solid-js";
 import NavTree from "~/components/NavTree";
 import { isSidebarToggleKey } from "~/utils/keybindings";
+import { useSidebarResize } from "~/composables/useSidebarResize";
 
 interface SidebarProps {
   isOpen: () => boolean;
   toggle: () => void;
+  onWidthChange?: (width: number) => void;
 }
 
 // Icon components
@@ -107,14 +109,20 @@ function NavigationItem(props: NavigationItemProps): JSX.Element {
 
 export default function Sidebar(props: SidebarProps) {
   const location = useLocation();
-  let navTreeRef: HTMLElement | undefined;
+  let navTreeRef: HTMLDivElement | undefined;
+  let sidebarRef: HTMLDivElement | undefined;
+  let resizeHandleRef: HTMLDivElement | undefined;
   
   // Should be positioned under the navbar
   // When true, the sidebar will inherit the navbar height from app.css
   // We don't want that for the current design
   const isUnderNavbar = false;
   const enableBackgroundBlur = false;
-  const closeOnItemClick = false;
+
+  // Resize functionality
+  const { isResizing, sidebarWidth, showResizeHandle, handleMouseDown } = useSidebarResize({
+    onWidthChange: props.onWidthChange,
+  });
 
   // Focus NavTree when sidebar opens for accessibility
   createEffect(() => {
@@ -161,25 +169,39 @@ export default function Sidebar(props: SidebarProps) {
       </Show>
 
       <div
+        ref={sidebarRef}
         classList={{
-          "fixed top-0 left-0 bottom-0 bg-[var(--color-base-200)] border-r border-[var(--color-base-300)] z-50 transform transition-transform duration-300 ease-in-out lg:translate-x-0":
+          "fixed top-0 left-0 bottom-0 bg-[var(--color-base-200)] border-r border-[var(--color-base-300)] z-50 transform duration-300 ease-in-out lg:translate-x-0":
             true,
           "translate-x-0": props.isOpen(),
           "-translate-x-full": !props.isOpen(),
           "top-[var(--navbar-height)]": false,
-          "w-[var(--sidebar-width)]": true,
+          "transition-transform": !isResizing(),
+        }}
+        style={{
+          width: `${sidebarWidth()}px`,
         }}
       >
         <div class="flex h-full flex-col">
           <div class="flex flex-1 flex-col pb-4 overflow-y-auto">
             {/* mt-2 pushes the content down a little bit */}
             <nav class="mt-4 flex-1 px-2 space-y-1" ref={navTreeRef}>
-              <NavTree
-                onItemClick={closeOnItemClick ? props.toggle : undefined}
-              />
+              <NavTree />
             </nav>
           </div>
         </div>
+        
+        {/* Resize handle - only show on desktop */}
+        <Show when={showResizeHandle()}>
+          <div
+            ref={resizeHandleRef}
+            class="sidebar-resize-handle"
+            classList={{
+              "resizing": isResizing(),
+            }}
+            onMouseDown={handleMouseDown}
+          />
+        </Show>
       </div>
     </>
   );
