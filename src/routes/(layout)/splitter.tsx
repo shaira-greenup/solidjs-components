@@ -1,5 +1,6 @@
-
 import Resizable from "@corvu/resizable";
+import { createSignal, Show } from "solid-js";
+import NavTree from "~/components/NavTree";
 
 function SkeletonBar({ width }: { width?: string }) {
   return (
@@ -66,6 +67,7 @@ export default function SplitterPage() {
  |------------------|-------------------------|
 
   */
+  const [isDragging, setIsDragging] = createSignal(false);
 
   return (
     <div class="w-full h-96 bg-gray-50 dark:bg-gray-900">
@@ -76,11 +78,19 @@ export default function SplitterPage() {
           minSize={0.2}
           class="bg-white dark:bg-gray-800 p-6 shadow-sm border-r border-gray-200 dark:border-gray-700"
         >
-          <SkeletonOne />
+          <Show when={!isDragging()} fallback={<NavTreeSkeleton />}>
+            <NavTree />
+          </Show>
         </Resizable.Panel>
         <Resizable.Handle
           aria-label="Resize Handle"
           class="group basis-1 hover:basis-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200 cursor-col-resize"
+          onHandleDragStart={() => {
+            console.log(setIsDragging(true));
+          }}
+          onHandleDragEnd={() => {
+            console.log(setIsDragging(false));
+          }}
         >
           <div class="size-full relative before:absolute before:inset-0 before:-inset-x-2 before:content-['']" />
         </Resizable.Handle>
@@ -114,6 +124,27 @@ export default function SplitterPage() {
           </Resizable>
         </Resizable.Panel>
       </Resizable>
+    </div>
+  );
+}
+
+function NavTreeSkeleton() {
+  return (
+    <div class="space-y-2">
+      <div class="h-6 dark:bg-gray-600 bg-gray-400 rounded animate-pulse w-2/3"></div>
+      <div class="pl-4 space-y-2">
+        <div class="h-5 dark:bg-gray-600 bg-gray-400 rounded animate-pulse w-3/4"></div>
+        <div class="h-5 dark:bg-gray-600 bg-gray-400 rounded animate-pulse w-1/2"></div>
+        <div class="pl-4 space-y-2">
+          <div class="h-4 dark:bg-gray-600 bg-gray-400 rounded animate-pulse w-5/6"></div>
+          <div class="h-4 dark:bg-gray-600 bg-gray-400 rounded animate-pulse w-2/3"></div>
+        </div>
+      </div>
+      <div class="pl-4 space-y-2">
+        <div class="h-5 dark:bg-gray-600 bg-gray-400 rounded animate-pulse w-4/5"></div>
+        <div class="h-5 dark:bg-gray-600 bg-gray-400 rounded animate-pulse w-3/5"></div>
+      </div>
+      <div class="h-6 dark:bg-gray-600 bg-gray-400 rounded animate-pulse w-1/2"></div>
     </div>
   );
 }
