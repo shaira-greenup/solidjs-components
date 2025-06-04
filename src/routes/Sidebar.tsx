@@ -162,11 +162,12 @@ export default function Sidebar(props: SidebarProps) {
 
       <div
         classList={{
-          "fixed top-0 left-0 bottom-0 w-64 bg-[var(--color-base-200)] border-r border-[var(--color-base-300)] z-50 transform transition-transform duration-300 ease-in-out lg:translate-x-0":
+          "fixed top-0 left-0 bottom-0 bg-[var(--color-base-200)] border-r border-[var(--color-base-300)] z-50 transform transition-transform duration-300 ease-in-out lg:translate-x-0":
             true,
           "translate-x-0": props.isOpen(),
           "-translate-x-full": !props.isOpen(),
           "top-[var(--navbar-height)]": false,
+          "w-[var(--sidebar-width)]": true,
         }}
       >
         <div class="flex h-full flex-col">

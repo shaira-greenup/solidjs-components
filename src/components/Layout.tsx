@@ -28,7 +28,7 @@ export default function Layout(props: LayoutProps) {
     <div class="min-h-screen bg-[--color-base-100]">
       <Sidebar isOpen={sidebarOpen} toggle={toggleSidebar} />
 
-      <div class="lg:ml-64">
+      <div class="lg:ml-[var(--sidebar-width)]">
         <Nav sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
 
         <main class="flex-1 overflow-x-hidden">
