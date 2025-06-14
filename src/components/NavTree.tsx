@@ -89,8 +89,13 @@ const data = [
         content: "",
         link: "layout_examples/overview",
       },
-// /home/ryan/Sync/Projects/2025/Web_Applications/solidjs-components/src/routes/layout_examples/side_drawer/side_drawer_sandbox.tsx
-{
+      {
+        title: "Accordian",
+        content:
+          "An accordian layout, benefit of this is it's extremely simple",
+        link: "layout_examples/accordian/accordian_example",
+      },
+      {
         title: "Side Drawer With Sidebar",
         expanded: true,
         children: [
