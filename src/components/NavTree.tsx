@@ -81,6 +81,34 @@ const data = [
   },
 
   {
+    title: "Layouts",
+    expanded: true,
+    children: [
+      {
+        title: "Overview",
+        content: "",
+        link: "layout_examples/overview",
+      },
+      {
+        title: "Bottom Drawer With Sidebar",
+        expanded: true,
+        children: [
+          {
+            title: "Sandbox",
+            content: "",
+            link: "layout_examples/bottom_drawer/sandbox_bottom_drawer",
+          },
+          {
+            title: "Polished",
+            content: "",
+            link: "layout_examples/bottom_drawer/polished.tsx",
+          },
+        ],
+      },
+    ],
+  },
+
+  {
     title: "DataTables",
     expanded: true,
     children: [
