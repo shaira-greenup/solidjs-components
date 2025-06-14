@@ -23,3 +23,6 @@
         - This corresponds to steps 1 and 2
     - Polished
         - This corresponds to Steps 4
+
+- `layout_examples/no_js/<Descr>`
+    - Similar to above, however, these layouts may be used without any JS, ideal for online content.

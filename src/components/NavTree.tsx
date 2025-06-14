@@ -89,6 +89,23 @@ const data = [
         content: "",
         link: "layout_examples/overview",
       },
+// /home/ryan/Sync/Projects/2025/Web_Applications/solidjs-components/src/routes/layout_examples/side_drawer/side_drawer_sandbox.tsx
+{
+        title: "Side Drawer With Sidebar",
+        expanded: true,
+        children: [
+          {
+            title: "Sandbox",
+            content: "",
+            link: "layout_examples/side_drawer/side_drawer_sandbox",
+          },
+          {
+            title: "Polished",
+            content: "",
+            link: "layout_examples/side_drawer/side_drawer_polished",
+          },
+        ],
+      },
       {
         title: "Bottom Drawer With Sidebar",
         expanded: true,
@@ -101,7 +118,7 @@ const data = [
           {
             title: "Polished",
             content: "",
-            link: "layout_examples/bottom_drawer/polished.tsx",
+            link: "layout_examples/bottom_drawer/polished_bottom_drawer",
           },
         ],
       },
