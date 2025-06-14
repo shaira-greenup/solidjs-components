@@ -25,6 +25,7 @@
     "corvu": "^0.7.2",
     "fullcalendar": "^6.1.17",
     "katex": "^0.16.22",
+    "marked": "^15.0.12",
     "solid-js": "^1.9.5",
     "vinxi": "^0.5.3",
     "wunderbaum": "^0.13.0"
