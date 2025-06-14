@@ -1,6 +1,19 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/* Set background on html and body to ensure proper dark mode */
+html {
+  background-color: var(--color-base-100);
+  color: var(--color-base-content);
+}
+
+body {
+  background-color: var(--color-base-100);
+  color: var(--color-base-content);
+  margin: 0;
+  padding: 0;
+}
+
 @theme {
   /* Light mode colors (default) */
   --color-base-100: oklch(100% 0 0);

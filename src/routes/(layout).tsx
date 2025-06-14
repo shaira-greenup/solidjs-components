@@ -12,7 +12,7 @@ function Sidebar() {
 
 export default function LayoutRoute(props: RouteSectionProps) {
   return (
-    <main class="h-screen flex flex-col">
+    <main class="h-screen flex flex-col bg-[var(--color-base-100)] text-[var(--color-base-content)]">
       <Layout sidebar={<Sidebar />}>
         <div class="max-w-4xl mx-auto p-8">
           <div class="bg-[var(--color-base-200)] rounded-xl shadow-sm border border-[var(--color-base-300)] p-8">

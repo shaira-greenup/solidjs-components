@@ -127,7 +127,7 @@ export default function Layout(props: LayoutProps) {
   };
 
   return (
-    <div>
+    <div class="min-h-screen bg-[var(--color-base-100)] text-[var(--color-base-content)]">
       {/* Overlay */}
       <div
         classList={{
