@@ -1,0 +1,81 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+:root {
+    --background-rgb: 214, 219, 220;
+    --foreground-rgb: 0, 0, 0;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-rgb: 0, 0, 0;
+        --foreground-rgb: 255, 255, 255;
+    }
+}
+
+body {
+    background: rgb(var(--background-rgb));
+    color: rgb(var(--foreground-rgb));
+}
+
+@theme {
+    /* --spacing-top_header: 4rem; */
+    --spacing-bottom_header: 4rem;
+    --spacing-mobile_drawer_width: 16rem;
+    --spacing-main_content: 1rem;
+    --spacing-sidebar_width: 256;
+    /* Use dvh to handle url bar on chrome */
+    --spacing-between_headers: calc(100dvh - var(--spacing-bottom_header));
+}
+
+@layer components {
+    .card {
+        background-color: var(--color-white);
+        border-radius: var(--rounded-lg);
+        padding: var(--spacing-8);
+        box-shadow:
+            0 4px 6px -1px rgba(0, 0, 0, 0.1),
+            0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        transition: all 0.2s ease-in-out;
+    }
+
+    .card:hover {
+        box-shadow:
+            0 10px 15px -3px rgba(0, 0, 0, 0.1),
+            0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        transform: translateY(-1px);
+    }
+
+    .button {
+        @apply ml-4 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600;
+    }
+
+    .drawer-btn {
+        @apply flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded transition-colors;
+        /* @apply flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded transition-colors; */
+    }
+
+    .transparent-red,
+    .transparent-purple,
+    .transparent-blue,
+    .transparent-green {
+        @apply border;
+    }
+
+    .transparent-red {
+        @apply bg-red-500/50 border-red-600;
+    }
+
+    .transparent-purple {
+        @apply bg-purple-500/50 border-purple-600;
+    }
+
+    .transparent-blue {
+        @apply bg-blue-500/50 border-blue-600;
+    }
+
+    .transparent-green {
+        @apply bg-green-500/50 border-green-600;
+    }
+}
