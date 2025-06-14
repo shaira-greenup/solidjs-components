@@ -26,3 +26,4 @@
 
 - `layout_examples/no_js/<Descr>`
     - Similar to above, however, these layouts may be used without any JS, ideal for online content.
+    - None of these are finished yet
