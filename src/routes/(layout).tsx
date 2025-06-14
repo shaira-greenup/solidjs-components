@@ -4,7 +4,7 @@ import NavTree from "~/components/NavTree";
 
 function Sidebar() {
   return (
-    <div class="h-full flex flex-col bg-[var(--color-base-200)] text-[var(--color-base-content)]">
+    <div class="h-full flex flex-col">
       <NavTree />
     </div>
   );
@@ -12,14 +12,14 @@ function Sidebar() {
 
 export default function LayoutRoute(props: RouteSectionProps) {
   return (
-    <div class="h-screen flex flex-col bg-[var(--color-base-100)] text-[var(--color-base-content)]">
+    <main class="h-screen flex flex-col">
       <Layout sidebar={<Sidebar />}>
-        <div class="p-8 h-full overflow-auto bg-[var(--color-base-100)]">
-          <div class="max-w-4xl mx-auto">
+        <div class="max-w-4xl mx-auto p-8">
+          <div class="bg-[var(--color-base-200)] rounded-xl shadow-sm border border-[var(--color-base-300)] p-8">
             {props.children}
           </div>
         </div>
       </Layout>
-    </div>
+    </main>
   );
 }
