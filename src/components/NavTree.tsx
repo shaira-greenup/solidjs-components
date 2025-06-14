@@ -75,6 +75,11 @@ const data = [
             content: "Example of Tailwind Sidebar",
             link: "tailwind_sidebar",
           },
+          {
+            title: "Radial Context Menu",
+            content: "Radial Context Menu minimizes right click distance",
+            link: "radial_menu/radial_menu",
+          },
         ],
       },
     ],
