@@ -60,10 +60,6 @@ const MOBILE_DRAWER_WIDTH = "w-64";
 
 function MyLayout() {
   const [drawerWidth, setDrawerWidth] = createSignal(256); // Default 256px (w-64)
-  const [isTopVisible, setIsTopVisible] = createSignal(true);
-  const [isBottomVisible, setIsBottomVisible] = createSignal(true);
-  const [isDrawerVisible, setIsDrawerVisible] = createSignal(false);
-  const [isDrawerMaximized, setIsDrawerMaximized] = createSignal(false);
   const [isResizing, setIsResizing] = createSignal(false);
 
   let resizeRef!: HTMLDivElement;
@@ -155,27 +151,30 @@ function MyLayout() {
     });
   });
 
-  onMount(() => {
-    // Add keyboard event listener
-    createEffect(() => {
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "1" || (e.ctrlKey && e.key === "1")) {
-          setIsDrawerVisible(!isDrawerVisible());
-        } else if (e.key === "2" || (e.ctrlKey && e.key === "1")) {
-          setIsBottomVisible(!isBottomVisible());
-        }
-      };
-
-      document.addEventListener("keydown", handleKeyDown);
-      return () => document.removeEventListener("keydown", handleKeyDown);
-    });
-  });
 
   const DRAWER_BLUR = false;
 
   // .............................................................................
   return (
     <div>
+      {/* Hidden checkboxes for state management */}
+      <input
+        type="checkbox"
+        class="hidden peer/drawer"
+        id="drawer-toggle"
+      />
+      <input
+        type="checkbox"
+        class="hidden peer/bottom"
+        id="bottom-toggle"
+        checked
+      />
+      <input
+        type="checkbox"
+        class="hidden peer/maximize"
+        id="maximize-toggle"
+      />
+
       {/* Overlay */}
       <div
         classList={{
@@ -183,14 +182,14 @@ function MyLayout() {
           "bg-black/50 ": true,
           "backdrop-blur-sm": DRAWER_BLUR,
           [Z_INDICES.overlay]: true,
-          "opacity-0 pointer-events-none": !isDrawerVisible(),
-          "opacity-100": isDrawerVisible(),
-          "pointer-events-auto": isDrawerVisible(),
+          "peer-checked/drawer:opacity-100 peer-checked/drawer:pointer-events-auto": true,
+          "opacity-0 pointer-events-none": true,
           "transition-opacity duration-300 ease-in-out": true,
           "md:hidden": true,
         }}
-        onclick={() => setIsDrawerVisible(false)}
-      />
+      >
+        <label for="drawer-toggle" class="block w-full h-full cursor-pointer" />
+      </div>
 
       {/* Sidebar */}
       <div
@@ -199,23 +198,25 @@ function MyLayout() {
           fixed: true,
           "inset-x-0": true,
           "bottom-0": true,
-          "mb-bottom_header": isBottomVisible(),
-          "translate-y-full": !isDrawerVisible(),
+          "peer-checked/bottom:mb-bottom_header": true,
+          "peer-checked/drawer:translate-y-0": true,
+          "translate-y-full": true,
           [Z_INDICES.mobileDrawer]: true,
 
           // If full lower drawer
-          "h-1/2 md:h-auto": !isDrawerMaximized(),
-          "h-between_headers": isDrawerMaximized(),
+          "peer-checked/maximize:h-between_headers": true,
+          "h-1/2 md:h-auto": true,
 
           // Now Handle Desktop
           "md:w-sidebar_width": true,
           "md:top-0": true,
           "md:left-0": true,
           "md:inset-y-0": true,
-          "md:-translate-x-full md:translate-y-0": !isDrawerVisible(),
+          "md:peer-checked/drawer:translate-x-0": true,
+          "md:-translate-x-full md:translate-y-0": true,
 
           // Animate movements
-          "transition-translate duration-300 ease-in-out": !isResizing(),
+          "transition-all duration-300 ease-in-out": !isResizing(),
           "transition-none": isResizing(),
         }}
       >
@@ -223,14 +224,12 @@ function MyLayout() {
           <div class="flex justify-center">
             {/* Drag Handle */}
             <div class="md:hidden">
-              <button
-                class="bg-transparent hover:bg-gray-200/20 rounded-full w-16 h-8 flex items-center justify-center transition-colors"
-                onclick={() => {
-                  setIsDrawerMaximized(!isDrawerMaximized());
-                }}
+              <label
+                for="maximize-toggle"
+                class="bg-transparent hover:bg-gray-200/20 rounded-full w-16 h-8 flex items-center justify-center transition-colors cursor-pointer"
               >
                 <div class="bg-gray-300 hover:bg-gray-400 rounded-full w-12 h-1 transition-colors"></div>
-              </button>
+              </label>
             </div>
           </div>
           <div class="flex-1 p-4 overflow-y-auto">
@@ -262,8 +261,8 @@ function MyLayout() {
           // Basic Layout
           "flex justify-center items-center p-4": true,
           // Desktop Layout
-          "mb-bottom_header": isBottomVisible(),
-          "md:ml-sidebar_width": isDrawerVisible(),
+          "peer-checked/bottom:mb-bottom_header": true,
+          "md:peer-checked/drawer:ml-sidebar_width": true,
           "transition-all duration-300 ease-in-out": !isResizing(),
           "transition-none": isResizing(),
         }}
@@ -280,32 +279,34 @@ function MyLayout() {
 
           [Z_INDICES.bottomHeader]: true,
 
-          // Allow Hiding Bottm
-          "translate-y-full": !isBottomVisible(),
+          // Allow Hiding Bottom
+          "peer-checked/bottom:translate-y-0": true,
+          "translate-y-full": true,
           "transition-all duration-300 ease-in-out": true,
         }}
       >
         <div class="h-full flex justify-center md:justify-start">
           {/* KDE Plasma-style start menu button */}
-          <button
-            class="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 px-4 h-full transition-colors"
-            onclick={() => {
-              setIsDrawerVisible(!isDrawerVisible());
-            }}
-            oncontextmenu={(e) => {
-              // maximize height before opening
-              e.preventDefault();
-              setIsDrawerMaximized(!isDrawerMaximized());
-              setIsDrawerVisible(!isDrawerVisible());
-              // Right click handler - add your logic here
-            }}
+          <label
+            for="drawer-toggle"
+            class="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 px-4 h-full transition-colors cursor-pointer"
           >
             {/* Application grid icon */}
             <ApplicationGridIcon />
             <span class="text-white text-sm font-medium select-none">
               Applications
             </span>
-          </button>
+          </label>
+          
+          {/* Bottom header toggle button */}
+          <label
+            for="bottom-toggle"
+            class="flex items-center space-x-2 bg-red-600 hover:bg-red-700 px-4 h-full transition-colors cursor-pointer ml-2"
+          >
+            <span class="text-white text-sm font-medium select-none">
+              Toggle Bottom
+            </span>
+          </label>
         </div>
       </div>
     </div>
