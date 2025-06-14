@@ -1,3 +1,4 @@
+@import "tailwindcss";
 
 /* Keyframes for fancy expansion animations */
 @keyframes expandPulse {
@@ -301,7 +302,7 @@
 }
 
 .wb-title {
-    @apply whitespace-nowrap overflow-hidden text-ellipsis flex-1 min-w-0;
+    @apply whitespace-nowrap overflow-hidden text-ellipsis flex-1 min-w-0 text-lg mb-2 mt-2;
     transition: all 0.3s ease;
 }
 
@@ -382,3 +383,8 @@
 }
 
 */
+
+/* .wb-title { */
+/*   width: 99px; */
+/*   font-size: 16px; */
+/* } */
