@@ -12,6 +12,10 @@ body {
   color: var(--color-base-content);
   margin: 0;
   padding: 0;
+  /* Prevent horizontal scrolling on mobile */
+  overflow-x: hidden;
+  /* Improve touch scrolling on mobile */
+  -webkit-overflow-scrolling: touch;
 }
 
 @theme {
@@ -72,22 +76,30 @@ body {
   --depth: 1;
   --noise: 0;
 
-  /* Project Constants */
+  /* Project Constants - Mobile First */
     /* --spacing-top_header: 4rem; */
-    --spacing-bottom_header: 4rem;
+    --spacing-bottom_header: 3.5rem; /* Smaller on mobile */
     --spacing-mobile_drawer_width: 16rem;
-    --spacing-main_content: 1rem;
-    --spacing-sidebar_width: 256;
-    /* Use dvh to handle url bar on chrome */
+    --spacing-main_content: 0.5rem; /* Smaller padding on mobile */
+    --spacing-sidebar_width: 256px;
+    /* Use dvh to handle url bar on chrome and mobile browsers */
     --spacing-between_headers: calc(100dvh - var(--spacing-bottom_header));
 
 }
 
 /* Media query for larger displays */
-/* screens.md is defined by tailwind as 768px */
+/* screens.sm is 640px, screens.md is 768px */
+@media (min-width: theme(screens.sm)) {
+  :root {
+    --spacing-main_content: 1rem; /* Increase padding on larger screens */
+  }
+}
+
 @media (min-width: theme(screens.md)) {
   :root {
     --spacing-navbar-height: 3rem;
+    --spacing-bottom_header: 4rem; /* Full height on desktop */
+    --spacing-main_content: 1.5rem; /* More padding on desktop */
   }
 }
 
@@ -158,6 +170,35 @@ body {
 /* Remove focus-visible outline as well */
 *:focus-visible {
   outline: none;
+}
+
+/* Mobile-specific improvements */
+@media (max-width: theme(screens.md)) {
+  /* Prevent zoom on input focus on mobile */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+  
+  /* Improve touch targets */
+  button, [role="button"], a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Prevent text selection on UI elements */
+  button, [role="button"] {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+}
+
+/* Ensure proper text sizing on mobile */
+@media (max-width: theme(screens.sm)) {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
 }
 
 @import "./styles/wunderbaum.css";

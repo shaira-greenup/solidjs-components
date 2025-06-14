@@ -150,24 +150,24 @@ export default function Layout(props: LayoutProps) {
           "bg-[var(--color-base-200)] border-r border-[var(--color-base-300)]": true,
           "shadow-xl": true,
           fixed: true,
-          "inset-x-0": true,
-          "bottom-0": true,
+          
+          // Mobile positioning - bottom drawer
+          "inset-x-0 bottom-0": true,
           "mb-bottom_header": isBottomVisible(),
           "translate-y-full": !isDrawerVisible(),
           [Z_INDICES.mobileDrawer]: true,
 
-          // If full lower drawer
-          "h-1/2 md:h-auto": !isDrawerMaximized(),
+          // Mobile heights
+          "h-1/2": !isDrawerMaximized(),
           "h-between_headers": isDrawerMaximized(),
+          "max-h-screen": true, // Prevent overflow on small screens
 
-          // Now Handle Desktop
-          "md:w-sidebar_width": true,
-          "md:top-0": true,
-          "md:left-0": true,
-          "md:inset-y-0": true,
+          // Desktop positioning - side drawer
+          "md:w-sidebar_width md:top-0 md:left-0 md:inset-y-0 md:h-auto": true,
           "md:-translate-x-full md:translate-y-0": !isDrawerVisible(),
+          "md:inset-x-auto": true, // Reset mobile inset-x-0 on desktop
 
-          // Animate movements
+          // Smooth transitions
           "transition-all duration-300 ease-in-out": !isResizing(),
           "transition-none": isResizing(),
         }}
@@ -213,10 +213,12 @@ export default function Layout(props: LayoutProps) {
       {/* Main Content */}
       <div
         classList={{
-          // Basic Layout
-          "flex justify-center items-center p-4": true,
+          // Basic Layout - Mobile first
+          "flex justify-center items-start min-h-screen": true,
+          "p-2 pt-4 pb-20": true, // Extra bottom padding for mobile taskbar
+          "sm:p-4 sm:pb-20": true,
           // Desktop Layout
-          "mb-bottom_header": isBottomVisible(),
+          "md:pb-bottom_header": isBottomVisible(),
           "md:ml-sidebar_width": isDrawerVisible(),
           "transition-all duration-300 ease-in-out": !isResizing(),
           "transition-none": isResizing(),
@@ -240,11 +242,11 @@ export default function Layout(props: LayoutProps) {
           "transition-all duration-300 ease-in-out": true,
         }}
       >
-        <div class="h-full flex items-center justify-between px-4">
+        <div class="h-full flex items-center justify-between px-2 sm:px-4">
           {/* Left side - Start menu button */}
           <div class="flex items-center space-x-2">
             <button
-              class="flex items-center space-x-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-[var(--color-primary-content)] px-4 py-2 rounded-lg transition-all duration-200 font-medium shadow-sm hover:shadow-md"
+              class="flex items-center space-x-2 sm:space-x-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-[var(--color-primary-content)] px-2 py-2 sm:px-4 rounded-lg transition-all duration-200 font-medium shadow-sm hover:shadow-md"
               onclick={() => {
                 setIsDrawerVisible(!isDrawerVisible());
               }}
@@ -255,25 +257,25 @@ export default function Layout(props: LayoutProps) {
               }}
             >
               <ApplicationGridIcon />
-              <span class="text-sm select-none">Applications</span>
+              <span class="text-xs sm:text-sm select-none hidden xs:inline">Applications</span>
             </button>
           </div>
 
           {/* Center - System info or quick actions */}
-          <div class="flex items-center space-x-4">
-            <div class="text-[var(--color-base-content)]/70 text-sm font-medium">
+          <div class="flex items-center space-x-2 sm:space-x-4">
+            <div class="text-[var(--color-base-content)]/70 text-xs sm:text-sm font-medium">
               {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </div>
           </div>
 
           {/* Right side - System controls */}
-          <div class="flex items-center space-x-2">
+          <div class="flex items-center space-x-1 sm:space-x-2">
             <button
-              class="p-2 hover:bg-[var(--color-base-300)]/50 rounded-lg transition-colors duration-200"
+              class="p-1.5 sm:p-2 hover:bg-[var(--color-base-300)]/50 rounded-lg transition-colors duration-200"
               onclick={() => setIsBottomVisible(false)}
               title="Hide taskbar"
             >
-              <svg class="w-4 h-4 text-[var(--color-base-content)]/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-3 h-3 sm:w-4 sm:h-4 text-[var(--color-base-content)]/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
