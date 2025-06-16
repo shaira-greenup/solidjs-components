@@ -4,7 +4,14 @@ import RadialMenu from "./RadialMenu";
 import { useRadialMenu, MenuItem } from "./useRadialMenu";
 
 export default function Home() {
-  const { showMenu, menuPosition, closeMenu, handleContextMenu } = useRadialMenu();
+  const { 
+    showMenu, 
+    menuPosition, 
+    closeMenu, 
+    handleContextMenu,
+    handleTouchStart,
+    handleTouchEnd
+  } = useRadialMenu();
 
   const menuItems: MenuItem[] = [
     {
