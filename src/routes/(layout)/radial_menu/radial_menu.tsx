@@ -1,4 +1,3 @@
-import { A } from "@solidjs/router";
 import Counter from "./Counter";
 import RadialMenu from "./RadialMenu";
 import { useRadialMenu, MenuItem } from "./useRadialMenu";
@@ -73,9 +72,9 @@ export default function Home() {
       <p class="my-4">
         <span>Home</span>
         {" - "}
-        <A href="/about" class="text-sky-600 hover:underline">
+        <a href="/about" class="text-sky-600 hover:underline">
           About Page
-        </A>{" "}
+        </a>{" "}
       </p>
 
       <RadialMenu
