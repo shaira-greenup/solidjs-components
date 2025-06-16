@@ -60,7 +60,7 @@ export default function Home() {
           Right-click anywhere in this area to open the radial context menu.
         </p>
         <div class="bg-white rounded border-2 border-dashed border-gray-300 p-12 min-h-64 flex items-center justify-center">
-          <p class="text-gray-500 no-select">Right-click here for radial menu</p>
+          <p class="text-gray-500 select-none">Right-click here for radial menu</p>
         </div>
       </div>
 
