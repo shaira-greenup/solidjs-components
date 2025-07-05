@@ -1,4 +1,4 @@
-import { createSignal, For } from "solid-js";
+import { createSignal, For, onMount, onCleanup } from "solid-js";
 import Card from "~/components/Card";
 import {
   Command,
@@ -23,6 +23,25 @@ interface CommandAction {
 export default function CommandPaletteDemo() {
   const [open, setOpen] = createSignal(false);
   const [selectedAction, setSelectedAction] = createSignal<string>("");
+
+  // Global keyboard shortcut handler
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+      event.preventDefault();
+      setOpen(!open());
+    }
+    if (event.key === 'Escape') {
+      setOpen(false);
+    }
+  };
+
+  // Add global event listener
+  onMount(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    onCleanup(() => {
+      document.removeEventListener('keydown', handleKeyDown);
+    });
+  });
 
   const commands: CommandAction[] = [
     {
@@ -234,22 +253,6 @@ export default function CommandPaletteDemo() {
           />
         </div>
       )}
-
-      {/* Global keyboard shortcut */}
-      <div
-        onKeyDown={(e) => {
-          if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-            e.preventDefault();
-            setOpen(!open());
-          }
-          if (e.key === 'Escape') {
-            setOpen(false);
-          }
-        }}
-        tabIndex={-1}
-        class="fixed inset-0 pointer-events-none"
-      />
-
     </div>
   );
 }
