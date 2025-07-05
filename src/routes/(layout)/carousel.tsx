@@ -211,7 +211,7 @@ export default function CarouselPage() {
           transition: all 0.2s ease;
         }
         
-        .carousel-indicator-active {
+        .carousel-indicator[data-current] {
           background: var(--color-primary, #3b82f6);
           transform: scale(1.25);
         }

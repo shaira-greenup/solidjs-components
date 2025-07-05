@@ -91,9 +91,6 @@ export function CarouselComponent(props: {
               <button
                 {...api().getIndicatorProps({ index })}
                 class="carousel-indicator"
-                classList={{
-                  "carousel-indicator-active": api().currentSlide === index,
-                }}
               />
             )}
           </Index>
