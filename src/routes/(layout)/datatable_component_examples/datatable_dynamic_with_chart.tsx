@@ -28,7 +28,7 @@ function generateMathematicalData(
   freq1: number,
   freq2: number,
   freq3: number,
-  decay: number
+  decay: number,
 ): MathematicalDataPoint[] {
   return Array.from({ length }, (_, i) => {
     const x = i * xScale;
@@ -101,10 +101,14 @@ function MathematicalEquationsContent(props: {
         <KaTeX math={`x = i \\times ${props.xScale}`} />
       </div>
       <div class="flex items-center space-x-4 ml-16">
-        <KaTeX math={`y = \\sin(x \\times ${props.freq1}) \\times \\cos(x \\times ${props.freq2})`} />
+        <KaTeX
+          math={`y = \\sin(x \\times ${props.freq1}) \\times \\cos(x \\times ${props.freq2})`}
+        />
       </div>
       <div class="flex items-center space-x-4 ml-16">
-        <KaTeX math={`z = e^{-x \\times ${props.decay}} \\times \\sin(x \\times ${props.freq3})`} />
+        <KaTeX
+          math={`z = e^{-x \\times ${props.decay}} \\times \\sin(x \\times ${props.freq3})`}
+        />
       </div>
     </div>
   );
@@ -211,35 +215,35 @@ function MathematicalChart(props: {
 }) {
   const chartConfig = createMemo((): ChartConfiguration => {
     const dataPoints = props.data();
-    
+
     // Sample data for chart (limit to reasonable number of points for performance)
     const maxPoints = Math.min(dataPoints.length, 200);
     const step = Math.max(1, Math.floor(dataPoints.length / maxPoints));
     const sampledData = dataPoints.filter((_, i) => i % step === 0);
-    
+
     // Extract raw mathematical values for plotting
     const chartData = sampledData.map((point, i) => {
       const actualIndex = i * step;
       const x = actualIndex * props.xScale;
       const y = Math.sin(x * props.freq1) * Math.cos(x * props.freq2);
       const z = Math.exp(-x * props.decay) * Math.sin(x * props.freq3);
-      
+
       return {
         x: x,
         y: y,
         z: z,
-        index: actualIndex
+        index: actualIndex,
       };
     });
 
     return {
       type: "line",
       data: {
-        labels: chartData.map(d => d.index.toString()),
+        labels: chartData.map((d) => d.index.toString()),
         datasets: [
           {
             label: "Y Function: sin(x×f1) × cos(x×f2)",
-            data: chartData.map(d => d.y),
+            data: chartData.map((d) => d.y),
             borderColor: "rgb(59, 130, 246)",
             backgroundColor: "rgba(59, 130, 246, 0.1)",
             tension: 0.4,
@@ -248,7 +252,7 @@ function MathematicalChart(props: {
           },
           {
             label: "Z Function: e^(-x×decay) × sin(x×f3)",
-            data: chartData.map(d => d.z),
+            data: chartData.map((d) => d.z),
             borderColor: "rgb(239, 68, 68)",
             backgroundColor: "rgba(239, 68, 68, 0.1)",
             tension: 0.4,
@@ -262,7 +266,7 @@ function MathematicalChart(props: {
         animation: false,
         interaction: {
           intersect: false,
-          mode: 'index',
+          mode: "index",
         },
         plugins: {
           title: {
@@ -271,20 +275,20 @@ function MathematicalChart(props: {
           },
           legend: {
             display: true,
-            position: 'top',
+            position: "top",
           },
         },
         scales: {
           x: {
             title: {
               display: true,
-              text: 'Data Point Index',
+              text: "Data Point Index",
             },
           },
           y: {
             title: {
               display: true,
-              text: 'Function Value',
+              text: "Function Value",
             },
           },
         },
@@ -312,15 +316,15 @@ function MathematicalDataTableApp() {
   const [decay, setDecay] = createSignal(0.05);
 
   // Reactive data generation - automatically updates when parameters change
-  const data = createMemo(() => 
+  const data = createMemo(() =>
     generateMathematicalData(
       length(),
       xScale(),
       freq1(),
       freq2(),
       freq3(),
-      decay()
-    )
+      decay(),
+    ),
   );
 
   // Manual rerender function that regenerates with current parameters
@@ -338,7 +342,8 @@ function MathematicalDataTableApp() {
           Dynamic Mathematical Data Table with Chart
         </h1>
         <p class="text-gray-600 dark:text-gray-400">
-          Adjust the mathematical parameters below to see real-time changes in both the chart and data table.
+          Adjust the mathematical parameters below to see real-time changes in
+          both the chart and data table.
         </p>
       </div>
 

@@ -20,19 +20,19 @@ type IrisDataPoint = {
  */
 const fetchIrisData = cache(async (): Promise<IrisDataPoint[]> => {
   "use server";
-  
+
   const { default: Database } = await import("better-sqlite3");
   const { resolve } = await import("path");
-  
+
   try {
     const dbPath = resolve("src/data/iris.db");
     const db = new Database(dbPath, { readonly: true });
-    
+
     const stmt = db.prepare("SELECT * FROM iris");
     const rows = stmt.all();
-    
+
     db.close();
-    
+
     return rows as IrisDataPoint[];
   } catch (error) {
     console.error("Error reading iris database:", error);
@@ -100,7 +100,9 @@ function IrisDatasetContent() {
         <span>Species: Setosa, Versicolor, and Virginica</span>
       </div>
       <div class="flex items-center space-x-4 ml-16">
-        <span>Measurements: Sepal length/width and Petal length/width (in cm)</span>
+        <span>
+          Measurements: Sepal length/width and Petal length/width (in cm)
+        </span>
       </div>
     </div>
   );
@@ -111,7 +113,7 @@ function IrisDatasetContent() {
  */
 function IrisDataTableApp() {
   const [irisData] = createResource(fetchIrisData);
-  
+
   const handleRerender = () => {
     // Refetch data from database
     irisData.refetch();
@@ -119,13 +121,15 @@ function IrisDataTableApp() {
 
   return (
     <div class="p-6 max-w-6xl mx-auto">
-      <Suspense fallback={
-        <div class="flex items-center justify-center h-64">
-          <div class="text-lg text-gray-600 dark:text-gray-400">
-            Loading iris dataset from database...
+      <Suspense
+        fallback={
+          <div class="flex items-center justify-center h-64">
+            <div class="text-lg text-gray-600 dark:text-gray-400">
+              Loading iris dataset from database...
+            </div>
           </div>
-        </div>
-      }>
+        }
+      >
         <DataTable
           data={() => irisData() || []}
           columns={createTableColumns()}

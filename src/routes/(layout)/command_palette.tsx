@@ -27,20 +27,20 @@ export default function CommandPaletteDemo() {
 
   // Global keyboard shortcut handler
   const handleKeyDown = (event: KeyboardEvent) => {
-    if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+    if ((event.metaKey || event.ctrlKey) && event.key === "k") {
       event.preventDefault();
       setOpen(!open());
     }
-    if (event.key === 'Escape') {
+    if (event.key === "Escape") {
       setOpen(false);
     }
   };
 
   // Add global event listener
   onMount(() => {
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
     onCleanup(() => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     });
   });
 
@@ -244,7 +244,9 @@ export default function CommandPaletteDemo() {
                                 )}
                               </div>
                               {command.shortcut && (
-                                <CommandShortcut>{command.shortcut}</CommandShortcut>
+                                <CommandShortcut>
+                                  {command.shortcut}
+                                </CommandShortcut>
                               )}
                             </CommandItem>
                           )}
@@ -256,10 +258,7 @@ export default function CommandPaletteDemo() {
               </CommandList>
             </Command>
           </div>
-          <div
-            class="fixed inset-0 -z-10"
-            onClick={() => setOpen(false)}
-          />
+          <div class="fixed inset-0 -z-10" onClick={() => setOpen(false)} />
         </div>
       )}
     </div>

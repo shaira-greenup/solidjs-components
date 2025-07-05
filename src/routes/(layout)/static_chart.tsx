@@ -40,7 +40,6 @@ export default function SimpleChartPage() {
     },
   };
 
-
   return (
     <div class="container mx-auto p-4">
       <Card title="Simple Chart Example">
@@ -53,4 +52,3 @@ export default function SimpleChartPage() {
     </div>
   );
 }
-

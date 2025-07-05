@@ -151,18 +151,13 @@ function MyLayout() {
     });
   });
 
-
   const DRAWER_BLUR = false;
 
   // .............................................................................
   return (
     <div>
       {/* Hidden checkboxes for state management */}
-      <input
-        type="checkbox"
-        class="hidden peer/drawer"
-        id="drawer-toggle"
-      />
+      <input type="checkbox" class="hidden peer/drawer" id="drawer-toggle" />
       <input
         type="checkbox"
         class="hidden peer/bottom"
@@ -249,8 +244,7 @@ function MyLayout() {
             // Sizing
             "w-10 h-full": true,
             // Styling & Interaction
-            "bg-gray-400 hover:bg-gray-600 cursor-col-resize transition-colors":
-              true,
+            "bg-gray-400 hover:bg-gray-600 cursor-col-resize transition-colors": true,
           }}
         />
       </div>
@@ -297,7 +291,7 @@ function MyLayout() {
               Applications
             </span>
           </label>
-          
+
           {/* Bottom header toggle button */}
           <label
             for="bottom-toggle"

@@ -112,9 +112,7 @@ export default function Home() {
               }`}
               onClick={toggleMobileExpansion}
             >
-              <h2 class="text-sm font-medium text-gray-200">
-                Explorer
-              </h2>
+              <h2 class="text-sm font-medium text-gray-200">Explorer</h2>
               <svg
                 class={`w-4 h-4 text-gray-400 transition-transform duration-200 ${
                   mobileExpanded() ? "rotate-180" : ""
@@ -238,7 +236,3 @@ export default function Home() {
     </div>
   );
 }
-
-
-
-

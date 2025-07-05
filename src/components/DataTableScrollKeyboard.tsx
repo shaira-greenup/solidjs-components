@@ -7,7 +7,14 @@ import {
   SortingState,
 } from "@tanstack/solid-table";
 import { createVirtualizer } from "@tanstack/solid-virtual";
-import { createSignal, createEffect, onMount, onCleanup, For, JSX } from "solid-js";
+import {
+  createSignal,
+  createEffect,
+  onMount,
+  onCleanup,
+  For,
+  JSX,
+} from "solid-js";
 import { isServer } from "solid-js/web";
 
 export interface DataTableScrollKeyboardConfig<T> {
@@ -29,9 +36,9 @@ export interface DataTableScrollKeyboardConfig<T> {
 /**
  * Table header component for virtualized table with keyboard navigation
  */
-function VirtualTableHeaderKeyboard<T>(props: { 
-  title?: string; 
-  description?: string; 
+function VirtualTableHeaderKeyboard<T>(props: {
+  title?: string;
+  description?: string;
   headerContent?: JSX.Element;
   totalFetched: () => number;
   totalCount: () => number;
@@ -45,21 +52,22 @@ function VirtualTableHeaderKeyboard<T>(props: {
           {props.title}
         </h2>
       )}
-      
+
       {props.description && (
         <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
           {props.description}
         </p>
       )}
-      
+
       {props.headerContent}
-      
+
       <div class="mt-4 space-y-2">
         <div class="text-sm text-gray-600 dark:text-gray-300">
           ({props.totalFetched()} of {props.totalCount()} rows loaded)
         </div>
         <div class="text-sm text-blue-600 dark:text-blue-400">
-          Current position: Row {props.currentRow() + 1}, Column {props.currentCol() + 1}
+          Current position: Row {props.currentRow() + 1}, Column{" "}
+          {props.currentCol() + 1}
         </div>
         <div class="text-xs text-gray-500 dark:text-gray-400">
           Use arrow keys to navigate • Enter to focus cell • Escape to unfocus
@@ -72,21 +80,21 @@ function VirtualTableHeaderKeyboard<T>(props: {
 /**
  * Sortable column header with visual sorting indicators for virtual table
  */
-function VirtualSortableColumnHeaderKeyboard<T>(props: { 
-  header: any; 
+function VirtualSortableColumnHeaderKeyboard<T>(props: {
+  header: any;
   isCurrentColumn: () => boolean;
 }) {
   const { header } = props;
 
   return (
-    <th 
+    <th
       style={{
         display: "flex",
         width: `${header.getSize()}px`,
         "align-items": "center",
         padding: "12px 24px",
-        "background-color": props.isCurrentColumn() 
-          ? "var(--color-primary, #3b82f6)" 
+        "background-color": props.isCurrentColumn()
+          ? "var(--color-primary, #3b82f6)"
           : "var(--color-base-200, #f8fafc)",
         "border-bottom": "1px solid var(--color-base-300, #e2e8f0)",
         "border-right": "1px solid var(--color-base-300, #e2e8f0)",
@@ -106,8 +114,8 @@ function VirtualSortableColumnHeaderKeyboard<T>(props: {
             "font-weight": "500",
             "text-transform": "uppercase",
             "letter-spacing": "0.05em",
-            color: props.isCurrentColumn() 
-              ? "white" 
+            color: props.isCurrentColumn()
+              ? "white"
               : "var(--color-base-content, #374151)",
           }}
         >
@@ -115,7 +123,9 @@ function VirtualSortableColumnHeaderKeyboard<T>(props: {
             {flexRender(header.column.columnDef.header, header.getContext())}
           </span>
           {header.column.getCanSort() && (
-            <span class={props.isCurrentColumn() ? "text-white" : "text-gray-400"}>
+            <span
+              class={props.isCurrentColumn() ? "text-white" : "text-gray-400"}
+            >
               {{
                 asc: "↑",
                 desc: "↓",
@@ -131,7 +141,9 @@ function VirtualSortableColumnHeaderKeyboard<T>(props: {
 /**
  * Reusable DataTableScrollKeyboard component with virtualized infinite scrolling and keyboard navigation
  */
-export default function DataTableScrollKeyboard<T>(props: DataTableScrollKeyboardConfig<T>) {
+export default function DataTableScrollKeyboard<T>(
+  props: DataTableScrollKeyboardConfig<T>,
+) {
   const {
     data,
     columns,
@@ -152,7 +164,7 @@ export default function DataTableScrollKeyboard<T>(props: DataTableScrollKeyboar
   const [currentRow, setCurrentRow] = createSignal(0);
   const [currentCol, setCurrentCol] = createSignal(0);
   const [isFocused, setIsFocused] = createSignal(false);
-  
+
   let tableContainerRef: HTMLDivElement | undefined;
 
   const tableConfig: any = {
@@ -181,7 +193,7 @@ export default function DataTableScrollKeyboard<T>(props: DataTableScrollKeyboar
     get count() {
       return table.getRowModel().rows.length;
     },
-    getScrollElement: () => isServer ? null : tableContainerRef,
+    getScrollElement: () => (isServer ? null : tableContainerRef),
     estimateSize: () => estimatedRowHeight,
     overscan: 5,
   });
@@ -189,8 +201,8 @@ export default function DataTableScrollKeyboard<T>(props: DataTableScrollKeyboar
   // Ensure current position is within bounds
   createEffect(() => {
     const rows = table.getRowModel().rows;
-    const cols = table.getAllColumns().filter(col => col.getIsVisible());
-    
+    const cols = table.getAllColumns().filter((col) => col.getIsVisible());
+
     if (rows.length > 0 && currentRow() >= rows.length) {
       setCurrentRow(Math.max(0, rows.length - 1));
     }
@@ -202,15 +214,17 @@ export default function DataTableScrollKeyboard<T>(props: DataTableScrollKeyboar
   // Scroll to current row when it changes (client-only)
   createEffect(() => {
     if (isServer) return;
-    
+
     const row = currentRow();
     if (isFocused() && row >= 0 && row < table.getRowModel().rows.length) {
-      rowVirtualizer.scrollToIndex(row, { align: 'center' });
+      rowVirtualizer.scrollToIndex(row, { align: "center" });
     }
   });
 
   // Fetch more data when scrolled near bottom
-  const fetchMoreOnBottomReached = (containerElement?: HTMLDivElement | null) => {
+  const fetchMoreOnBottomReached = (
+    containerElement?: HTMLDivElement | null,
+  ) => {
     if (containerElement && onFetchMore && hasMore() && !isFetching()) {
       const { scrollHeight, scrollTop, clientHeight } = containerElement;
       if (scrollHeight - scrollTop - clientHeight < 500) {
@@ -229,26 +243,26 @@ export default function DataTableScrollKeyboard<T>(props: DataTableScrollKeyboar
     if (!isFocused()) return;
 
     const rows = table.getRowModel().rows;
-    const cols = table.getAllColumns().filter(col => col.getIsVisible());
-    
+    const cols = table.getAllColumns().filter((col) => col.getIsVisible());
+
     switch (e.key) {
-      case 'ArrowUp':
+      case "ArrowUp":
         e.preventDefault();
-        setCurrentRow(prev => Math.max(0, prev - 1));
+        setCurrentRow((prev) => Math.max(0, prev - 1));
         break;
-      case 'ArrowDown':
+      case "ArrowDown":
         e.preventDefault();
-        setCurrentRow(prev => Math.min(rows.length - 1, prev + 1));
+        setCurrentRow((prev) => Math.min(rows.length - 1, prev + 1));
         break;
-      case 'ArrowLeft':
+      case "ArrowLeft":
         e.preventDefault();
-        setCurrentCol(prev => Math.max(0, prev - 1));
+        setCurrentCol((prev) => Math.max(0, prev - 1));
         break;
-      case 'ArrowRight':
+      case "ArrowRight":
         e.preventDefault();
-        setCurrentCol(prev => Math.min(cols.length - 1, prev + 1));
+        setCurrentCol((prev) => Math.min(cols.length - 1, prev + 1));
         break;
-      case 'Home':
+      case "Home":
         e.preventDefault();
         if (e.ctrlKey) {
           setCurrentRow(0);
@@ -257,7 +271,7 @@ export default function DataTableScrollKeyboard<T>(props: DataTableScrollKeyboar
           setCurrentCol(0);
         }
         break;
-      case 'End':
+      case "End":
         e.preventDefault();
         if (e.ctrlKey) {
           setCurrentRow(rows.length - 1);
@@ -266,15 +280,15 @@ export default function DataTableScrollKeyboard<T>(props: DataTableScrollKeyboar
           setCurrentCol(cols.length - 1);
         }
         break;
-      case 'PageUp':
+      case "PageUp":
         e.preventDefault();
-        setCurrentRow(prev => Math.max(0, prev - 10));
+        setCurrentRow((prev) => Math.max(0, prev - 10));
         break;
-      case 'PageDown':
+      case "PageDown":
         e.preventDefault();
-        setCurrentRow(prev => Math.min(rows.length - 1, prev + 10));
+        setCurrentRow((prev) => Math.min(rows.length - 1, prev + 10));
         break;
-      case 'Escape':
+      case "Escape":
         e.preventDefault();
         setIsFocused(false);
         break;
@@ -300,17 +314,17 @@ export default function DataTableScrollKeyboard<T>(props: DataTableScrollKeyboar
   // Set up keyboard event listeners (client-only)
   onMount(() => {
     if (isServer) return;
-    
-    document.addEventListener('keydown', handleKeyDown);
+
+    document.addEventListener("keydown", handleKeyDown);
     onCleanup(() => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     });
   });
 
   // Scroll to top when sorting changes (client-only)
   createEffect(() => {
     if (isServer) return;
-    
+
     const currentSorting = sorting();
     if (currentSorting.length > 0 && table.getRowModel().rows.length > 0) {
       rowVirtualizer.scrollToIndex(0);
@@ -321,12 +335,14 @@ export default function DataTableScrollKeyboard<T>(props: DataTableScrollKeyboar
   // Check if we need to fetch more data on mount and after data changes (client-only)
   createEffect(() => {
     if (isServer || !tableContainerRef) return;
-    
+
     fetchMoreOnBottomReached(tableContainerRef);
   });
 
   return (
-    <div class={`bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden ${className}`}>
+    <div
+      class={`bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden ${className}`}
+    >
       <VirtualTableHeaderKeyboard
         title={title}
         description={description}
@@ -348,7 +364,9 @@ export default function DataTableScrollKeyboard<T>(props: DataTableScrollKeyboar
           overflow: "auto",
           position: "relative",
           height: height,
-          outline: isFocused() ? "2px solid var(--color-primary, #3b82f6)" : "none",
+          outline: isFocused()
+            ? "2px solid var(--color-primary, #3b82f6)"
+            : "none",
         }}
         class="border-t border-gray-200 dark:border-gray-700 focus:outline-none"
       >
@@ -366,9 +384,11 @@ export default function DataTableScrollKeyboard<T>(props: DataTableScrollKeyboar
                 <tr style={{ display: "flex", width: "100%" }}>
                   <For each={headerGroup.headers}>
                     {(header, index) => (
-                      <VirtualSortableColumnHeaderKeyboard 
-                        header={header} 
-                        isCurrentColumn={() => isFocused() && index() === currentCol()}
+                      <VirtualSortableColumnHeaderKeyboard
+                        header={header}
+                        isCurrentColumn={() =>
+                          isFocused() && index() === currentCol()
+                        }
                       />
                     )}
                   </For>
@@ -386,8 +406,9 @@ export default function DataTableScrollKeyboard<T>(props: DataTableScrollKeyboar
             <For each={rowVirtualizer.getVirtualItems()}>
               {(virtualRow) => {
                 const row = table.getRowModel().rows[virtualRow.index];
-                const isCurrentRow = () => isFocused() && virtualRow.index === currentRow();
-                
+                const isCurrentRow = () =>
+                  isFocused() && virtualRow.index === currentRow();
+
                 return (
                   <tr
                     data-index={virtualRow.index}
@@ -398,17 +419,18 @@ export default function DataTableScrollKeyboard<T>(props: DataTableScrollKeyboar
                       width: "100%",
                     }}
                     classList={{
-                      "hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors": !isCurrentRow(),
+                      "hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors":
+                        !isCurrentRow(),
                       "bg-blue-50 dark:bg-blue-900/30": isCurrentRow(),
                     }}
                   >
                     <For each={row.getVisibleCells()}>
                       {(cell, cellIndex) => {
-                        const isCurrentCell = () => 
-                          isFocused() && 
-                          virtualRow.index === currentRow() && 
+                        const isCurrentCell = () =>
+                          isFocused() &&
+                          virtualRow.index === currentRow() &&
                           cellIndex() === currentCol();
-                        
+
                         return (
                           <td
                             style={{
@@ -416,18 +438,24 @@ export default function DataTableScrollKeyboard<T>(props: DataTableScrollKeyboar
                               width: `${cell.column.getSize()}px`,
                               "align-items": "center",
                               padding: "12px 24px",
-                              "border-bottom": "1px solid var(--color-base-300, #e2e8f0)",
-                              "border-right": "1px solid var(--color-base-300, #e2e8f0)",
-                              "background-color": isCurrentCell() 
-                                ? "var(--color-primary, #3b82f6)" 
+                              "border-bottom":
+                                "1px solid var(--color-base-300, #e2e8f0)",
+                              "border-right":
+                                "1px solid var(--color-base-300, #e2e8f0)",
+                              "background-color": isCurrentCell()
+                                ? "var(--color-primary, #3b82f6)"
                                 : "transparent",
                             }}
                             classList={{
-                              "text-sm text-gray-900 dark:text-gray-100": !isCurrentCell(),
+                              "text-sm text-gray-900 dark:text-gray-100":
+                                !isCurrentCell(),
                               "text-sm text-white font-medium": isCurrentCell(),
                             }}
                           >
-                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext(),
+                            )}
                           </td>
                         );
                       }}

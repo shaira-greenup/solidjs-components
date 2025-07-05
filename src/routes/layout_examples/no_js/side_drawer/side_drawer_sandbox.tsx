@@ -234,8 +234,7 @@ function MyLayout() {
             // Sizing
             "w-10 h-full": true,
             // Styling & Interaction
-            "bg-gray-400 hover:bg-gray-600 cursor-col-resize transition-colors":
-              true,
+            "bg-gray-400 hover:bg-gray-600 cursor-col-resize transition-colors": true,
           }}
         />
       </div>

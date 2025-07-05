@@ -83,8 +83,7 @@ function NavigationItem(props: NavigationItemProps): JSX.Element {
       href={props.item.href}
       onClick={props.onNavigate}
       classList={{
-        "group flex items-center px-3 py-2 text-sm font-medium rounded-[var(--radius-field)] transition-colors":
-          true,
+        "group flex items-center px-3 py-2 text-sm font-medium rounded-[var(--radius-field)] transition-colors": true,
         "bg-[var(--color-primary)]/10 text-[var(--color-text-primary)] border-r-2 border-[var(--color-primary)]":
           props.isActive,
         "text-[var(--color-text-secondary)] hover:bg-[var(--color-base-300)] hover:text-[var(--color-text-primary)]":
@@ -108,7 +107,7 @@ function NavigationItem(props: NavigationItemProps): JSX.Element {
 export default function Sidebar(props: SidebarProps) {
   const location = useLocation();
   let navTreeRef: HTMLElement | undefined;
-  
+
   // Should be positioned under the navbar
   // When true, the sidebar will inherit the navbar height from app.css
   // We don't want that for the current design
@@ -123,7 +122,7 @@ export default function Sidebar(props: SidebarProps) {
       setTimeout(() => {
         // Focus the first focusable element within NavTree
         const firstFocusable = navTreeRef?.querySelector(
-          'a, button, [tabindex]:not([tabindex="-1"])'
+          'a, button, [tabindex]:not([tabindex="-1"])',
         ) as HTMLElement;
         firstFocusable?.focus();
       }, 50);
@@ -142,7 +141,7 @@ export default function Sidebar(props: SidebarProps) {
     };
 
     document.addEventListener("keydown", handleKeyDown);
-    
+
     onCleanup(() => {
       document.removeEventListener("keydown", handleKeyDown);
     });
@@ -162,8 +161,7 @@ export default function Sidebar(props: SidebarProps) {
 
       <div
         classList={{
-          "fixed top-0 left-0 bottom-0 bg-[var(--color-base-200)] border-r border-[var(--color-base-300)] z-50 transform transition-transform duration-300 ease-in-out lg:translate-x-0":
-            true,
+          "fixed top-0 left-0 bottom-0 bg-[var(--color-base-200)] border-r border-[var(--color-base-300)] z-50 transform transition-transform duration-300 ease-in-out lg:translate-x-0": true,
           "translate-x-0": props.isOpen(),
           "-translate-x-full": !props.isOpen(),
           "top-[var(--navbar-height)]": false,

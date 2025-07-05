@@ -2,7 +2,6 @@ import { createSignal } from "solid-js";
 import Card from "~/components/Card";
 import Slider from "~/components/Slider";
 
-
 export default function SliderExample() {
   const [value, setValue] = createSignal(50);
   const [uncontrolledValue, setUncontrolledValue] = createSignal(25);

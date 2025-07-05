@@ -19,7 +19,9 @@ function LayoutContainer(props: { children: JSXElement }) {
 
 function MainArea(props: { children: JSXElement }) {
   return (
-    <div class="flex-1 relative md:flex overflow-hidden bg-[var(--color-base-100)]">{props.children}</div>
+    <div class="flex-1 relative md:flex overflow-hidden bg-[var(--color-base-100)]">
+      {props.children}
+    </div>
   );
 }
 
@@ -229,7 +231,7 @@ function MyLayout() {
               Browse application sections
             </p>
           </div>
-          
+
           <div class="flex-1 p-4 overflow-y-auto">
             <SidebarContent />
           </div>
@@ -247,8 +249,7 @@ function MyLayout() {
             // Sizing
             "w-1 h-full": true,
             // Styling & Interaction
-            "bg-[var(--color-base-300)] hover:bg-[var(--color-primary)] cursor-col-resize transition-all duration-200":
-              true,
+            "bg-[var(--color-base-300)] hover:bg-[var(--color-primary)] cursor-col-resize transition-all duration-200": true,
             "hover:w-1.5": true,
           }}
         />
@@ -308,7 +309,7 @@ function MyLayout() {
                 Menu
               </span>
             </button>
-            
+
             {/* App Title */}
             <div class="hidden md:block">
               <h1 class="text-lg font-semibold text-[var(--color-base-content)]">
@@ -345,24 +346,54 @@ const ApplicationGridIcon = () => {
 
 const SearchIcon = () => {
   return (
-    <svg class="w-5 h-5 text-[var(--color-base-content)]/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    <svg
+      class="w-5 h-5 text-[var(--color-base-content)]/70"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+      />
     </svg>
   );
 };
 
 const NotificationIcon = () => {
   return (
-    <svg class="w-5 h-5 text-[var(--color-base-content)]/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM10.5 3.75a6 6 0 0 0-6 6v2.25a2.25 2.25 0 0 1-2.25 2.25H2a.75.75 0 0 0 0 1.5h16.5a.75.75 0 0 0 0-1.5h-.25a2.25 2.25 0 0 1-2.25-2.25V9.75a6 6 0 0 0-6-6z" />
+    <svg
+      class="w-5 h-5 text-[var(--color-base-content)]/70"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M15 17h5l-5 5v-5zM10.5 3.75a6 6 0 0 0-6 6v2.25a2.25 2.25 0 0 1-2.25 2.25H2a.75.75 0 0 0 0 1.5h16.5a.75.75 0 0 0 0-1.5h-.25a2.25 2.25 0 0 1-2.25-2.25V9.75a6 6 0 0 0-6-6z"
+      />
     </svg>
   );
 };
 
 const UserIcon = () => {
   return (
-    <svg class="w-5 h-5 text-[var(--color-base-content)]/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+    <svg
+      class="w-5 h-5 text-[var(--color-base-content)]/70"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+      />
     </svg>
   );
 };
@@ -386,8 +417,10 @@ const SidebarContent = () => {
           key={index}
           classList={{
             "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-left transition-all duration-200": true,
-            "bg-[var(--color-primary)] text-[var(--color-primary-content)] shadow-sm": item.active,
-            "text-[var(--color-base-content)] hover:bg-[var(--color-base-300)]": !item.active,
+            "bg-[var(--color-primary)] text-[var(--color-primary-content)] shadow-sm":
+              item.active,
+            "text-[var(--color-base-content)] hover:bg-[var(--color-base-300)]":
+              !item.active,
             "font-medium": item.active,
           }}
         >
@@ -395,7 +428,7 @@ const SidebarContent = () => {
           <span class="text-sm">{item.label}</span>
         </button>
       ))}
-      
+
       <div class="pt-4 mt-6 border-t border-[var(--color-base-300)]">
         <h3 class="text-xs font-semibold text-[var(--color-base-content)]/60 uppercase tracking-wider mb-3 px-3">
           Recent
@@ -421,11 +454,10 @@ const Article = (props: {}) => {
     <div class="space-y-8">
       {/* Hero Section */}
       <div class="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] rounded-2xl p-8 text-[var(--color-primary-content)]">
-        <h1 class="text-4xl font-bold mb-4">
-          Welcome to Professional App
-        </h1>
+        <h1 class="text-4xl font-bold mb-4">Welcome to Professional App</h1>
         <p class="text-lg opacity-90 mb-6">
-          Experience a modern, responsive interface designed for productivity and elegance.
+          Experience a modern, responsive interface designed for productivity
+          and elegance.
         </p>
         <button class="bg-white/20 hover:bg-white/30 backdrop-blur-sm px-6 py-3 rounded-lg font-medium transition-all duration-200 hover:scale-105">
           Get Started
@@ -466,16 +498,27 @@ const Article = (props: {}) => {
         </h2>
         <div class="prose prose-gray dark:prose-invert max-w-none">
           <p class="text-[var(--color-base-content)]/80 leading-relaxed">
-            This application features a responsive layout that adapts seamlessly to different screen sizes. 
-            The sidebar can be toggled on mobile devices and resized on desktop for optimal workflow customization.
+            This application features a responsive layout that adapts seamlessly
+            to different screen sizes. The sidebar can be toggled on mobile
+            devices and resized on desktop for optimal workflow customization.
           </p>
           <div class="mt-6 p-4 bg-[var(--color-base-300)]/50 rounded-lg">
             <h4 class="font-semibold text-[var(--color-base-content)] mb-2">
               Keyboard Shortcuts:
             </h4>
             <ul class="space-y-1 text-sm text-[var(--color-base-content)]/70">
-              <li><kbd class="px-2 py-1 bg-[var(--color-base-300)] rounded text-xs">1</kbd> Toggle sidebar</li>
-              <li><kbd class="px-2 py-1 bg-[var(--color-base-300)] rounded text-xs">2</kbd> Toggle header</li>
+              <li>
+                <kbd class="px-2 py-1 bg-[var(--color-base-300)] rounded text-xs">
+                  1
+                </kbd>{" "}
+                Toggle sidebar
+              </li>
+              <li>
+                <kbd class="px-2 py-1 bg-[var(--color-base-300)] rounded text-xs">
+                  2
+                </kbd>{" "}
+                Toggle header
+              </li>
             </ul>
           </div>
         </div>

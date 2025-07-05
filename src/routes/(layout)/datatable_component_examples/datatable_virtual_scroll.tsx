@@ -31,7 +31,7 @@ type PersonApiResponse = {
  */
 function generatePersonData(start: number, size: number): Person[] {
   const statuses = ["Single", "In Relationship", "Complicated", "Married"];
-  
+
   return Array.from({ length: size }, (_, i) => {
     const id = start + i;
     return {
@@ -42,7 +42,9 @@ function generatePersonData(start: number, size: number): Person[] {
       visits: Math.floor(Math.random() * 1000),
       status: statuses[Math.floor(Math.random() * statuses.length)],
       progress: Math.floor(Math.random() * 100),
-      createdAt: new Date(Date.now() - Math.random() * 1000 * 60 * 60 * 24 * 365),
+      createdAt: new Date(
+        Date.now() - Math.random() * 1000 * 60 * 60 * 24 * 365,
+      ),
     };
   });
 }
@@ -50,12 +52,15 @@ function generatePersonData(start: number, size: number): Person[] {
 /**
  * Simulate API call with delay
  */
-async function fetchData(start: number, size: number): Promise<PersonApiResponse> {
+async function fetchData(
+  start: number,
+  size: number,
+): Promise<PersonApiResponse> {
   // Simulate network delay
-  await new Promise(resolve => setTimeout(resolve, 500));
-  
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
   const data = generatePersonData(start, size);
-  
+
   return {
     data,
     meta: {
@@ -83,7 +88,7 @@ function createPersonColumns(): ColumnDef<Person>[] {
     },
     {
       accessorKey: "lastName",
-      header: "Last Name", 
+      header: "Last Name",
       size: 150,
       enableSorting: true,
     },
@@ -130,7 +135,9 @@ function VirtualScrollContent() {
     <div class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
       <div class="flex items-center space-x-4">
         <span class="font-medium">Demo:</span>
-        <span>Virtualized infinite scrolling with 10,000 simulated records</span>
+        <span>
+          Virtualized infinite scrolling with 10,000 simulated records
+        </span>
       </div>
       <div class="flex items-center space-x-4 ml-16">
         <span>Scroll down to automatically load more data</span>
@@ -175,9 +182,9 @@ function VirtualScrollDataTableApp() {
     try {
       const currentLength = allData().length;
       const response = await fetchData(currentLength, fetchSize);
-      
-      setAllData(prev => [...prev, ...response.data]);
-      
+
+      setAllData((prev) => [...prev, ...response.data]);
+
       // Check if we've reached the end
       if (currentLength + response.data.length >= response.meta.totalRowCount) {
         setHasMore(false);

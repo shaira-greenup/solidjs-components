@@ -1,5 +1,11 @@
 import { ColumnDef } from "@tanstack/solid-table";
-import { createSignal, createResource, Suspense, createMemo, For } from "solid-js";
+import {
+  createSignal,
+  createResource,
+  Suspense,
+  createMemo,
+  For,
+} from "solid-js";
 import { action, cache } from "@solidjs/router";
 import { ChartConfiguration } from "chart.js";
 import KaTeX from "~/components/KaTeX";
@@ -23,19 +29,19 @@ type IrisDataPoint = {
  */
 const fetchIrisData = cache(async (): Promise<IrisDataPoint[]> => {
   "use server";
-  
+
   const { default: Database } = await import("better-sqlite3");
   const { resolve } = await import("path");
-  
+
   try {
     const dbPath = resolve("src/data/iris.db");
     const db = new Database(dbPath, { readonly: true });
-    
+
     const stmt = db.prepare("SELECT * FROM iris");
     const rows = stmt.all();
-    
+
     db.close();
-    
+
     return rows as IrisDataPoint[];
   } catch (error) {
     console.error("Error reading iris database:", error);
@@ -103,7 +109,9 @@ function IrisDatasetContent() {
         <span>Species: Setosa, Versicolor, and Virginica</span>
       </div>
       <div class="flex items-center space-x-4 ml-16">
-        <span>Measurements: Sepal length/width and Petal length/width (in cm)</span>
+        <span>
+          Measurements: Sepal length/width and Petal length/width (in cm)
+        </span>
       </div>
     </div>
   );
@@ -162,46 +170,54 @@ function IrisChart(props: {
   const chartConfig = createMemo((): ChartConfiguration => {
     const data = props.data();
     const selectedSpecies = props.selectedSpecies();
-    
+
     // Filter data by selected species
-    const filteredData = selectedSpecies === "all" 
-      ? data 
-      : data.filter(item => item.species === selectedSpecies);
+    const filteredData =
+      selectedSpecies === "all"
+        ? data
+        : data.filter((item) => item.species === selectedSpecies);
 
     // Define colors for each species
     const speciesColors: Record<string, string> = {
-      "setosa": "rgb(239, 68, 68)",      // Red
-      "versicolor": "rgb(34, 197, 94)",  // Green
-      "virginica": "rgb(59, 130, 246)",  // Blue
+      setosa: "rgb(239, 68, 68)", // Red
+      versicolor: "rgb(34, 197, 94)", // Green
+      virginica: "rgb(59, 130, 246)", // Blue
     };
 
     // Group data by species for scatter plot
-    const datasets = selectedSpecies === "all" 
-      ? Object.keys(speciesColors).map(species => {
-          const speciesData = data.filter(item => item.species === species);
-          return {
-            label: species.charAt(0).toUpperCase() + species.slice(1),
-            data: speciesData.map(item => ({
-              x: item.sepal_length,
-              y: item.sepal_width,
-            })),
-            backgroundColor: speciesColors[species],
-            borderColor: speciesColors[species],
-            pointRadius: 4,
-            pointHoverRadius: 6,
-          };
-        })
-      : [{
-          label: selectedSpecies.charAt(0).toUpperCase() + selectedSpecies.slice(1),
-          data: filteredData.map(item => ({
-            x: item.sepal_length,
-            y: item.sepal_width,
-          })),
-          backgroundColor: speciesColors[selectedSpecies] || "rgb(107, 114, 128)",
-          borderColor: speciesColors[selectedSpecies] || "rgb(107, 114, 128)",
-          pointRadius: 4,
-          pointHoverRadius: 6,
-        }];
+    const datasets =
+      selectedSpecies === "all"
+        ? Object.keys(speciesColors).map((species) => {
+            const speciesData = data.filter((item) => item.species === species);
+            return {
+              label: species.charAt(0).toUpperCase() + species.slice(1),
+              data: speciesData.map((item) => ({
+                x: item.sepal_length,
+                y: item.sepal_width,
+              })),
+              backgroundColor: speciesColors[species],
+              borderColor: speciesColors[species],
+              pointRadius: 4,
+              pointHoverRadius: 6,
+            };
+          })
+        : [
+            {
+              label:
+                selectedSpecies.charAt(0).toUpperCase() +
+                selectedSpecies.slice(1),
+              data: filteredData.map((item) => ({
+                x: item.sepal_length,
+                y: item.sepal_width,
+              })),
+              backgroundColor:
+                speciesColors[selectedSpecies] || "rgb(107, 114, 128)",
+              borderColor:
+                speciesColors[selectedSpecies] || "rgb(107, 114, 128)",
+              pointRadius: 4,
+              pointHoverRadius: 6,
+            },
+          ];
 
     return {
       type: "scatter",
@@ -213,7 +229,7 @@ function IrisChart(props: {
         animation: false,
         interaction: {
           intersect: false,
-          mode: 'point',
+          mode: "point",
         },
         plugins: {
           title: {
@@ -222,21 +238,26 @@ function IrisChart(props: {
           },
           legend: {
             display: true,
-            position: 'top',
+            position: "top",
           },
           tooltip: {
             callbacks: {
-              label: function(context: any) {
+              label: function (context: any) {
                 const dataIndex = context.dataIndex;
                 const datasetIndex = context.datasetIndex;
-                const point = filteredData[selectedSpecies === "all" ? 
-                  data.findIndex(item => 
-                    item.sepal_length === context.parsed.x && 
-                    item.sepal_width === context.parsed.y &&
-                    item.species === datasets[datasetIndex].label.toLowerCase()
-                  ) : dataIndex
-                ];
-                
+                const point =
+                  filteredData[
+                    selectedSpecies === "all"
+                      ? data.findIndex(
+                          (item) =>
+                            item.sepal_length === context.parsed.x &&
+                            item.sepal_width === context.parsed.y &&
+                            item.species ===
+                              datasets[datasetIndex].label.toLowerCase(),
+                        )
+                      : dataIndex
+                  ];
+
                 if (point) {
                   return [
                     `Species: ${point.species}`,
@@ -246,16 +267,16 @@ function IrisChart(props: {
                     `Petal Width: ${point.petal_width} cm`,
                   ];
                 }
-                return '';
-              }
-            }
-          }
+                return "";
+              },
+            },
+          },
         },
         scales: {
           x: {
             title: {
               display: true,
-              text: 'Sepal Length (cm)',
+              text: "Sepal Length (cm)",
             },
             min: 4,
             max: 8,
@@ -263,7 +284,7 @@ function IrisChart(props: {
           y: {
             title: {
               display: true,
-              text: 'Sepal Width (cm)',
+              text: "Sepal Width (cm)",
             },
             min: 1.5,
             max: 4.5,
@@ -286,12 +307,12 @@ function IrisChart(props: {
 function IrisDataTableApp() {
   const [irisData] = createResource(fetchIrisData);
   const [selectedSpecies, setSelectedSpecies] = createSignal("all");
-  
+
   // Get unique species from data
   const availableSpecies = createMemo(() => {
     const data = irisData();
     if (!data) return [];
-    return [...new Set(data.map(item => item.species))].sort();
+    return [...new Set(data.map((item) => item.species))].sort();
   });
 
   // Filter data based on selected species
@@ -299,9 +320,9 @@ function IrisDataTableApp() {
     const data = irisData();
     if (!data) return [];
     if (selectedSpecies() === "all") return data;
-    return data.filter(item => item.species === selectedSpecies());
+    return data.filter((item) => item.species === selectedSpecies());
   });
-  
+
   const handleRerender = () => {
     // Refetch data from database
     irisData.refetch();
@@ -314,17 +335,20 @@ function IrisDataTableApp() {
           Iris Dataset with Interactive Visualization
         </h1>
         <p class="text-gray-600 dark:text-gray-400">
-          Explore the classic iris dataset with interactive charts and filtering by species.
+          Explore the classic iris dataset with interactive charts and filtering
+          by species.
         </p>
       </div>
 
-      <Suspense fallback={
-        <div class="flex items-center justify-center h-64">
-          <div class="text-lg text-gray-600 dark:text-gray-400">
-            Loading iris dataset from database...
+      <Suspense
+        fallback={
+          <div class="flex items-center justify-center h-64">
+            <div class="text-lg text-gray-600 dark:text-gray-400">
+              Loading iris dataset from database...
+            </div>
           </div>
-        </div>
-      }>
+        }
+      >
         <SpeciesFilter
           selectedSpecies={selectedSpecies}
           setSelectedSpecies={setSelectedSpecies}

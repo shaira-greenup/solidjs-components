@@ -1,4 +1,4 @@
-import { Component, createSignal, createEffect } from 'solid-js';
+import { Component, createSignal, createEffect } from "solid-js";
 
 interface MenuItem {
   id: string;
@@ -17,11 +17,11 @@ interface RadialMenuProps {
 
 const RadialMenu: Component<RadialMenuProps> = (props) => {
   const [menuRef, setMenuRef] = createSignal<HTMLDivElement>();
-  
+
   const outerRadius = 120;
   const innerRadius = 30;
   const menuSize = outerRadius * 2;
-  
+
   createEffect(() => {
     if (props.show) {
       const menu = menuRef();
@@ -42,19 +42,19 @@ const RadialMenu: Component<RadialMenuProps> = (props) => {
     const anglePerSlice = (2 * Math.PI) / total;
     const startAngle = index * anglePerSlice - Math.PI / 2;
     const endAngle = (index + 1) * anglePerSlice - Math.PI / 2;
-    
+
     const x1 = Math.cos(startAngle) * innerRadius + outerRadius;
     const y1 = Math.sin(startAngle) * innerRadius + outerRadius;
     const x2 = Math.cos(endAngle) * innerRadius + outerRadius;
     const y2 = Math.sin(endAngle) * innerRadius + outerRadius;
-    
+
     const x3 = Math.cos(endAngle) * outerRadius + outerRadius;
     const y3 = Math.sin(endAngle) * outerRadius + outerRadius;
     const x4 = Math.cos(startAngle) * outerRadius + outerRadius;
     const y4 = Math.sin(startAngle) * outerRadius + outerRadius;
-    
+
     const largeArcFlag = anglePerSlice > Math.PI ? 1 : 0;
-    
+
     return `M ${x1} ${y1} 
             A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 1 ${x2} ${y2}
             L ${x3} ${y3}
@@ -74,7 +74,7 @@ const RadialMenu: Component<RadialMenuProps> = (props) => {
   return (
     <div
       class={`fixed inset-0 z-50 transition-opacity duration-200 ${
-        props.show ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        props.show ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
       onClick={handleBackdrop}
     >
@@ -83,11 +83,7 @@ const RadialMenu: Component<RadialMenuProps> = (props) => {
         class="absolute transform -translate-x-1/2 -translate-y-1/2"
         style={{ width: `${menuSize}px`, height: `${menuSize}px` }}
       >
-        <svg
-          width={menuSize}
-          height={menuSize}
-          class="drop-shadow-lg"
-        >
+        <svg width={menuSize} height={menuSize} class="drop-shadow-lg">
           {props.items.map((item, index) => {
             const textPos = getTextPosition(index, props.items.length);
             return (
@@ -117,7 +113,7 @@ const RadialMenu: Component<RadialMenuProps> = (props) => {
               </g>
             );
           })}
-          
+
           <circle
             cx={outerRadius}
             cy={outerRadius}

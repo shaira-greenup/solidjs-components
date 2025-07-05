@@ -109,15 +109,50 @@ function MathematicalEquationsHeader() {
         </h3>
         <div class="grid grid-cols-2 gap-4 text-xs text-gray-600 dark:text-gray-400">
           <div class="space-y-1">
-            <div><kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">←</kbd> Previous page</div>
-            <div><kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">→</kbd> Next page</div>
-            <div><kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">Home</kbd> First page</div>
-            <div><kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">End</kbd> Last page</div>
+            <div>
+              <kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">
+                ←
+              </kbd>{" "}
+              Previous page
+            </div>
+            <div>
+              <kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">
+                →
+              </kbd>{" "}
+              Next page
+            </div>
+            <div>
+              <kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">
+                Home
+              </kbd>{" "}
+              First page
+            </div>
+            <div>
+              <kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">
+                End
+              </kbd>{" "}
+              Last page
+            </div>
           </div>
           <div class="space-y-1">
-            <div><kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">1-5</kbd> Set page size (10-50)</div>
-            <div><kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">G</kbd> Go to page (prompt)</div>
-            <div><kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">R</kbd> Rerender data</div>
+            <div>
+              <kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">
+                1-5
+              </kbd>{" "}
+              Set page size (10-50)
+            </div>
+            <div>
+              <kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">
+                G
+              </kbd>{" "}
+              Go to page (prompt)
+            </div>
+            <div>
+              <kbd class="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">
+                R
+              </kbd>{" "}
+              Rerender data
+            </div>
           </div>
         </div>
       </div>
@@ -241,55 +276,57 @@ function PaginationControls(props: {
   // Handle keyboard navigation
   const handleKeyDown = (event: KeyboardEvent) => {
     // Prevent default behavior for navigation keys
-    const navigationKeys = ['ArrowLeft', 'ArrowRight', 'Home', 'End'];
-    if (navigationKeys.includes(event.key) ||
-        (event.key >= '1' && event.key <= '5') ||
-        event.key.toLowerCase() === 'g' ||
-        event.key.toLowerCase() === 'r') {
+    const navigationKeys = ["ArrowLeft", "ArrowRight", "Home", "End"];
+    if (
+      navigationKeys.includes(event.key) ||
+      (event.key >= "1" && event.key <= "5") ||
+      event.key.toLowerCase() === "g" ||
+      event.key.toLowerCase() === "r"
+    ) {
       event.preventDefault();
     }
 
     switch (event.key) {
-      case 'ArrowLeft':
+      case "ArrowLeft":
         if (table.getCanPreviousPage()) {
           table.previousPage();
         }
         break;
-      case 'ArrowRight':
+      case "ArrowRight":
         if (table.getCanNextPage()) {
           table.nextPage();
         }
         break;
-      case 'Home':
+      case "Home":
         if (table.getCanPreviousPage()) {
           table.setPageIndex(0);
         }
         break;
-      case 'End':
+      case "End":
         if (table.getCanNextPage()) {
           table.setPageIndex(table.getPageCount() - 1);
         }
         break;
-      case '1':
+      case "1":
         table.setPageSize(10);
         break;
-      case '2':
+      case "2":
         table.setPageSize(20);
         break;
-      case '3':
+      case "3":
         table.setPageSize(30);
         break;
-      case '4':
+      case "4":
         table.setPageSize(40);
         break;
-      case '5':
+      case "5":
         table.setPageSize(50);
         break;
-      case 'g':
-      case 'G':
+      case "g":
+      case "G":
         const pageInput = prompt(
           `Go to page (1-${table.getPageCount()}):`,
-          String(table.getState().pagination.pageIndex + 1)
+          String(table.getState().pagination.pageIndex + 1),
         );
         if (pageInput) {
           const pageNumber = parseInt(pageInput, 10);
@@ -298,8 +335,8 @@ function PaginationControls(props: {
           }
         }
         break;
-      case 'r':
-      case 'R':
+      case "r":
+      case "R":
         props.onRerender();
         break;
     }
@@ -313,13 +350,13 @@ function PaginationControls(props: {
     // on the server, so we need the explicit isServer check to prevent access
     // to browser-only APIs like document.addEventListener
     if (!isServer) {
-      document.addEventListener('keydown', handleKeyDown);
+      document.addEventListener("keydown", handleKeyDown);
     }
   });
 
   onCleanup(() => {
-    if (!isServer && typeof document !== 'undefined') {
-      document.removeEventListener('keydown', handleKeyDown);
+    if (!isServer && typeof document !== "undefined") {
+      document.removeEventListener("keydown", handleKeyDown);
     }
   });
 
@@ -328,7 +365,8 @@ function PaginationControls(props: {
       <div class="flex items-center space-x-2">
         <span class="text-sm text-gray-700 dark:text-gray-300">
           Page {table.getState().pagination.pageIndex + 1} of{" "}
-          {table.getPageCount()} ({table.getFilteredRowModel().rows.length} total rows)
+          {table.getPageCount()} ({table.getFilteredRowModel().rows.length}{" "}
+          total rows)
         </span>
       </div>
 
@@ -386,7 +424,7 @@ function PaginationControls(props: {
           onClick={() => {
             const pageInput = prompt(
               `Go to page (1-${table.getPageCount()}):`,
-              String(table.getState().pagination.pageIndex + 1)
+              String(table.getState().pagination.pageIndex + 1),
             );
             if (pageInput) {
               const pageNumber = parseInt(pageInput, 10);

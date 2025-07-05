@@ -19,7 +19,9 @@ function LayoutContainer(props: { children: JSXElement }) {
 
 function MainArea(props: { children: JSXElement }) {
   return (
-    <div class="flex-1 relative md:flex overflow-hidden bg-[var(--color-base-100)]">{props.children}</div>
+    <div class="flex-1 relative md:flex overflow-hidden bg-[var(--color-base-100)]">
+      {props.children}
+    </div>
   );
 }
 
@@ -254,8 +256,7 @@ function MyLayout() {
             // Sizing
             "w-1 h-full": true,
             // Styling & Interaction
-            "bg-[var(--color-base-300)] hover:bg-[var(--color-primary)] cursor-col-resize transition-colors duration-200":
-              true,
+            "bg-[var(--color-base-300)] hover:bg-[var(--color-primary)] cursor-col-resize transition-colors duration-200": true,
             "hover:w-2": true,
           }}
         />
@@ -313,7 +314,10 @@ function MyLayout() {
           {/* Center - System info or quick actions */}
           <div class="flex items-center space-x-4">
             <div class="text-[var(--color-base-content)]/70 text-sm font-medium">
-              {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              {new Date().toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
             </div>
           </div>
 
@@ -324,8 +328,18 @@ function MyLayout() {
               onclick={() => setIsBottomVisible(false)}
               title="Hide taskbar"
             >
-              <svg class="w-4 h-4 text-[var(--color-base-content)]/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              <svg
+                class="w-4 h-4 text-[var(--color-base-content)]/70"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
               </svg>
             </button>
           </div>
@@ -345,26 +359,56 @@ const ApplicationGridIcon = () => {
 
 const SidebarContent = () => {
   const categories = [
-    { name: "Productivity", items: ["Documents", "Spreadsheets", "Presentations", "Notes"] },
-    { name: "Development", items: ["Code Editor", "Terminal", "Git Client", "Database"] },
-    { name: "Design", items: ["Image Editor", "Vector Graphics", "3D Modeling", "Prototyping"] },
-    { name: "Communication", items: ["Email", "Chat", "Video Calls", "Social"] },
-    { name: "Media", items: ["Music Player", "Video Player", "Photo Viewer", "Streaming"] },
-    { name: "Utilities", items: ["File Manager", "Calculator", "Calendar", "Weather"] },
+    {
+      name: "Productivity",
+      items: ["Documents", "Spreadsheets", "Presentations", "Notes"],
+    },
+    {
+      name: "Development",
+      items: ["Code Editor", "Terminal", "Git Client", "Database"],
+    },
+    {
+      name: "Design",
+      items: ["Image Editor", "Vector Graphics", "3D Modeling", "Prototyping"],
+    },
+    {
+      name: "Communication",
+      items: ["Email", "Chat", "Video Calls", "Social"],
+    },
+    {
+      name: "Media",
+      items: ["Music Player", "Video Player", "Photo Viewer", "Streaming"],
+    },
+    {
+      name: "Utilities",
+      items: ["File Manager", "Calculator", "Calendar", "Weather"],
+    },
   ];
 
   return (
     <div class="space-y-6">
       <div class="px-2">
-        <h2 class="text-lg font-semibold text-[var(--color-base-content)] mb-4">Applications</h2>
+        <h2 class="text-lg font-semibold text-[var(--color-base-content)] mb-4">
+          Applications
+        </h2>
         <div class="relative mb-4">
           <input
             type="text"
             placeholder="Search applications..."
             class="w-full px-4 py-2 bg-[var(--color-base-100)] border border-[var(--color-base-300)] rounded-lg focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent text-[var(--color-base-content)] placeholder-[var(--color-base-content)]/50"
           />
-          <svg class="absolute right-3 top-2.5 w-5 h-5 text-[var(--color-base-content)]/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          <svg
+            class="absolute right-3 top-2.5 w-5 h-5 text-[var(--color-base-content)]/50"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
           </svg>
         </div>
       </div>
@@ -400,10 +444,12 @@ const Article = (props: {}) => {
           <h1 class="text-3xl font-bold text-[var(--color-base-content)] mb-6">
             Professional Application Layout
           </h1>
-          
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div class="bg-[var(--color-base-100)] p-6 rounded-lg border border-[var(--color-base-300)]">
-              <h3 class="text-lg font-semibold text-[var(--color-base-content)] mb-3">Features</h3>
+              <h3 class="text-lg font-semibold text-[var(--color-base-content)] mb-3">
+                Features
+              </h3>
               <ul class="space-y-2 text-[var(--color-base-content)]/80">
                 <li class="flex items-center space-x-2">
                   <div class="w-2 h-2 bg-[var(--color-success)] rounded-full"></div>
@@ -423,17 +469,23 @@ const Article = (props: {}) => {
                 </li>
               </ul>
             </div>
-            
+
             <div class="bg-[var(--color-base-100)] p-6 rounded-lg border border-[var(--color-base-300)]">
-              <h3 class="text-lg font-semibold text-[var(--color-base-content)] mb-3">Controls</h3>
+              <h3 class="text-lg font-semibold text-[var(--color-base-content)] mb-3">
+                Controls
+              </h3>
               <div class="space-y-3 text-sm text-[var(--color-base-content)]/80">
                 <div class="flex justify-between">
                   <span>Toggle Sidebar:</span>
-                  <kbd class="px-2 py-1 bg-[var(--color-base-300)] rounded text-xs">1</kbd>
+                  <kbd class="px-2 py-1 bg-[var(--color-base-300)] rounded text-xs">
+                    1
+                  </kbd>
                 </div>
                 <div class="flex justify-between">
                   <span>Toggle Taskbar:</span>
-                  <kbd class="px-2 py-1 bg-[var(--color-base-300)] rounded text-xs">2</kbd>
+                  <kbd class="px-2 py-1 bg-[var(--color-base-300)] rounded text-xs">
+                    2
+                  </kbd>
                 </div>
                 <div class="flex justify-between">
                   <span>Right-click Apps:</span>
@@ -444,9 +496,10 @@ const Article = (props: {}) => {
           </div>
 
           <p class="text-[var(--color-base-content)]/80 leading-relaxed mb-6">
-            This professional application layout demonstrates modern UI patterns with a clean, 
-            accessible design. The interface adapts seamlessly between mobile and desktop viewports, 
-            providing an optimal user experience across all devices.
+            This professional application layout demonstrates modern UI patterns
+            with a clean, accessible design. The interface adapts seamlessly
+            between mobile and desktop viewports, providing an optimal user
+            experience across all devices.
           </p>
 
           <div class="bg-gradient-to-r from-[var(--color-primary)]/10 to-[var(--color-secondary)]/10 p-6 rounded-lg border border-[var(--color-primary)]/20">
@@ -454,9 +507,10 @@ const Article = (props: {}) => {
               Modern Design System
             </h3>
             <p class="text-[var(--color-base-content)]/80">
-              Built with CSS custom properties for consistent theming, smooth animations, 
-              and professional visual hierarchy. The layout uses modern CSS techniques 
-              including CSS Grid, Flexbox, and custom properties for maintainable styling.
+              Built with CSS custom properties for consistent theming, smooth
+              animations, and professional visual hierarchy. The layout uses
+              modern CSS techniques including CSS Grid, Flexbox, and custom
+              properties for maintainable styling.
             </p>
           </div>
         </div>

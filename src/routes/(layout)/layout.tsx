@@ -46,8 +46,8 @@ export default function LayoutPage() {
               Card 2
             </h3>
             <p class="text-gray-600 dark:text-gray-400">
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco
-              laboris nisi ut aliquip ex ea commodo consequat.
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
             </p>
           </div>
         </div>
@@ -57,8 +57,8 @@ export default function LayoutPage() {
             Try It Out
           </h3>
           <p class="text-blue-700 dark:text-blue-300">
-            Drag the vertical line between the sidebar and this content area
-            to resize the panels. The sidebar has minimum and maximum width
+            Drag the vertical line between the sidebar and this content area to
+            resize the panels. The sidebar has minimum and maximum width
             constraints to ensure a good user experience.
           </p>
         </div>

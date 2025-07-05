@@ -7,7 +7,15 @@ import {
   SortingState,
 } from "@tanstack/solid-table";
 import { createVirtualizer } from "@tanstack/solid-virtual";
-import { createSignal, createEffect, onMount, onCleanup, For, JSX, untrack } from "solid-js";
+import {
+  createSignal,
+  createEffect,
+  onMount,
+  onCleanup,
+  For,
+  JSX,
+  untrack,
+} from "solid-js";
 import { isServer } from "solid-js/web";
 
 export interface DataTableScrollConfig<T> {
@@ -29,9 +37,9 @@ export interface DataTableScrollConfig<T> {
 /**
  * Table header component for virtualized table
  */
-function VirtualTableHeader<T>(props: { 
-  title?: string; 
-  description?: string; 
+function VirtualTableHeader<T>(props: {
+  title?: string;
+  description?: string;
   headerContent?: JSX.Element;
   totalFetched: () => number;
   totalCount: () => number;
@@ -43,15 +51,15 @@ function VirtualTableHeader<T>(props: {
           {props.title}
         </h2>
       )}
-      
+
       {props.description && (
         <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
           {props.description}
         </p>
       )}
-      
+
       {props.headerContent}
-      
+
       <div class="mt-4 text-sm text-gray-600 dark:text-gray-300">
         ({props.totalFetched()} of {props.totalCount()} rows loaded)
       </div>
@@ -66,7 +74,7 @@ function VirtualSortableColumnHeader<T>(props: { header: any }) {
   const { header } = props;
 
   return (
-    <th 
+    <th
       style={{
         display: "flex",
         width: `${header.getSize()}px`,
@@ -160,13 +168,15 @@ export default function DataTableScroll<T>(props: DataTableScrollConfig<T>) {
       sorting(); // Track sorting changes
       return table.getRowModel().rows.length;
     },
-    getScrollElement: () => isServer ? null : tableContainerRef,
+    getScrollElement: () => (isServer ? null : tableContainerRef),
     estimateSize: () => estimatedRowHeight,
     overscan: 5,
   });
 
   // Fetch more data when scrolled near bottom
-  const fetchMoreOnBottomReached = (containerElement?: HTMLDivElement | null) => {
+  const fetchMoreOnBottomReached = (
+    containerElement?: HTMLDivElement | null,
+  ) => {
     if (containerElement && onFetchMore && hasMore() && !isFetching()) {
       const { scrollHeight, scrollTop, clientHeight } = containerElement;
       // Fetch more when within 500px of bottom
@@ -184,16 +194,16 @@ export default function DataTableScroll<T>(props: DataTableScrollConfig<T>) {
   // Handle sorting changes - scroll to top when sorting changes
   createEffect(() => {
     if (isServer) return;
-    
+
     // Track sorting changes
     const currentSorting = sorting();
-    
+
     // Only scroll to top if there's actually sorting applied
     if (currentSorting.length > 0) {
       // Use untrack to avoid creating additional reactive dependencies
       untrack(() => {
         // Scroll to top immediately when sorting changes
-        rowVirtualizer.scrollToIndex(0, { align: 'start' });
+        rowVirtualizer.scrollToIndex(0, { align: "start" });
       });
     }
   });
@@ -201,12 +211,14 @@ export default function DataTableScroll<T>(props: DataTableScrollConfig<T>) {
   // Check if we need to fetch more data on mount and after data changes (client-only)
   createEffect(() => {
     if (isServer || !tableContainerRef) return;
-    
+
     fetchMoreOnBottomReached(tableContainerRef);
   });
 
   return (
-    <div class={`bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden ${className}`}>
+    <div
+      class={`bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden ${className}`}
+    >
       <VirtualTableHeader
         title={title}
         description={description}
@@ -238,7 +250,9 @@ export default function DataTableScroll<T>(props: DataTableScrollConfig<T>) {
               {(headerGroup) => (
                 <tr style={{ display: "flex", width: "100%" }}>
                   <For each={headerGroup.headers}>
-                    {(header) => <VirtualSortableColumnHeader header={header} />}
+                    {(header) => (
+                      <VirtualSortableColumnHeader header={header} />
+                    )}
                   </For>
                 </tr>
               )}
@@ -256,9 +270,9 @@ export default function DataTableScroll<T>(props: DataTableScrollConfig<T>) {
                 // Access the current sorted rows reactively
                 const rows = table.getRowModel().rows;
                 const row = rows[virtualRow.index];
-                
+
                 if (!row) return null;
-                
+
                 return (
                   <tr
                     data-index={virtualRow.index}
@@ -278,11 +292,15 @@ export default function DataTableScroll<T>(props: DataTableScrollConfig<T>) {
                             width: `${cell.column.getSize()}px`,
                             "align-items": "center",
                             padding: "12px 24px",
-                            "border-bottom": "1px solid var(--color-base-300, #e2e8f0)",
+                            "border-bottom":
+                              "1px solid var(--color-base-300, #e2e8f0)",
                           }}
                           class="text-sm text-gray-900 dark:text-gray-100"
                         >
-                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
                         </td>
                       )}
                     </For>

@@ -1,5 +1,8 @@
 import { JSXElement, Show, onMount, onCleanup } from "solid-js";
-import { isSidebarToggleKey, SIDEBAR_TOGGLE_TOOLTIP } from "~/utils/keybindings";
+import {
+  isSidebarToggleKey,
+  SIDEBAR_TOGGLE_TOOLTIP,
+} from "~/utils/keybindings";
 
 interface NavProps {
   sidebarOpen: () => boolean;
@@ -33,7 +36,7 @@ export default function Nav(props: NavProps) {
     };
 
     document.addEventListener("keydown", handleKeyDown);
-    
+
     onCleanup(() => {
       document.removeEventListener("keydown", handleKeyDown);
     });
@@ -83,11 +86,15 @@ function H1(props: { children?: JSXElement }) {
 
 function CentreSideNav(props: { children?: JSXElement }) {
   return (
-    <div class="flex items-center justify-center flex-1 min-w-0">{props.children}</div>
+    <div class="flex items-center justify-center flex-1 min-w-0">
+      {props.children}
+    </div>
   );
 }
 function LeftSideNav(props: { children?: JSXElement }) {
-  return <div class="flex items-center gap-4 flex-shrink-0">{props.children}</div>;
+  return (
+    <div class="flex items-center gap-4 flex-shrink-0">{props.children}</div>
+  );
 }
 
 function RightSideNav(props: {

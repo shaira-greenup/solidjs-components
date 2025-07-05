@@ -104,7 +104,7 @@ function CarouselDemo() {
   return (
     <div class="max-w-lg w-full space-y-6">
       <CarouselHeader />
-      <CarouselCard 
+      <CarouselCard
         currentSlide={carouselInstance.currentSlide}
         totalSlides={carouselInstance.totalSlides}
       >
@@ -127,7 +127,7 @@ export default function CarouselPage() {
           width: 100%;
           max-width: 400px;
         }
-        
+
         .carousel-controls {
           position: absolute;
           top: 50%;
@@ -138,7 +138,7 @@ export default function CarouselPage() {
           pointer-events: none;
           z-index: 2;
         }
-        
+
         .carousel-button {
           width: 40px;
           height: 40px;
@@ -156,17 +156,17 @@ export default function CarouselPage() {
           transition: all 0.2s ease;
           pointer-events: auto;
         }
-        
+
         .carousel-button:hover:not(:disabled) {
           background: rgba(255, 255, 255, 1);
           transform: scale(1.05);
         }
-        
+
         .carousel-button:disabled {
           opacity: 0.5;
           cursor: not-allowed;
         }
-        
+
         .carousel-items {
           display: flex;
           overflow-x: auto;
@@ -175,17 +175,17 @@ export default function CarouselPage() {
           scrollbar-width: none;
           -ms-overflow-style: none;
         }
-        
+
         .carousel-items::-webkit-scrollbar {
           display: none;
         }
-        
+
         .carousel-item {
           flex-shrink: 0;
           width: 100%;
           scroll-snap-align: start;
         }
-        
+
         .carousel-image {
           width: 100%;
           height: 300px;
@@ -193,14 +193,14 @@ export default function CarouselPage() {
           border-radius: 8px;
           display: block;
         }
-        
+
         .carousel-indicators {
           display: flex;
           justify-content: center;
           gap: 8px;
           margin-top: 16px;
         }
-        
+
         .carousel-indicator {
           width: 8px;
           height: 8px;
@@ -210,12 +210,12 @@ export default function CarouselPage() {
           cursor: pointer;
           transition: all 0.2s ease;
         }
-        
+
         .carousel-indicator[data-current] {
           background: var(--color-primary, #3b82f6);
           transform: scale(1.25);
         }
-        
+
         .carousel-indicator:hover {
           background: var(--color-primary, #3b82f6);
         }

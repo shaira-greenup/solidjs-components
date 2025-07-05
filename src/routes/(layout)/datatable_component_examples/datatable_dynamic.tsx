@@ -25,7 +25,7 @@ function generateMathematicalData(
   freq1: number,
   freq2: number,
   freq3: number,
-  decay: number
+  decay: number,
 ): MathematicalDataPoint[] {
   return Array.from({ length }, (_, i) => {
     const x = i * xScale;
@@ -98,10 +98,14 @@ function MathematicalEquationsContent(props: {
         <KaTeX math={`x = i \\times ${props.xScale}`} />
       </div>
       <div class="flex items-center space-x-4 ml-16">
-        <KaTeX math={`y = \\sin(x \\times ${props.freq1}) \\times \\cos(x \\times ${props.freq2})`} />
+        <KaTeX
+          math={`y = \\sin(x \\times ${props.freq1}) \\times \\cos(x \\times ${props.freq2})`}
+        />
       </div>
       <div class="flex items-center space-x-4 ml-16">
-        <KaTeX math={`z = e^{-x \\times ${props.decay}} \\times \\sin(x \\times ${props.freq3})`} />
+        <KaTeX
+          math={`z = e^{-x \\times ${props.decay}} \\times \\sin(x \\times ${props.freq3})`}
+        />
       </div>
     </div>
   );
@@ -208,15 +212,15 @@ function MathematicalDataTableApp() {
   const [decay, setDecay] = createSignal(0.05);
 
   // Reactive data generation - automatically updates when parameters change
-  const data = createMemo(() => 
+  const data = createMemo(() =>
     generateMathematicalData(
       length(),
       xScale(),
       freq1(),
       freq2(),
       freq3(),
-      decay()
-    )
+      decay(),
+    ),
   );
 
   // Manual rerender function that regenerates with current parameters
@@ -234,7 +238,8 @@ function MathematicalDataTableApp() {
           Dynamic Mathematical Data Table
         </h1>
         <p class="text-gray-600 dark:text-gray-400">
-          Adjust the mathematical parameters below to see real-time changes in the generated data.
+          Adjust the mathematical parameters below to see real-time changes in
+          the generated data.
         </p>
       </div>
 
