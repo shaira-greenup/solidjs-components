@@ -90,6 +90,11 @@ const data = [
             content: "Interactive date picker with keyboard navigation",
             link: "date_picker",
           },
+          {
+            title: "Carousel",
+            content: "Image carousel with navigation controls and indicators",
+            link: "carousel",
+          },
         ],
       },
     ],

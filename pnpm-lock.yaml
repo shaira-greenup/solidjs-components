@@ -41,6 +41,9 @@ importers:
       '@types/better-sqlite3':
         specifier: ^7.6.13
         version: 7.6.13
+      '@zag-js/carousel':
+        specifier: ^1.18.2
+        version: 1.18.2
       '@zag-js/date-picker':
         specifier: ^1.18.2
         version: 1.18.2(@internationalized/date@3.8.2)
@@ -1742,6 +1745,9 @@ packages:
   '@zag-js/anatomy@1.18.2':
     resolution: {integrity: sha512-GxwOUfSDrnwU4oROohKBy0TRKPlYjD0dhuFHo52ZJLSPDkr8H8DlE/y3rFlb6BaGVO/bHjCUeJlaZzZgIpFK0g==}
 
+  '@zag-js/carousel@1.18.2':
+    resolution: {integrity: sha512-jq5DCw501uc6BeJpeR0tFa4LWJK3+vWZYoX7QmR6GWxcGIZCLXdoa6JNFOcKumiWngAQzdHKt6CmpMEDsbKyvA==}
+
   '@zag-js/core@1.18.2':
     resolution: {integrity: sha512-feKLPL8OMJIegwiGwQwoKI4iB9vA/Gf4d5IOZ+KH0X/5S4lCJ3dswmki+Jtu2Ce2PiyYc7oClvG3CM5mfywtfQ==}
 
@@ -1769,6 +1775,9 @@ packages:
 
   '@zag-js/popper@1.18.2':
     resolution: {integrity: sha512-RAhYpUhDyEjW40787d2FGcPHga8Z6t3vUmNLcoAS5FhIPlZcyPNmUo6PEPndo3Or8ZKrTNFzrU4qOQZ3Jvbf0w==}
+
+  '@zag-js/scroll-snap@1.18.2':
+    resolution: {integrity: sha512-nsV7fZ078wwnI1Oyti+Mdh1ugevbQc25SKxdwJKbdQ1R7QxWNOhgW2RjjJEx8v4xm72Uk9KS3nXz+i6ZaNUxtg==}
 
   '@zag-js/solid@1.18.2':
     resolution: {integrity: sha512-8y6WdfStu+i60Wt7zxz2c7K6M444nolQoRc8Mk/B/OpHyHVQgce0DNaJ/pfc4pOnTPqahISZ2Ut2KU25JwZgjw==}
@@ -6312,6 +6321,15 @@ snapshots:
 
   '@zag-js/anatomy@1.18.2': {}
 
+  '@zag-js/carousel@1.18.2':
+    dependencies:
+      '@zag-js/anatomy': 1.18.2
+      '@zag-js/core': 1.18.2
+      '@zag-js/dom-query': 1.18.2
+      '@zag-js/scroll-snap': 1.18.2
+      '@zag-js/types': 1.18.2
+      '@zag-js/utils': 1.18.2
+
   '@zag-js/core@1.18.2':
     dependencies:
       '@zag-js/dom-query': 1.18.2
@@ -6356,6 +6374,10 @@ snapshots:
       '@floating-ui/dom': 1.7.2
       '@zag-js/dom-query': 1.18.2
       '@zag-js/utils': 1.18.2
+
+  '@zag-js/scroll-snap@1.18.2':
+    dependencies:
+      '@zag-js/dom-query': 1.18.2
 
   '@zag-js/solid@1.18.2(solid-js@1.9.7)':
     dependencies:
