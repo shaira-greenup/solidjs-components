@@ -105,10 +105,10 @@ export default function Layout(props: LayoutProps) {
     // Add keyboard event listener
     createEffect(() => {
       const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "1" || (e.ctrlKey && e.key === "1")) {
-          setIsDrawerVisible(!isDrawerVisible());
-        } else if (e.key === "2" || (e.ctrlKey && e.key === "2")) {
+        if (e.ctrlKey && e.altKey && e.key === "b") {
           setIsBottomVisible(!isBottomVisible());
+        } else if (e.ctrlKey && e.key === "b") {
+          setIsDrawerVisible(!isDrawerVisible());
         }
       };
 
@@ -150,7 +150,7 @@ export default function Layout(props: LayoutProps) {
           "bg-[var(--color-base-200)] border-r border-[var(--color-base-300)]": true,
           "shadow-xl": true,
           fixed: true,
-          
+
           // Mobile positioning - bottom drawer
           "inset-x-0 bottom-0": true,
           "mb-bottom_header": isBottomVisible(),
@@ -186,9 +186,7 @@ export default function Layout(props: LayoutProps) {
               </button>
             </div>
           </div>
-          <div class="flex-1 p-4 overflow-y-auto">
-            {props.sidebar}
-          </div>
+          <div class="flex-1 p-4 overflow-y-auto">{props.sidebar}</div>
         </div>
         {/* Resize Handle */}
         <div
@@ -203,8 +201,7 @@ export default function Layout(props: LayoutProps) {
             // Sizing
             "w-1 h-full": true,
             // Styling & Interaction
-            "bg-[var(--color-base-300)] hover:bg-[var(--color-primary)] cursor-col-resize transition-colors duration-200":
-              true,
+            "bg-[var(--color-base-300)] hover:bg-[var(--color-primary)] cursor-col-resize transition-colors duration-200": true,
             "hover:w-2": true,
           }}
         />
@@ -257,14 +254,19 @@ export default function Layout(props: LayoutProps) {
               }}
             >
               <ApplicationGridIcon />
-              <span class="text-xs sm:text-sm select-none hidden xs:inline">Applications</span>
+              <span class="text-xs sm:text-sm select-none hidden xs:inline">
+                Applications
+              </span>
             </button>
           </div>
 
           {/* Center - System info or quick actions */}
           <div class="flex items-center space-x-2 sm:space-x-4">
             <div class="text-[var(--color-base-content)]/70 text-xs sm:text-sm font-medium">
-              {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              {new Date().toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
             </div>
           </div>
 
@@ -275,8 +277,18 @@ export default function Layout(props: LayoutProps) {
               onclick={() => setIsBottomVisible(false)}
               title="Hide taskbar"
             >
-              <svg class="w-3 h-3 sm:w-4 sm:h-4 text-[var(--color-base-content)]/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              <svg
+                class="w-3 h-3 sm:w-4 sm:h-4 text-[var(--color-base-content)]/70"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
               </svg>
             </button>
           </div>
