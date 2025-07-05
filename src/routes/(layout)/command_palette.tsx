@@ -1,4 +1,4 @@
-import { createSignal, For, onMount, onCleanup } from "solid-js";
+import { createSignal, For, onMount, onCleanup, createEffect } from "solid-js";
 import Card from "~/components/Card";
 import {
   Command,
@@ -23,6 +23,7 @@ interface CommandAction {
 export default function CommandPaletteDemo() {
   const [open, setOpen] = createSignal(false);
   const [selectedAction, setSelectedAction] = createSignal<string>("");
+  let inputRef: HTMLInputElement | undefined;
 
   // Global keyboard shortcut handler
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -41,6 +42,13 @@ export default function CommandPaletteDemo() {
     onCleanup(() => {
       document.removeEventListener('keydown', handleKeyDown);
     });
+  });
+
+  // Focus the input when command palette opens
+  createEffect(() => {
+    if (open() && inputRef) {
+      inputRef.focus();
+    }
   });
 
   const commands: CommandAction[] = [
@@ -210,6 +218,7 @@ export default function CommandPaletteDemo() {
           <div class="w-full max-w-lg mx-4">
             <Command class="rounded-lg border bg-base-100 shadow-lg shadow-black/20">
               <CommandInput
+                ref={inputRef}
                 placeholder="Type a command or search..."
                 class="border-0"
               />
