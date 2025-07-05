@@ -1,6 +1,5 @@
 import { createSignal, For } from "solid-js";
 import Card from "~/components/Card";
-import { DisplayContent } from "~/components/DisplayCurrentSource";
 import {
   Command,
   CommandEmpty,
@@ -173,7 +172,7 @@ export default function CommandPaletteDemo() {
             </div>
           )}
 
-          <div class="prose prose-sm max-w-none">
+          <div class="prose prose-sm max-w-none text-base-content dark:prose-invert">
             <h3>Features</h3>
             <ul>
               <li>Fast fuzzy search across all commands</li>
@@ -191,8 +190,8 @@ export default function CommandPaletteDemo() {
         <div class="fixed inset-0 z-50 flex items-start justify-center pt-[10vh] bg-black/50">
           <div class="w-full max-w-lg mx-4">
             <Command class="rounded-lg border bg-base-100 shadow-lg shadow-black/20">
-              <CommandInput 
-                placeholder="Type a command or search..." 
+              <CommandInput
+                placeholder="Type a command or search..."
                 class="border-0"
               />
               <CommandList>
@@ -229,15 +228,15 @@ export default function CommandPaletteDemo() {
               </CommandList>
             </Command>
           </div>
-          <div 
-            class="fixed inset-0 -z-10" 
+          <div
+            class="fixed inset-0 -z-10"
             onClick={() => setOpen(false)}
           />
         </div>
       )}
 
       {/* Global keyboard shortcut */}
-      <div 
+      <div
         onKeyDown={(e) => {
           if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
             e.preventDefault();
@@ -251,9 +250,6 @@ export default function CommandPaletteDemo() {
         class="fixed inset-0 pointer-events-none"
       />
 
-      <Card>
-        <DisplayContent />
-      </Card>
     </div>
   );
 }
