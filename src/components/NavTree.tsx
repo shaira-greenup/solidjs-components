@@ -80,6 +80,11 @@ const data = [
             content: "Radial Context Menu minimizes right click distance",
             link: "radial_menu/radial_menu",
           },
+          {
+            title: "Command Palette",
+            content: "Professional command palette with fuzzy search",
+            link: "command_palette",
+          },
         ],
       },
     ],
