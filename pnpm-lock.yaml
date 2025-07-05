@@ -89,9 +89,6 @@ importers:
       solid-js:
         specifier: ^1.9.5
         version: 1.9.7
-      tinymce:
-        specifier: ^7.9.1
-        version: 7.9.1
       vinxi:
         specifier: ^0.5.3
         version: 0.5.6(@types/node@22.15.29)(better-sqlite3@11.10.0)(db0@0.3.2(better-sqlite3@11.10.0))(ioredis@5.6.1)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.40.0)
@@ -4133,9 +4130,6 @@ packages:
   tinyglobby@0.2.14:
     resolution: {integrity: sha512-tX5e7OM1HnYr2+a2C/4V0htOcSQcoSTH9KgJnVvNm5zm/cyEWKJ7j7YutsH9CxMdtOkkLFy2AHrMci9IM8IPZQ==}
     engines: {node: '>=12.0.0'}
-
-  tinymce@7.9.1:
-    resolution: {integrity: sha512-zaOHwmiP1EqTeLRXAvVriDb00JYnfEjWGPdKEuac7MiZJ5aiDMZ4Unc98Gmajn+PBljOmO1GKV6G0KwWn3+k8A==}
 
   tmp-promise@3.0.3:
     resolution: {integrity: sha512-RwM7MoPojPxsOBYnyd2hy0bxtIlVrihNs9pj5SUvY8Zz1sQcQG2tG1hSr8PDxfgEB8RNKDhqbIlroIarSNDNsQ==}
@@ -9529,8 +9523,6 @@ snapshots:
     dependencies:
       fdir: 6.4.5(picomatch@4.0.2)
       picomatch: 4.0.2
-
-  tinymce@7.9.1: {}
 
   tmp-promise@3.0.3:
     dependencies:
