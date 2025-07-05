@@ -29,7 +29,7 @@ export function Carousel(props: {
   return {
     api,
     currentSlide: () => api().page,
-    totalSlides: () => api().totalSlides,
+    totalSlides: () => props.items.length,
     canGoNext: () => api().canScrollNext,
     canGoPrev: () => api().canScrollPrev,
     goToNext: () => api().scrollNext(),
