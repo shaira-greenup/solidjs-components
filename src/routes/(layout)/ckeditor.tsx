@@ -1,7 +1,10 @@
 import { createEffect, createSignal, onCleanup, onMount, Show } from "solid-js";
 // import "../../../node_modules/ckeditor5/dist/ckeditor5.css";
 import "ckeditor5/ckeditor5.css";
+import { marked } from "marked";
 import "../../styles/ckeditor-dark.css";
+
+const useMDX = false;
 
 function Card(props: { title: string; children: any; class?: string }) {
   return (
@@ -17,10 +20,28 @@ function Card(props: { title: string; children: any; class?: string }) {
 }
 
 function MarkdownPreview(props: { content: string }) {
+  const [renderedHtml, setRenderedHtml] = createSignal("");
+
+  createEffect(() => {
+    const renderMarkdown = async () => {
+      try {
+        const html = useMDX
+          ? "<b>TODO MDX Rendering not yet Implemented</b>"
+          : await marked(props.content);
+        setRenderedHtml(html);
+      } catch (error) {
+        console.error("Markdown rendering error:", error);
+        setRenderedHtml(props.content);
+      }
+    };
+
+    renderMarkdown();
+  });
+
   return (
     <Card title="Markdown Preview" class="h-96 overflow-auto">
       <div class="prose prose-sm dark:prose-invert max-w-none">
-        <div innerHTML={props.content}></div>
+        <div innerHTML={renderedHtml()}></div>
       </div>
     </Card>
   );
