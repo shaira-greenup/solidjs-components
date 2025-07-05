@@ -58,14 +58,14 @@ export function CarouselComponent(props: {
           <button
             {...api().getPrevTriggerProps()}
             class="carousel-button carousel-button-prev"
-            disabled={!api().canGoPrev}
+            disabled={!api().canScrollPrev}
           >
             ‹
           </button>
           <button
             {...api().getNextTriggerProps()}
             class="carousel-button carousel-button-next"
-            disabled={!api().canGoNext}
+            disabled={!api().canScrollNext}
           >
             ›
           </button>
