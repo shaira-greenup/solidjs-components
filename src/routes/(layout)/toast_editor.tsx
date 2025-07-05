@@ -113,20 +113,20 @@ export default function MarkdownEditor() {
 
   const initializeToastEditor = async () => {
     if (isServer) return;
-    
+
     try {
       // Dynamic import to ensure it only runs on client
       const { default: Editor } = await import("@toast-ui/editor");
       await import("@toast-ui/editor/dist/toastui-editor.css");
       await import("@toast-ui/editor/dist/theme/toastui-editor-dark.css");
-      
+
       editorInstance = new Editor({
         el: editorRef,
         height: '400px',
         initialEditType: 'wysiwyg',
         previewStyle: 'vertical',
         theme: isDarkMode() ? 'dark' : 'light',
-        initialValue: '# Welcome to the Toast Editor\n\nStart writing your content here. This editor supports **bold**, *italic*, `inline code`, and much more!\n\n> Use the toolbar above to access all formatting options.',
+        initialValue: '# Welcome to the Toast Editor\n\nStart writing your content here. This editor supports **bold**, *italic*, `inline code`, and much more!\n\n> Use the toolbar above to access all formatting options.\n\n## MDX Component Example\n\nYou can embed React-like components in your markdown:\n\n```jsx\nexport function Alert({ children, type = "info" }) {\n  return (\n    <div className={`alert alert-${type}`}>\n      {children}\n    </div>\n  );\n}\n\n<Alert type="success">\n  🎉 This is a custom component rendered in markdown!\n</Alert>\n```\n\nThis combines the power of markdown with interactive components!',
         events: {
           change: () => {
             const markdownContent = editorInstance!.getMarkdown();
@@ -200,6 +200,29 @@ export default function MarkdownEditor() {
           </div>
         </Show>
       </div>
+    </div>
+  );
+}
+
+export function Alert({ children, type = "info" }) {
+  let backgroundColor;
+  switch (type) {
+    case "success":
+      backgroundColor = "#d4edda";
+      break;
+    case "warning":
+      backgroundColor = "#fff3cd";
+      break;
+    case "danger":
+      backgroundColor = "#f8d7da";
+      break;
+    default:
+      backgroundColor = "#d1ecf1"; // default "info" type
+  }
+
+  return (
+    <div style={`background-color: ${backgroundColor}; padding: 10px; border-radius: 5px;`}>
+      {children}
     </div>
   );
 }
