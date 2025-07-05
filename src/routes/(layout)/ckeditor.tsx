@@ -3,8 +3,10 @@ import { createEffect, createSignal, onCleanup, onMount, Show } from "solid-js";
 import "ckeditor5/ckeditor5.css";
 import { marked } from "marked";
 import "../../styles/ckeditor-dark.css";
+import { evaluate } from "@mdx-js/mdx";
+import { jsx, jsxs, Fragment } from "solid-js/h/jsx-runtime";
 
-const useMDX = false;
+const useMDX = true;
 
 function Card(props: { title: string; children: any; class?: string }) {
   return (
@@ -21,17 +23,32 @@ function Card(props: { title: string; children: any; class?: string }) {
 
 function MarkdownPreview(props: { content: string }) {
   const [renderedHtml, setRenderedHtml] = createSignal("");
+  const [MdxComponent, setMdxComponent] = createSignal<any>(null);
 
   createEffect(() => {
     const renderMarkdown = async () => {
       try {
-        const html = useMDX
-          ? "<b>TODO MDX Rendering not yet Implemented</b>"
-          : await marked(props.content);
-        setRenderedHtml(html);
+        if (useMDX) {
+          // Evaluate the MDX and get the component
+          const { default: Content } = await evaluate(props.content, {
+            Fragment,
+            jsx,
+            jsxs,
+            useMDXComponents: () => ({}),
+          });
+
+          // Store the component for rendering
+          setMdxComponent(() => Content);
+          setRenderedHtml("");
+        } else {
+          const html = await marked(props.content);
+          setRenderedHtml(html);
+          setMdxComponent(null);
+        }
       } catch (error) {
         console.error("Markdown rendering error:", error);
         setRenderedHtml(props.content);
+        setMdxComponent(null);
       }
     };
 
@@ -41,7 +58,13 @@ function MarkdownPreview(props: { content: string }) {
   return (
     <Card title="Markdown Preview" class="h-96 overflow-auto">
       <div class="prose prose-sm dark:prose-invert max-w-none">
-        <div innerHTML={renderedHtml()}></div>
+        <Show when={useMDX && MdxComponent()}>
+          {/* Must evaluate the component directly to avoid need of server-side rendering */}
+          {MdxComponent()()}
+        </Show>
+        <Show when={!useMDX || !MdxComponent()}>
+          <div innerHTML={renderedHtml()}></div>
+        </Show>
       </div>
     </Card>
   );
