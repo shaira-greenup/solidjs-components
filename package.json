@@ -18,6 +18,8 @@
     "@tanstack/solid-table": "^8.21.3",
     "@tanstack/solid-virtual": "^3.13.9",
     "@types/better-sqlite3": "^7.6.13",
+    "@zag-js/date-picker": "^1.18.2",
+    "@zag-js/solid": "^1.18.2",
     "better-sqlite3": "^11.10.0",
     "bootstrap-icons": "^1.13.1",
     "chart.js": "^4.4.9",

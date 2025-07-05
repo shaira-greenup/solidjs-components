@@ -85,6 +85,11 @@ const data = [
             content: "Professional command palette with fuzzy search",
             link: "command_palette",
           },
+          {
+            title: "Date Picker",
+            content: "Interactive date picker with keyboard navigation",
+            link: "date_picker",
+          },
         ],
       },
     ],

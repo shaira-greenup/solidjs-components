@@ -77,14 +77,13 @@ body {
   --noise: 0;
 
   /* Project Constants - Mobile First */
-    /* --spacing-top_header: 4rem; */
-    --spacing-bottom_header: 3.5rem; /* Smaller on mobile */
-    --spacing-mobile_drawer_width: 16rem;
-    --spacing-main_content: 0.5rem; /* Smaller padding on mobile */
-    --spacing-sidebar_width: 256px;
-    /* Use dvh to handle url bar on chrome and mobile browsers */
-    --spacing-between_headers: calc(100dvh - var(--spacing-bottom_header));
-
+  /* --spacing-top_header: 4rem; */
+  --spacing-bottom_header: 3.5rem; /* Smaller on mobile */
+  --spacing-mobile_drawer_width: 16rem;
+  --spacing-main_content: 0.5rem; /* Smaller padding on mobile */
+  --spacing-sidebar_width: 256px;
+  /* Use dvh to handle url bar on chrome and mobile browsers */
+  --spacing-between_headers: calc(100dvh - var(--spacing-bottom_header));
 }
 
 /* Media query for larger displays */
@@ -175,18 +174,23 @@ body {
 /* Mobile-specific improvements */
 @media (max-width: theme(screens.md)) {
   /* Prevent zoom on input focus on mobile */
-  input, select, textarea {
+  input,
+  select,
+  textarea {
     font-size: 16px !important;
   }
-  
+
   /* Improve touch targets */
-  button, [role="button"], a {
+  button,
+  [role="button"],
+  a {
     min-height: 44px;
     min-width: 44px;
   }
-  
+
   /* Prevent text selection on UI elements */
-  button, [role="button"] {
+  button,
+  [role="button"] {
     -webkit-user-select: none;
     user-select: none;
     -webkit-touch-callout: none;
@@ -203,3 +207,81 @@ body {
 
 @import "./styles/wunderbaum.css";
 @import "./styles/sidebar.css";
+
+/*
+Date Picker
+*/
+
+@layer components {
+  .datepicker-input {
+    background-color: var(--color-base-100);
+    border: var(--border) solid var(--color-base-300);
+    border-radius: var(--radius-field);
+    color: var(--color-base-content);
+    padding: 0.5rem 0.75rem;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .datepicker-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px
+      color-mix(in srgb, var(--color-primary) 20%, transparent);
+  }
+
+  .datepicker-button {
+    background-color: var(--color-base-200);
+    border: var(--border) solid var(--color-base-300);
+    border-radius: var(--radius-field);
+    color: var(--color-base-content);
+    padding: 0.5rem;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+    cursor: pointer;
+  }
+
+  .datepicker-button:hover {
+    background-color: var(--color-base-300);
+    border-color: var(--color-primary);
+  }
+
+  .datepicker-popup {
+    background-color: var(--color-base-100);
+    border: var(--border) solid var(--color-base-300);
+    border-radius: var(--radius-box);
+    box-shadow:
+      0 10px 25px -5px color-mix(in srgb, var(--color-neutral) 25%, transparent),
+      0 4px 6px -2px color-mix(in srgb, var(--color-neutral) 10%, transparent);
+    padding: 1rem;
+  }
+
+  .datepicker-nav-button {
+    background-color: transparent;
+    border: none;
+    color: var(--color-base-content);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-field);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .datepicker-nav-button:hover {
+    background-color: var(--color-base-200);
+  }
+
+  .datepicker-cell {
+    border-radius: var(--radius-field);
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+    cursor: pointer;
+  }
+
+  .datepicker-cell:hover {
+    background-color: var(--color-primary);
+    color: var(--color-primary-content);
+  }
+}
