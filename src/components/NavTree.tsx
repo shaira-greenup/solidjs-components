@@ -239,6 +239,31 @@ const data = [
         content: "Example of Tanstack Sidebar",
         link: "virtualization_revisited/virtual_normal_table",
       },
+
+      {
+        title: "Virtual Scrolling Plain Table (Employee Data)",
+        content: "Example of Tanstack Sidebar",
+        link: "virtualization_revisited/VirtualizedEmployeeTable",
+      },
+
+      {
+        title: "Plain DataTable",
+        content: "Example of Tanstack Sidebar",
+        link: "virtualization_revisited/DataTableExample",
+      },
+
+      {
+        title: "Virtual Scrolling DataTable",
+        content: "Example of Tanstack Sidebar",
+        link: "virtualization_revisited/VirtualizedDataTableExample",
+      },
+
+      {
+        title: "Virtual Scrolling Plain Table (Employee Data)",
+        content: "Example of Tanstack Sidebar",
+        link: "virtualization_revisited/VirtualizedEmployeeTable",
+      },
+
     ],
   },
 

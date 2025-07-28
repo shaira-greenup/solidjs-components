@@ -14,6 +14,9 @@ importers:
       '@corvu/tailwind':
         specifier: ^0.1.7
         version: 0.1.7(tailwindcss@4.1.8)
+      '@faker-js/faker':
+        specifier: ^9.9.0
+        version: 9.9.0
       '@fortawesome/fontawesome-free':
         specifier: ^6.7.2
         version: 6.7.2
@@ -83,6 +86,9 @@ importers:
       katex:
         specifier: ^0.16.22
         version: 0.16.22
+      lucide-solid:
+        specifier: ^0.526.0
+        version: 0.526.0(solid-js@1.9.7)
       marked:
         specifier: ^15.0.12
         version: 15.0.12
@@ -915,6 +921,10 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@faker-js/faker@9.9.0':
+    resolution: {integrity: sha512-OEl393iCOoo/z8bMezRlJu+GlRGlsKbUAN7jKB6LhnKoqKve5DXRpalbItIIcwnCjs1k/FOPjFzcA6Qn+H+YbA==}
+    engines: {node: '>=18.0.0', npm: '>=9.0.0'}
 
   '@fastify/busboy@3.1.1':
     resolution: {integrity: sha512-5DGmA8FTdB2XbDeEwc/5ZXBl6UbBAyBOOLlPuBnZ/N1SwdH9Ii+cOX3tBROlDgcTXxjOYnLMVoKk9+FXAw0CJw==}
@@ -3139,6 +3149,11 @@ packages:
 
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
+
+  lucide-solid@0.526.0:
+    resolution: {integrity: sha512-oPvewVG3KzpMPQcRCc3FU0HabC1DcVCdFxiJiwHZ2EKHfrPOL2Eq+vOVU+/raZfcJt8HY/+PKaYXD/DB9K19AQ==}
+    peerDependencies:
+      solid-js: ^1.4.7
 
   luxon@3.6.1:
     resolution: {integrity: sha512-tJLxrKJhO2ukZ5z0gyjY1zPh3Rh88Ej9P7jNrZiHMUXHae1yvI2imgOZtL1TO8TW6biMMKfTtAOoEJANgtWBMQ==}
@@ -5595,6 +5610,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.25.5':
     optional: true
+
+  '@faker-js/faker@9.9.0': {}
 
   '@fastify/busboy@3.1.1': {}
 
@@ -8139,6 +8156,10 @@ snapshots:
   lru-cache@5.1.1:
     dependencies:
       yallist: 3.1.1
+
+  lucide-solid@0.526.0(solid-js@1.9.7):
+    dependencies:
+      solid-js: 1.9.7
 
   luxon@3.6.1: {}
 

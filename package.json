@@ -9,6 +9,7 @@
   "dependencies": {
     "@corvu/resizable": "^0.2.5",
     "@corvu/tailwind": "^0.1.7",
+    "@faker-js/faker": "^9.9.0",
     "@fortawesome/fontawesome-free": "^6.7.2",
     "@mdx-js/mdx": "^3.1.0",
     "@solidjs/meta": "^0.29.4",
@@ -32,6 +33,7 @@
     "corvu": "^0.7.2",
     "fullcalendar": "^6.1.17",
     "katex": "^0.16.22",
+    "lucide-solid": "^0.526.0",
     "marked": "^15.0.12",
     "solid-js": "^1.9.5",
     "tailwind-merge": "^3.3.1",
