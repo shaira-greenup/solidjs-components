@@ -226,6 +226,23 @@ const data = [
   },
 
   {
+    title: "Virtualization Revisited",
+    expanded: true,
+    children: [
+      {
+        title: "Virtual Scrolling Using Component",
+        content: "Example of Tanstack Virtual List",
+        link: "virtualization_revisited/virtual_list",
+      },
+      {
+        title: "Virtual Scrolling Plain Table",
+        content: "Example of Tanstack Sidebar",
+        link: "virtualization_revisited/virtual_normal_table",
+      },
+    ],
+  },
+
+  {
     title: "Compositional Content",
     expanded: true,
     children: [
