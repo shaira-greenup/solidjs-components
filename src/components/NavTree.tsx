@@ -263,7 +263,35 @@ const data = [
         content: "Example of Tanstack Sidebar",
         link: "virtualization_revisited/VirtualizedEmployeeTable",
       },
+    ],
+  },
+  {
+    title: "Tree Views",
+    expanded: true,
+    children: [
+      {
+        title: "Custom Tree",
+        content: "Custom Tree For Note Taking",
+        link: "Tree/Custom/SQLiteTreeViewWithHoisting",
+      },
 
+      {
+        title: "TODO Wunderbaum",
+        content: "Custom Tree For Note Taking",
+        link: "Tree/Custom/SQLiteTreeViewWithHoisting",
+      },
+
+      {
+        title: "TODO Zag Lazy",
+        content: "Solid Zag JS Lazy Load Show with DOM Unload",
+        link: "Tree/Custom/SQLiteTreeViewWithHoisting",
+      },
+
+      {
+        title: "TODO Ark UI Lazy",
+        content: "Solid Ark UI Lazy Load Show with DOM Unload",
+        link: "Tree/Custom/SQLiteTreeViewWithHoisting",
+      },
     ],
   },
 
