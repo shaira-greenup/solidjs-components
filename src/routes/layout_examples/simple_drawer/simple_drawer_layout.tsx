@@ -5,7 +5,7 @@ import MenuIcon from "lucide-solid/icons/menu";
 
 const styles = tv({
   slots: {
-    container: "h-screen flex flex-col",
+    container: "h-dvh flex flex-col",
     nav: "bg-blue-600/50 border-b px-4 h-16 flex items-center justify-between",
     button: "p-2 hover:bg-gray-100 rounded",
     title: "text-xl font-semibold",
