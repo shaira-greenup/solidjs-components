@@ -147,6 +147,22 @@ const data = [
           },
         ],
       },
+      {
+        title: "Simple Drawer",
+        content: "A simple drawer layout",
+        link: "layout_examples/simple_drawer/simple_drawer_example",
+      },
+      {
+        title: "Lilium Accordion",
+        expanded: true,
+        children: [
+          {
+            title: "Accordion Nav Layout",
+            content: "Responsive accordion navigation layout",
+            link: "layout_examples/lilium_accordian/1_template/accordian_nav_layout",
+          },
+        ],
+      },
     ],
   },
 
