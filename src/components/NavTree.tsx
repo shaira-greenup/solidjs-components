@@ -157,9 +157,14 @@ const data = [
         expanded: true,
         children: [
           {
-            title: "Accordion Nav Layout",
-            content: "Responsive accordion navigation layout",
-            link: "layout_examples/lilium_accordian/1_template/accordian_nav_layout",
+            title: "Initial Layout",
+            content: "Basic accordion layout implementation",
+            link: "layout_examples/lilium_accordian/working/1_initial_layout/accordian_nav_layout",
+          },
+          {
+            title: "Styled Layout",
+            content: "Enhanced accordion layout with file tree",
+            link: "layout_examples/lilium_accordian/working/2_styled_layout/accordian_nav_layout",
           },
         ],
       },
