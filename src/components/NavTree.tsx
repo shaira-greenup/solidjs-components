@@ -95,6 +95,11 @@ const data = [
             content: "Image carousel with navigation controls and indicators",
             link: "carousel",
           },
+          {
+            title: "MDX Example",
+            content: "MDX integration with interactive components",
+            link: "mdx_example",
+          },
         ],
       },
     ],

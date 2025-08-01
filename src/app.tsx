@@ -3,6 +3,8 @@ import { FileRoutes } from "@solidjs/start/router";
 import { Suspense } from "solid-js";
 import { MetaProvider, Title, Meta, Link } from "@solidjs/meta";
 import "./app.css";
+import "katex/dist/katex.min.css";
+import "highlight.js/styles/github.css";
 
 export default function App() {
   return (
