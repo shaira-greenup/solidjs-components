@@ -1,144 +1,79 @@
-import { Router } from "@solidjs/router";
-import { FileRoutes } from "@solidjs/start/router";
-import {
-  Accessor,
-  createSignal,
-  JSXElement,
-  Setter,
-  Show,
-  Suspense,
-} from "solid-js";
+import { createSignal, JSXElement, Show } from "solid-js";
 import { Transition } from "solid-transition-group";
 import { tv } from "tailwind-variants";
 import MenuIcon from "lucide-solid/icons/menu";
 
-const nav = tv({ base: "bg-base-200 h-12 flex items-center px-4 z-20" });
-const aside = tv({
-  base: "bg-base-200 transition-all overflow-hidden z-10 absolute sm:relative h-full",
-  variants: {
-    open: { true: "w-64", false: "w-0" },
+const styles = tv({
+  slots: {
+    container: "h-screen flex flex-col",
+    nav: "bg-red-600/50 border-b px-4 h-16 flex items-center justify-between z-30",
+    button: "p-2 hover:bg-gray-100 rounded",
+    title: "text-xl font-semibold",
+    spacer: "w-10",
+    content: "flex flex-1 relative",
+    overlay: "absolute inset-0 bg-black/50 md:hidden z-10 transition-opacity duration-200",
+    aside: "bg-blue-600/50 text-white transition-all duration-200 z-20 overflow-hidden absolute md:relative h-full",
+    sidebarHeader: "p-4 border-b border-gray-700 w-64",
+    sidebarTitle: "text-lg font-semibold",
+    sidebarNav: "p-4 space-y-2 w-64",
+    sidebarLink: "block p-2 hover:bg-gray-700 rounded",
+    main: "flex-1 p-6 overflow-auto bg-gray-50 min-w-0",
+    bottomDash: "bg-green-600/50 border-t px-4 h-16 flex items-center justify-center md:hidden z-30"
   },
-});
-const overlay = tv({
-  base: "absolute inset-0 bg-black/50 sm:hidden transition-opacity duration-300",
-});
-const bottomNav = tv({
-  base: "bg-base-200 h-12 flex items-center justify-center sm:hidden z-20",
+  variants: {
+    open: {
+      true: { aside: "w-64" },
+      false: { aside: "w-0" }
+    }
+  }
 });
 
 export function SimpleDrawer(props: { children: JSXElement }) {
   const [open, setOpen] = createSignal(false);
-  const toggleSidebar = () => {
-    setOpen(!open());
-  };
+
   return (
-    // Mobile browsers show/hide address bar on scroll, affecting viewport height.
-    // Using h-dvh (dynamic viewport height) instead of h-screen ensures proper sizing.
-    <div class="h-dvh flex flex-col">
-      <Nav toggleSidebar={toggleSidebar} />
-      <div class="flex flex-1 relative">
-        <Overlay open={open} setOpen={setOpen} />
-        <aside class={aside({ open: open() })}>
-          <SidebarContent />
+    <div class={styles().container()}>
+      <nav class={styles().nav()}>
+        <button onclick={() => setOpen(!open())} class={styles().button()}>
+          <MenuIcon size={20} />
+        </button>
+        <h1 class={styles().title()}>App Title</h1>
+        <div class={styles().spacer()}></div>
+      </nav>
+
+      <div class={styles().content()}>
+        <Transition
+          enterClass="opacity-0"
+          enterToClass="opacity-100"
+          exitClass="opacity-100"
+          exitToClass="opacity-0"
+        >
+          <Show when={open()}>
+            <div class={styles().overlay()} onclick={() => setOpen(false)} />
+          </Show>
+        </Transition>
+
+        <aside class={styles({ open: open() }).aside()}>
+          <div class={styles().sidebarHeader()}>
+            <h2 class={styles().sidebarTitle()}>Menu</h2>
+          </div>
+          <nav class={styles().sidebarNav()}>
+            <a href="#" class={styles().sidebarLink()}>Dashboard</a>
+            <a href="#" class={styles().sidebarLink()}>Projects</a>
+            <a href="#" class={styles().sidebarLink()}>Settings</a>
+          </nav>
         </aside>
-        <main class="flex-1 p-4">
-          <Suspense>{props.children}</Suspense>
+
+        <main class={styles().main()}>
+          {props.children}
         </main>
       </div>
-      <MobileDash toggleSidebar={toggleSidebar} />
+
+      <div class={styles().bottomDash()}>
+        <button onclick={() => setOpen(!open())} class={styles().button()}>
+          <MenuIcon size={20} />
+        </button>
+      </div>
     </div>
   );
 }
-
-const MobileDash = (props: { toggleSidebar: () => void }) => {
-  return (
-    <div class={bottomNav()}>
-      <MenuButton onClick={props.toggleSidebar} />
-    </div>
-  );
-};
-
-const Overlay = (props: {
-  open: Accessor<boolean>;
-  setOpen: Setter<boolean>;
-}) => {
-  return (
-    <Transition
-      enterClass="opacity-0"
-      enterToClass="opacity-100"
-      exitClass="opacity-100"
-      exitToClass="opacity-0"
-    >
-      <Show when={props.open()}>
-        <div class={overlay()} onclick={() => props.setOpen(false)} />
-      </Show>
-    </Transition>
-  );
-};
-
-const MenuButton = (props: { onClick: () => void }) => {
-  return (
-    <button
-      onclick={props.onClick}
-      class="p-2 hover:bg-white/10 rounded-lg transition-all duration-200"
-    >
-      <MenuIcon />
-    </button>
-  );
-};
-
-const Nav = (props: { toggleSidebar: () => void }) => {
-  return (
-    <nav class={nav()}>
-      <MenuButton onClick={props.toggleSidebar} />
-      <NavContent />
-    </nav>
-  );
-};
-
-const NavContent = () => {
-  return (
-    <div class="prose dark:prose-invert">
-      <p> Add some Nav Content </p>
-    </div>
-  );
-};
-
-
-const SidebarContent = () => {
-  return (
-    <nav>
-      <ul class="menu">
-        <li>
-          <a href="#" class="block p-2 hover:bg-red-500/20 rounded">
-            Item 1
-          </a>
-        </li>
-        <li>
-          <details class="group">
-            <summary class="p-2 hover:bg-red-500/20 rounded cursor-pointer">
-              Parent Item
-            </summary>
-            <ul class="ml-4 mt-1 space-y-1">
-              <li>
-                <a href="#" class="block p-2 hover:bg-red-500/20 rounded text-sm">
-                  Submenu 1
-                </a>
-              </li>
-              <li>
-                <a href="#" class="block p-2 hover:bg-red-500/20 rounded text-sm">
-                  Submenu 2
-                </a>
-              </li>
-            </ul>
-          </details>
-        </li>
-        <li>
-          <a href="#" class="block p-2 hover:bg-red-500/20 rounded">
-            Item 3
-          </a>
-        </li>
-      </ul>
-    </nav>
-  );
-};
