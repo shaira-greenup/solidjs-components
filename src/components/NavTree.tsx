@@ -35,70 +35,93 @@ const data = [
         expanded: true,
         children: [
           {
-            title: "Splitter",
-            content: "A Splitter like the Qt Splitter",
-            link: "splitter",
-          },
-          {
-            title: "Layout",
-            content: "A Layout Example",
-            link: "layout",
-          },
-          {
-            title: "Chart",
-            content: "Example of a Chart",
-            link: "static_chart",
-          },
-          {
-            title: "Slider",
-            content: "Example of a Slider",
-            link: "slider_example",
-          },
-          {
-            title: "KaTeX",
-            content: "Example of KaTeX",
-            link: "katex",
-          },
-          {
-            title: "CK Editor 5",
-            content: "Example of CK Editor",
-            link: "ckeditor",
-          },
+            title: "Misc",
+            content: "Miscellaneous",
+            children: [
+              {
+                title: "Splitter",
+                content: "A Splitter like the Qt Splitter",
+                link: "splitter",
+              },
+              {
+                title: "Layout",
+                content: "A Layout Example",
+                link: "layout",
+              },
+              {
+                title: "Chart",
+                content: "Example of a Chart",
+                link: "static_chart",
+              },
+              {
+                title: "Slider",
+                content: "Example of a Slider",
+                link: "slider_example",
+              },
+              {
+                title: "KaTeX",
+                content: "Example of KaTeX",
+                link: "katex",
+              },
+              {
+                title: "CK Editor 5",
+                content: "Example of CK Editor",
+                link: "ckeditor",
+              },
 
-          {
-            title: "Full Calendar io",
-            content: "Example of Full Calendar IO",
-            link: "calendar",
+              {
+                title: "Full Calendar io",
+                content: "Example of Full Calendar IO",
+                link: "calendar",
+              },
+              {
+                title: "Tailwind Sidebar",
+                content: "Example of Tailwind Sidebar",
+                link: "tailwind_sidebar",
+              },
+              {
+                title: "Radial Context Menu",
+                content: "Radial Context Menu minimizes right click distance",
+                link: "radial_menu/radial_menu",
+              },
+              {
+                title: "Command Palette",
+                content: "Professional command palette with fuzzy search",
+                link: "command_palette",
+              },
+              {
+                title: "Date Picker",
+                content: "Interactive date picker with keyboard navigation",
+                link: "date_picker",
+              },
+              {
+                title: "Carousel",
+                content:
+                  "Image carousel with navigation controls and indicators",
+                link: "carousel",
+              },
+              {
+                title: "MDX Example",
+                content: "MDX integration with interactive components",
+                link: "mdx_example",
+              },
+            ],
           },
           {
-            title: "Tailwind Sidebar",
-            content: "Example of Tailwind Sidebar",
-            link: "tailwind_sidebar",
-          },
-          {
-            title: "Radial Context Menu",
-            content: "Radial Context Menu minimizes right click distance",
-            link: "radial_menu/radial_menu",
-          },
-          {
-            title: "Command Palette",
-            content: "Professional command palette with fuzzy search",
-            link: "command_palette",
-          },
-          {
-            title: "Date Picker",
-            content: "Interactive date picker with keyboard navigation",
-            link: "date_picker",
-          },
-          {
-            title: "Carousel",
-            content: "Image carousel with navigation controls and indicators",
-            link: "carousel",
-          },
-          {
-            title: "MDX Example",
-            content: "MDX integration with interactive components",
-            link: "mdx_example",
+            title: "Kobalte",
+            content: "",
+            children: [
+              {
+                title: "Kobalte Combo Box",
+                content: "Kobalte combo box component example",
+                link: "kobalte/comboBox/comboBox",
+              },
+              {
+                title: "Kobalte Accordion",
+                content: "Kobalte accordion component example",
+                link: "kobalte/accordion/accordion",
+              },
+            ],
           },
         ],
       },
@@ -289,7 +312,6 @@ const data = [
         content: "Example of Tanstack Sidebar",
         link: "virtualization_revisited/VirtualizedEmployeeTable",
       },
-
     ],
   },
 
