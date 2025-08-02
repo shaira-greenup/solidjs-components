@@ -4,7 +4,7 @@ import { tv } from "tailwind-variants";
  * It will be decessary to ensure all animations align so the margins etc. remain smooth
  *
  */
-export const ANIMATION = "transition-all duration-300 ease-in-out";
+export const ANIMATION = "transition-all duration-200 ease-in-out";
 
 export const Z_INDICES = {
   mobileDrawer: "z-50",
@@ -95,7 +95,7 @@ export const sidebarSty = tv({
     // Block animations when resizing
     resizing: {
       true: "transition-none",
-      false: "transition-translate duration-300 ease-in-out",
+      false: ANIMATION,
     },
     isVisible: {
       true: "translate-x-0",
