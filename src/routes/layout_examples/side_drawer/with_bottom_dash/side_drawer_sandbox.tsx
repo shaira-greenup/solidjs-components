@@ -2,7 +2,6 @@ import { createEffect, createSignal, For, onMount } from "solid-js";
 import { createStore } from "solid-js/store";
 import "./app.css";
 import {
-  bottomDashSty,
   MainContentSty,
   overlaySty,
   resizeHandleSty,
@@ -13,6 +12,7 @@ import { createGlobalKeybindings } from "./hooks/createGlobalKeybindings";
 import Article from "./views/Article";
 import SidebarContent from "./views/SidebarContent";
 import Navbar from "./views/Navbar";
+import BottomDash from "./views/BottomDash";
 import { LayoutState } from "./types/layout";
 import { BOTTOM_DASH_ONLY_ON_MOBILE } from "./config/constants";
 
@@ -126,12 +126,10 @@ function MyLayout() {
       </div>
 
       {/*Bottom Mobile Dash*/}
-      <div
-        class={bottomDashSty({
-          hidden: !layoutState.bottomDash.visible,
-          mobileOnly: BOTTOM_DASH_ONLY_ON_MOBILE,
-          dev: isDev(),
-        })}
+      <BottomDash 
+        layoutState={layoutState}
+        mobileOnly={BOTTOM_DASH_ONLY_ON_MOBILE}
+        isDev={isDev()}
       />
     </div>
   );
