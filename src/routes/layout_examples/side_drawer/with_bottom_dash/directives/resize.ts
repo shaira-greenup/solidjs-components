@@ -1,22 +1,7 @@
 import { onCleanup } from "solid-js";
 import type { Accessor } from "solid-js";
 import type { SetStoreFunction } from "solid-js/store";
-
-interface LayoutState {
-  drawer: {
-    width: number;
-    visible: boolean;
-    isResizing: boolean;
-    startX: number;
-    startWidth: number;
-  };
-  topBar: {
-    visible: boolean;
-  };
-  bottomDash: {
-    visible: boolean;
-  };
-}
+import { LayoutState } from "../types/layout";
 
 interface ResizeOptions {
   layoutState: LayoutState;
@@ -27,10 +12,25 @@ interface ResizeOptions {
 
 /**
  * A directive that adds resize functionality to an element.
- * This directive DOES interact with the element it's attached to,
+ * This directive interacts with the element it's attached to,
  * making it a good use case for the `use` directive pattern.
  *
- * The element will respond to mouse and touch events to resize the drawer.
+ * This adjusts a signal, it's good practice to track a css variable
+ * `var(----spacing-sidebar_width)` in this case:
+ *
+ *  ```ts
+ *   onMount(() => {
+ *     createEffect(() => {
+ *       document.documentElement.style.setProperty(
+ *         "--spacing-sidebar_width",
+ *         `${layoutState.drawer.width}px`,
+ *       );
+ *     });
+ *   });
+ *  ```
+ *
+ * The element will respond to mouse and touch events to resize the sidebar.
+ *
  *
  * NOTE: We don't need onMount here because directives are only executed
  * when the element is actually in the DOM. According to the Solid.js docs:
@@ -42,7 +42,10 @@ interface ResizeOptions {
  * This is different from component logic where one typically needs onMount
  * to ensure the DOM is ready.
  */
-export function resizeHandle(el: HTMLElement, accessor: Accessor<ResizeOptions>) {
+export function resizeHandle(
+  el: HTMLElement,
+  accessor: Accessor<ResizeOptions>,
+) {
   const options = accessor();
   const MIN_WIDTH = options.minWidth ?? 200;
   const MAX_WIDTH = options.maxWidth ?? 1024;
@@ -55,11 +58,11 @@ export function resizeHandle(el: HTMLElement, accessor: Accessor<ResizeOptions>)
       MAX_WIDTH,
       Math.max(MIN_WIDTH, options.layoutState.drawer.startWidth + deltaX),
     );
-    options.setLayoutState('drawer', 'width', newWidth);
+    options.setLayoutState("drawer", "width", newWidth);
   };
 
   const handleMouseUp = () => {
-    options.setLayoutState('drawer', 'isResizing', false);
+    options.setLayoutState("drawer", "isResizing", false);
     if (document) {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
@@ -78,11 +81,11 @@ export function resizeHandle(el: HTMLElement, accessor: Accessor<ResizeOptions>)
       MAX_WIDTH,
       Math.max(MIN_WIDTH, options.layoutState.drawer.startWidth + deltaX),
     );
-    options.setLayoutState('drawer', 'width', newWidth);
+    options.setLayoutState("drawer", "width", newWidth);
   };
 
   const handleTouchEnd = () => {
-    options.setLayoutState('drawer', 'isResizing', false);
+    options.setLayoutState("drawer", "isResizing", false);
     if (document) {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
@@ -95,10 +98,10 @@ export function resizeHandle(el: HTMLElement, accessor: Accessor<ResizeOptions>)
 
   const handleMouseDown = (e: MouseEvent) => {
     e.preventDefault();
-    options.setLayoutState('drawer', {
+    options.setLayoutState("drawer", {
       isResizing: true,
       startX: e.clientX,
-      startWidth: options.layoutState.drawer.width
+      startWidth: options.layoutState.drawer.width,
     });
 
     if (document) {
@@ -111,10 +114,10 @@ export function resizeHandle(el: HTMLElement, accessor: Accessor<ResizeOptions>)
 
   const handleTouchStart = (e: TouchEvent) => {
     e.preventDefault();
-    options.setLayoutState('drawer', {
+    options.setLayoutState("drawer", {
       isResizing: true,
       startX: e.touches[0].clientX,
-      startWidth: options.layoutState.drawer.width
+      startWidth: options.layoutState.drawer.width,
     });
 
     if (document) {
