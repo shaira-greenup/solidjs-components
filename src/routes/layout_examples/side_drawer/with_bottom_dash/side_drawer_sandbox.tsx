@@ -1,4 +1,5 @@
 import { createEffect, createSignal, For, onMount } from "solid-js";
+import { createStore } from "solid-js/store";
 import "./app.css";
 import {
   bottomDashSty,
@@ -9,6 +10,7 @@ import {
   resizeHandleSty,
   sidebarSty,
 } from "./styles";
+import { createGlobalKeybindings } from "./side_drawer_sandbox_keybindings";
 
 const DEV = false;
 const BOTTOM_DASH_ONLY_ON_MOBILE = true;
@@ -22,24 +24,34 @@ export default function Home() {
 }
 
 function MyLayout() {
-  const [drawerWidth, setDrawerWidth] = createSignal(256); // Default 256px (w-64)
-  const [isTopVisible, setIsTopVisible] = createSignal(true);
-  const [isDrawerVisible, setIsDrawerVisible] = createSignal(false);
-  const [isResizing, setIsResizing] = createSignal(false);
-  // Optionally toggle the dash on mobile
-  const [isBottomVisible, setIsBottomVisible] = createSignal(true);
-
-  let resizeRef!: HTMLDivElement;
-  let startX = 0;
-  let startWidth = 0;
   const MIN_WIDTH = 200;
   const MAX_WIDTH = 1024;
 
+  const [layoutState, setLayoutState] = createStore({
+    drawer: {
+      width: 256, // Default 256px (w-64)
+      visible: false,
+      isResizing: false,
+      startX: 0,
+      startWidth: 0
+    },
+    topBar: {
+      visible: true
+    },
+    bottomDash: {
+      visible: true
+    }
+  });
+
+  let resizeRef!: HTMLDivElement;
+
   const handleMouseDown = (e: MouseEvent) => {
     e.preventDefault();
-    setIsResizing(true);
-    startX = e.clientX;
-    startWidth = drawerWidth();
+    setLayoutState('drawer', {
+      isResizing: true,
+      startX: e.clientX,
+      startWidth: layoutState.drawer.width
+    });
 
     if (document) {
       document.addEventListener("mousemove", handleMouseMove);
@@ -50,18 +62,18 @@ function MyLayout() {
   };
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (!isResizing()) return;
+    if (!layoutState.drawer.isResizing) return;
 
-    const deltaX = e.clientX - startX;
+    const deltaX = e.clientX - layoutState.drawer.startX;
     const newWidth = Math.min(
       MAX_WIDTH,
-      Math.max(MIN_WIDTH, startWidth + deltaX),
+      Math.max(MIN_WIDTH, layoutState.drawer.startWidth + deltaX),
     );
-    setDrawerWidth(newWidth);
+    setLayoutState('drawer', 'width', newWidth);
   };
 
   const handleMouseUp = () => {
-    setIsResizing(false);
+    setLayoutState('drawer', 'isResizing', false);
     if (document) {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
@@ -74,9 +86,11 @@ function MyLayout() {
 
   const handleTouchStart = (e: TouchEvent) => {
     e.preventDefault();
-    setIsResizing(true);
-    startX = e.touches[0].clientX;
-    startWidth = drawerWidth();
+    setLayoutState('drawer', {
+      isResizing: true,
+      startX: e.touches[0].clientX,
+      startWidth: layoutState.drawer.width
+    });
 
     if (document) {
       document.addEventListener("touchmove", handleTouchMove);
@@ -86,18 +100,18 @@ function MyLayout() {
   };
 
   const handleTouchMove = (e: TouchEvent) => {
-    if (!isResizing()) return;
+    if (!layoutState.drawer.isResizing) return;
 
-    const deltaX = e.touches[0].clientX - startX;
+    const deltaX = e.touches[0].clientX - layoutState.drawer.startX;
     const newWidth = Math.min(
       MAX_WIDTH,
-      Math.max(MIN_WIDTH, startWidth + deltaX),
+      Math.max(MIN_WIDTH, layoutState.drawer.startWidth + deltaX),
     );
-    setDrawerWidth(newWidth);
+    setLayoutState('drawer', 'width', newWidth);
   };
 
   const handleTouchEnd = () => {
-    setIsResizing(false);
+    setLayoutState('drawer', 'isResizing', false);
     if (document) {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
@@ -108,31 +122,16 @@ function MyLayout() {
     }
   };
 
+  // Set up global keybindings (work anywhere on the page, not just when component is focused)
+  createGlobalKeybindings(layoutState, setLayoutState);
+
   /* If Required, the following changes the size of, e.g., bottom Drawer */
   onMount(() => {
     createEffect(() => {
       document.documentElement.style.setProperty(
         "--spacing-sidebar_width",
-        `${drawerWidth()}px`,
+        `${layoutState.drawer.width}px`,
       );
-    });
-  });
-
-  onMount(() => {
-    // Add keyboard event listener
-    createEffect(() => {
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "1" || (e.ctrlKey && e.key === "1")) {
-          setIsDrawerVisible(!isDrawerVisible());
-        } else if (e.key === "2" || (e.ctrlKey && e.key === "2")) {
-          setIsTopVisible(!isTopVisible());
-        } else if (e.key === "3" || (e.ctrlKey && e.key === "3")) {
-          setIsBottomVisible(!isBottomVisible());
-        }
-      };
-
-      document.addEventListener("keydown", handleKeyDown);
-      return () => document.removeEventListener("keydown", handleKeyDown);
     });
   });
 
@@ -140,13 +139,13 @@ function MyLayout() {
   return (
     <div>
       {/* Top Navbar */}
-      <div class={navbarSty({ visible: isTopVisible(), dev: DEV })}>
+      <div class={navbarSty({ visible: layoutState.topBar.visible, dev: DEV })}>
         <div class="h-full flex justify-center md:justify-start">
           {/* KDE Plasma-style start menu button */}
           <button
             class={buttonSty()}
             onclick={() => {
-              setIsDrawerVisible(!isDrawerVisible());
+              setLayoutState('drawer', 'visible', !layoutState.drawer.visible);
             }}
           >
             {/* Application grid icon */}
@@ -161,20 +160,20 @@ function MyLayout() {
       {/* Overlay */}
       <div
         class={overlaySty({
-          visible: isDrawerVisible(),
+          visible: layoutState.drawer.visible,
           blur: true,
-          bottomDashVisible: isBottomVisible(),
+          bottomDashVisible: layoutState.bottomDash.visible,
         })}
-        onclick={() => setIsDrawerVisible(false)}
+        onclick={() => setLayoutState('drawer', 'visible', false)}
       />
 
       {/* Sidebar */}
       <div
         class={sidebarSty({
-          resizing: isResizing(),
-          isVisible: isDrawerVisible(),
-          bottomDashVisible: isBottomVisible(),
-          topNavVisible: isTopVisible(),
+          resizing: layoutState.drawer.isResizing,
+          isVisible: layoutState.drawer.visible,
+          bottomDashVisible: layoutState.bottomDash.visible,
+          topNavVisible: layoutState.topBar.visible,
           dev: DEV,
         })}
       >
@@ -195,10 +194,10 @@ function MyLayout() {
       {/* Main Content */}
       <div
         class={MainContentSty({
-          drawerVisible: isDrawerVisible(),
-          isResizing: isResizing(),
-          isTopVisible: isTopVisible(),
-          isBottomVisible: isBottomVisible(),
+          drawerVisible: layoutState.drawer.visible,
+          isResizing: layoutState.drawer.isResizing,
+          isTopVisible: layoutState.topBar.visible,
+          isBottomVisible: layoutState.bottomDash.visible,
           dev: DEV,
         })}
       >
@@ -206,7 +205,7 @@ function MyLayout() {
       </div>
 
       {/*Bottom Mobile Dash*/}
-      <div class={bottomDashSty({ hidden: !isBottomVisible(), dev: DEV })} />
+      <div class={bottomDashSty({ hidden: !layoutState.bottomDash.visible, dev: DEV })} />
     </div>
   );
 }
