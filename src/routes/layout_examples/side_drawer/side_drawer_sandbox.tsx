@@ -56,11 +56,9 @@ const Z_INDICES = {
   overlay: "z-40",
   sidebar: "z-10",
 };
-const MOBILE_DRAWER_WIDTH = "w-64";
 
 function MyLayout() {
   const [drawerWidth, setDrawerWidth] = createSignal(256); // Default 256px (w-64)
-  const [isTopVisible_old, setIsTopVisible_old] = createSignal(true);
   const [isTopVisible, setIsTopVisible] = createSignal(true);
   const [isDrawerVisible, setIsDrawerVisible] = createSignal(false);
   const [isDrawerMaximized, setIsDrawerMaximized] = createSignal(false);
@@ -176,6 +174,44 @@ function MyLayout() {
   // .............................................................................
   return (
     <div>
+      {/* Top Navbar */}
+      <div
+        classList={{
+          "bg-blue-500/50 border border-blue-600": true,
+          fixed: true,
+          "inset-x-0 h-top_header top-0": true,
+
+          [Z_INDICES.bottomHeader]: true,
+
+          // Allow Hiding Bottm
+          "translate-y-full": !isTopVisible(),
+          "transition-all duration-300 ease-in-out": true,
+        }}
+      >
+        <div class="h-full flex justify-center md:justify-start">
+          {/* KDE Plasma-style start menu button */}
+          <button
+            class="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 px-4 h-full transition-colors"
+            onclick={() => {
+              setIsDrawerVisible(!isDrawerVisible());
+            }}
+            oncontextmenu={(e) => {
+              // maximize height before opening
+              e.preventDefault();
+              setIsDrawerMaximized(!isDrawerMaximized());
+              setIsDrawerVisible(!isDrawerVisible());
+              // Right click handler - add your logic here
+            }}
+          >
+            {/* Application grid icon */}
+            <ApplicationGridIcon />
+            <span class="text-white text-sm font-medium select-none">
+              Applications
+            </span>
+          </button>
+        </div>
+      </div>
+
       {/* Overlay */}
       <div
         classList={{
@@ -252,44 +288,6 @@ function MyLayout() {
         }}
       >
         <Article />
-      </div>
-
-      {/* Bottom */}
-      <div
-        classList={{
-          "bg-blue-500/50 border border-blue-600": true,
-          fixed: true,
-          "inset-x-0 h-top_header top-0": true,
-
-          [Z_INDICES.bottomHeader]: true,
-
-          // Allow Hiding Bottm
-          "translate-y-full": !isTopVisible(),
-          "transition-all duration-300 ease-in-out": true,
-        }}
-      >
-        <div class="h-full flex justify-center md:justify-start">
-          {/* KDE Plasma-style start menu button */}
-          <button
-            class="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 px-4 h-full transition-colors"
-            onclick={() => {
-              setIsDrawerVisible(!isDrawerVisible());
-            }}
-            oncontextmenu={(e) => {
-              // maximize height before opening
-              e.preventDefault();
-              setIsDrawerMaximized(!isDrawerMaximized());
-              setIsDrawerVisible(!isDrawerVisible());
-              // Right click handler - add your logic here
-            }}
-          >
-            {/* Application grid icon */}
-            <ApplicationGridIcon />
-            <span class="text-white text-sm font-medium select-none">
-              Applications
-            </span>
-          </button>
-        </div>
       </div>
     </div>
   );
