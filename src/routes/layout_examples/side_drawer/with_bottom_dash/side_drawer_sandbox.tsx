@@ -11,6 +11,7 @@ import {
   sidebarSty,
 } from "./styles";
 import { createGlobalKeybindings } from "./side_drawer_sandbox_keybindings";
+import { resizeHandle } from "./side_drawer_resize_directive";
 
 const DEV = false;
 const BOTTOM_DASH_ONLY_ON_MOBILE = true;
@@ -43,84 +44,6 @@ function MyLayout() {
     }
   });
 
-  let resizeRef!: HTMLDivElement;
-
-  const handleMouseDown = (e: MouseEvent) => {
-    e.preventDefault();
-    setLayoutState('drawer', {
-      isResizing: true,
-      startX: e.clientX,
-      startWidth: layoutState.drawer.width
-    });
-
-    if (document) {
-      document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseup", handleMouseUp);
-      document.body.style.cursor = "col-resize";
-      document.body.style.userSelect = "none";
-    }
-  };
-
-  const handleMouseMove = (e: MouseEvent) => {
-    if (!layoutState.drawer.isResizing) return;
-
-    const deltaX = e.clientX - layoutState.drawer.startX;
-    const newWidth = Math.min(
-      MAX_WIDTH,
-      Math.max(MIN_WIDTH, layoutState.drawer.startWidth + deltaX),
-    );
-    setLayoutState('drawer', 'width', newWidth);
-  };
-
-  const handleMouseUp = () => {
-    setLayoutState('drawer', 'isResizing', false);
-    if (document) {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-      document.removeEventListener("touchmove", handleTouchMove);
-      document.removeEventListener("touchend", handleTouchEnd);
-      document.body.style.cursor = "";
-      document.body.style.userSelect = "";
-    }
-  };
-
-  const handleTouchStart = (e: TouchEvent) => {
-    e.preventDefault();
-    setLayoutState('drawer', {
-      isResizing: true,
-      startX: e.touches[0].clientX,
-      startWidth: layoutState.drawer.width
-    });
-
-    if (document) {
-      document.addEventListener("touchmove", handleTouchMove);
-      document.addEventListener("touchend", handleTouchEnd);
-      document.body.style.userSelect = "none";
-    }
-  };
-
-  const handleTouchMove = (e: TouchEvent) => {
-    if (!layoutState.drawer.isResizing) return;
-
-    const deltaX = e.touches[0].clientX - layoutState.drawer.startX;
-    const newWidth = Math.min(
-      MAX_WIDTH,
-      Math.max(MIN_WIDTH, layoutState.drawer.startWidth + deltaX),
-    );
-    setLayoutState('drawer', 'width', newWidth);
-  };
-
-  const handleTouchEnd = () => {
-    setLayoutState('drawer', 'isResizing', false);
-    if (document) {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-      document.removeEventListener("touchmove", handleTouchMove);
-      document.removeEventListener("touchend", handleTouchEnd);
-      document.body.style.cursor = "";
-      document.body.style.userSelect = "";
-    }
-  };
 
   // Set up global keybindings (work anywhere on the page, not just when component is focused)
   createGlobalKeybindings(layoutState, setLayoutState);
@@ -184,9 +107,12 @@ function MyLayout() {
         </div>
         {/* Resize Handle */}
         <div
-          ref={resizeRef}
-          onMouseDown={handleMouseDown}
-          onTouchStart={handleTouchStart}
+          use:resizeHandle={{
+            layoutState,
+            setLayoutState,
+            minWidth: MIN_WIDTH,
+            maxWidth: MAX_WIDTH
+          }}
           class={resizeHandleSty({ dev: DEV })}
         />
       </div>
