@@ -3,9 +3,7 @@ import { createStore } from "solid-js/store";
 import "./app.css";
 import {
   bottomDashSty,
-  buttonSty,
   MainContentSty,
-  navbarSty,
   overlaySty,
   resizeHandleSty,
   sidebarSty,
@@ -14,9 +12,9 @@ import { resizeHandle } from "./directives/resize";
 import { createGlobalKeybindings } from "./hooks/createGlobalKeybindings";
 import Article from "./views/Article";
 import SidebarContent from "./views/SidebarContent";
+import Navbar from "./views/Navbar";
 import { LayoutState } from "./types/layout";
-import { BOTTOM_DASH_ONLY_ON_MOBILE, DEV } from "./config/constants";
-import ApplicationGridIcon from "./components/icons/ApplicationGrid";
+import { BOTTOM_DASH_ONLY_ON_MOBILE } from "./config/constants";
 
 export default function Home() {
   return (
@@ -29,6 +27,8 @@ export default function Home() {
 function MyLayout() {
   const MIN_WIDTH = 200;
   const MAX_WIDTH = 1024;
+  
+  const [isDev, setIsDev] = createSignal(false);
 
   const [layoutState, setLayoutState] = createStore<LayoutState>({
     drawer: {
@@ -66,23 +66,12 @@ function MyLayout() {
   return (
     <div>
       {/* Top Navbar */}
-      <div class={navbarSty({ visible: layoutState.topBar.visible, dev: DEV })}>
-        <div class="h-full flex justify-center md:justify-start">
-          {/* KDE Plasma-style start menu button */}
-          <button
-            class={buttonSty()}
-            onclick={() => {
-              setLayoutState("drawer", "visible", !layoutState.drawer.visible);
-            }}
-          >
-            {/* Application grid icon */}
-            <ApplicationGridIcon isActive={layoutState.drawer.visible} />
-            <span class="text-white text-sm font-medium select-none">
-              Applications
-            </span>
-          </button>
-        </div>
-      </div>
+      <Navbar 
+        layoutState={layoutState}
+        setLayoutState={setLayoutState}
+        isDev={isDev}
+        setIsDev={setIsDev}
+      />
 
       {/* Overlay */}
       <div
@@ -102,7 +91,7 @@ function MyLayout() {
           bottomDashVisible: layoutState.bottomDash.visible,
           bottomDashMobileOnly: BOTTOM_DASH_ONLY_ON_MOBILE,
           topNavVisible: layoutState.topBar.visible,
-          dev: DEV,
+          dev: isDev(),
         })}
       >
         <div class="flex flex-col h-full">
@@ -118,7 +107,7 @@ function MyLayout() {
             minWidth: MIN_WIDTH,
             maxWidth: MAX_WIDTH,
           }}
-          class={resizeHandleSty({ dev: DEV })}
+          class={resizeHandleSty({ dev: isDev() })}
         />
       </div>
 
@@ -130,7 +119,7 @@ function MyLayout() {
           isTopVisible: layoutState.topBar.visible,
           isBottomVisible: layoutState.bottomDash.visible,
           bottomDashMobileOnly: BOTTOM_DASH_ONLY_ON_MOBILE,
-          dev: DEV,
+          dev: isDev(),
         })}
       >
         <Article />
@@ -141,7 +130,7 @@ function MyLayout() {
         class={bottomDashSty({
           hidden: !layoutState.bottomDash.visible,
           mobileOnly: BOTTOM_DASH_ONLY_ON_MOBILE,
-          dev: DEV,
+          dev: isDev(),
         })}
       />
     </div>
