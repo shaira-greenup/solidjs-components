@@ -3,12 +3,15 @@ import Search from "lucide-solid/icons/search";
 import Heart from "lucide-solid/icons/heart";
 import User from "lucide-solid/icons/user";
 import Settings from "lucide-solid/icons/settings";
+import Menu from "lucide-solid/icons/menu";
 import { bottomDashSty } from "../styles";
 import type { LayoutState } from "../types/layout";
+import type { SetStoreFunction } from "solid-js/store";
 import { Show } from "solid-js";
 
 interface BottomDashProps {
   layoutState: LayoutState;
+  setLayoutState: SetStoreFunction<LayoutState>;
   mobileOnly: boolean;
   isDev: boolean;
 }
@@ -35,9 +38,12 @@ export default function BottomDash(props: BottomDashProps) {
           <span class="mt-1">Search</span>
         </button>
 
-        <button class={buttonClass}>
-          <Heart class={iconClass} />
-          <span class="mt-1">Favorites</span>
+        <button 
+          class={buttonClass}
+          onclick={() => props.setLayoutState("drawer", "visible", !props.layoutState.drawer.visible)}
+        >
+          <Menu class={iconClass} />
+          <span class="mt-1">Menu</span>
         </button>
 
         <button class={buttonClass}>

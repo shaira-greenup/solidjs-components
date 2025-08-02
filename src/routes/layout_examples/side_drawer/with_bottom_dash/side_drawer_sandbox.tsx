@@ -128,6 +128,7 @@ function MyLayout() {
       {/*Bottom Mobile Dash*/}
       <BottomDash 
         layoutState={layoutState}
+        setLayoutState={setLayoutState}
         mobileOnly={BOTTOM_DASH_ONLY_ON_MOBILE}
         isDev={isDev()}
       />
