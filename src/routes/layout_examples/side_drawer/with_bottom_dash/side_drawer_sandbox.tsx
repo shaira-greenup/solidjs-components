@@ -47,7 +47,10 @@ function MyLayout() {
   });
 
   // Set up global keybindings (work anywhere on the page, not just when component is focused)
-  createGlobalKeybindings(layoutState, setLayoutState);
+  createGlobalKeybindings(layoutState, setLayoutState, {
+    minWidth: MIN_WIDTH,
+    maxWidth: MAX_WIDTH,
+  });
 
   /* Update the CSS Variable to adjust the layout  */
   onMount(() => {
