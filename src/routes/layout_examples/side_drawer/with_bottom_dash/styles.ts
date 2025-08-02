@@ -1,6 +1,5 @@
 import { tv } from "tailwind-variants";
 
-
 /**
  * It will be decessary to ensure all animations align so the margins etc. remain smooth
  *
@@ -41,7 +40,6 @@ export const overlaySty = tv({
     },
   },
 });
-
 
 export const navbarSty = tv({
   base: [
@@ -122,7 +120,6 @@ export const sidebarSty = tv({
   },
 });
 
-
 export const resizeHandleSty = tv({
   base: [
     // Visibility & Responsive
@@ -184,8 +181,6 @@ export const MainContentSty = tv({
   },
 });
 
-
-
 export const bottomDashSty = tv({
   base: [
     // colors
@@ -211,4 +206,3 @@ export const bottomDashSty = tv({
     },
   },
 });
-
