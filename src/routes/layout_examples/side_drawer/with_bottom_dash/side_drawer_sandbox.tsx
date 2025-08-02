@@ -94,7 +94,7 @@ const overlay = tv({
     // Positioning
     "fixed inset-0",
     // Background & Effects
-    "bg-black/50",
+    "bg-black/10",
     // Z-index
     Z_INDICES.overlay,
     // Animation (Must smoothly adjust for hiding nav when drawer open, so keep consistent)
