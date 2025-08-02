@@ -1,4 +1,4 @@
-import { createEffect, createSignal, JSXElement, onMount } from "solid-js";
+import { createEffect, createSignal, For, JSXElement, onMount } from "solid-js";
 import "./app.css";
 
 export default function Home() {
@@ -63,6 +63,8 @@ function MyLayout() {
   const [isDrawerVisible, setIsDrawerVisible] = createSignal(false);
   const [isDrawerMaximized, setIsDrawerMaximized] = createSignal(false);
   const [isResizing, setIsResizing] = createSignal(false);
+  // Optionally toggle the dash on mobile
+  const [isBottomVisible, setIsBottomVisible] = createSignal(true);
 
   let resizeRef!: HTMLDivElement;
   let startX = 0;
@@ -159,8 +161,10 @@ function MyLayout() {
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "1" || (e.ctrlKey && e.key === "1")) {
           setIsDrawerVisible(!isDrawerVisible());
-        } else if (e.key === "2" || (e.ctrlKey && e.key === "1")) {
+        } else if (e.key === "2" || (e.ctrlKey && e.key === "2")) {
           setIsTopVisible(!isTopVisible());
+        } else if (e.key === "3" || (e.ctrlKey && e.key === "3")) {
+          setIsBottomVisible(!isBottomVisible());
         }
       };
 
@@ -183,8 +187,8 @@ function MyLayout() {
 
           [Z_INDICES.bottomHeader]: true,
 
-          // Allow Hiding Bottm
-          "translate-y-full": !isTopVisible(),
+          // Allow Hiding Top
+          "-translate-y-full": !isTopVisible(),
           "transition-all duration-300 ease-in-out": true,
         }}
       >
@@ -246,6 +250,7 @@ function MyLayout() {
           "md:left-0": true,
           "md:inset-y-0": true,
           "md:-translate-x-full md:translate-y-0": !isDrawerVisible(),
+          "mb-bottom_dash": isBottomVisible(),
 
           // Animate movements
           "transition-translate duration-300 ease-in-out": !isResizing(),
@@ -278,6 +283,8 @@ function MyLayout() {
       {/* Main Content */}
       <div
         classList={{
+          // Color is helpful
+          "bg-orange-600/50": true,
           // Basic Layout
           "flex justify-center items-center p-4": true,
           // Desktop Layout
@@ -285,10 +292,21 @@ function MyLayout() {
           "transition-all duration-300 ease-in-out": !isResizing(),
           "transition-none": isResizing(),
           "mt-top_header": isTopVisible(),
+          "mb-bottom_dash": isBottomVisible(),
         }}
       >
         <Article />
       </div>
+
+      {/*Bottom Mobile Dash*/}
+      <div
+        classList={{
+          "bg-purple-600/50 fixed bottom-0 left-0 w-full h-bottom_dash": true,
+          "translate-y-full": !isBottomVisible(),
+          "transition-all duration-300 ease-in-out": true,
+          "sm:hidden": true,
+        }}
+      ></div>
     </div>
   );
 }
@@ -318,17 +336,27 @@ const SidebarContent = () => {
   );
 };
 
-const Article = (props: {}) => {
+const Article = (props) => {
+  // Create an array for the range 1 to 10.
+  const range = Array.from({ length: 10 }, (_, i) => i + 1);
+
   return (
     <div class="prose dark:prose-invert">
-      <h1>Main Content Area</h1>
-      <p class="">
-        This content area adjusts based on the sidebar and header visibility.
-      </p>
-      <div class="">
-        <p class="">Current layout state:</p>
-        <ul class=""></ul>
-      </div>
+      <For each={range}>
+        {(item) => (
+          <div>
+            <h1>Main Content Area {item}</h1>
+            <p>
+              This content area adjusts based on the sidebar and header
+              visibility.
+            </p>
+            <div>
+              <p>Current layout state:</p>
+              <ul>{/* List items can be generated here if required */}</ul>
+            </div>
+          </div>
+        )}
+      </For>
     </div>
   );
 };

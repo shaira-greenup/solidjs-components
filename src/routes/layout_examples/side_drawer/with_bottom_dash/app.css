@@ -2,13 +2,13 @@
 @plugin "@tailwindcss/typography";
 
 :root {
-    --background-rgb: 214, 219, 220;
+    --background-rgb: purple;
     --foreground-rgb: 0, 0, 0;
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --background-rgb: 0, 0, 0;
+    --background-rgb: purple;
         --foreground-rgb: 255, 255, 255;
     }
 }
@@ -24,8 +24,8 @@ body {
     --spacing-mobile_drawer_width: 16rem;
     --spacing-main_content: 1rem;
     --spacing-sidebar_width: 256;
-    /* Use dvh to handle url bar on chrome */
-    --spacing-between_headers: calc(100dvh - var(--spacing-bottom_header));
+    --spacing-bottom_dash: 4rem;
+    --spacing-between_headers: calc(100dvh - var(--spacing-bottom_dash) - var(--spacing-top_header));
 }
 
 @layer components {
