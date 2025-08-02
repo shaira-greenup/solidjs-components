@@ -157,6 +157,11 @@ const data = [
             content: "",
             link: "layout_examples/side_drawer/side_drawer_polished",
           },
+          {
+            title: "With Bottom Dash",
+            content: "Side drawer with mobile bottom navigation dash",
+            link: "layout_examples/side_drawer/with_bottom_dash/side_drawer_sandbox",
+          },
         ],
       },
       {
