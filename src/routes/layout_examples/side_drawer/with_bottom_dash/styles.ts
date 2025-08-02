@@ -110,6 +110,10 @@ export const sidebarSty = tv({
       true: "mb-bottom_dash",
       false: "mb-0",
     },
+    bottomDashMobileOnly: {
+      true: "",
+      false: "",
+    },
     topNavVisible: {
       true: "mt-top_header",
       false: "mt-0",
@@ -118,6 +122,14 @@ export const sidebarSty = tv({
       true: "bg-green-500 border border-green-600",
     },
   },
+  compoundVariants: [
+    // When bottomDash is mobileOnly and visible, only apply margin on mobile
+    {
+      bottomDashVisible: true,
+      bottomDashMobileOnly: true,
+      class: "mb-bottom_dash md:mb-0",
+    },
+  ],
 });
 
 export const resizeHandleSty = tv({
@@ -172,6 +184,10 @@ export const MainContentSty = tv({
     isBottomVisible: {
       true: "mb-bottom_dash",
     },
+    bottomDashMobileOnly: {
+      true: "",
+      false: "",
+    },
     dev: {
       true: [
         // Translucent Colors
@@ -179,6 +195,14 @@ export const MainContentSty = tv({
       ],
     },
   },
+  compoundVariants: [
+    // When bottomDash is mobileOnly and visible, only apply margin on mobile
+    {
+      isBottomVisible: true,
+      bottomDashMobileOnly: true,
+      class: "mb-bottom_dash md:mb-0",
+    },
+  ],
 });
 
 export const bottomDashSty = tv({
@@ -197,6 +221,19 @@ export const bottomDashSty = tv({
   variants: {
     hidden: {
       true: "translate-y-full",
+    },
+    /**
+     * Controls whether the bottom dash is only visible on mobile screens.
+     * When true: Only shows on screens smaller than md breakpoint
+     * When false: Shows on all screen sizes
+     * 
+     * This variant allows quick migration between mobile-only and all-screen
+     * behavior without refactoring the mb-bottom_dash adjustments throughout
+     * the codebase.
+     */
+    mobileOnly: {
+      true: "md:hidden",
+      false: "",
     },
     dev: {
       true: [

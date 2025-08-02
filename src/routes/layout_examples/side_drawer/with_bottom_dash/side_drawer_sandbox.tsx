@@ -14,7 +14,7 @@ import { createGlobalKeybindings } from "./side_drawer_sandbox_keybindings";
 import { resizeHandle } from "./side_drawer_resize_directive";
 
 const DEV = false;
-const BOTTOM_DASH_ONLY_ON_MOBILE = true;
+const BOTTOM_DASH_ONLY_ON_MOBILE = false;
 
 export default function Home() {
   return (
@@ -96,6 +96,7 @@ function MyLayout() {
           resizing: layoutState.drawer.isResizing,
           isVisible: layoutState.drawer.visible,
           bottomDashVisible: layoutState.bottomDash.visible,
+          bottomDashMobileOnly: BOTTOM_DASH_ONLY_ON_MOBILE,
           topNavVisible: layoutState.topBar.visible,
           dev: DEV,
         })}
@@ -124,6 +125,7 @@ function MyLayout() {
           isResizing: layoutState.drawer.isResizing,
           isTopVisible: layoutState.topBar.visible,
           isBottomVisible: layoutState.bottomDash.visible,
+          bottomDashMobileOnly: BOTTOM_DASH_ONLY_ON_MOBILE,
           dev: DEV,
         })}
       >
@@ -131,7 +133,11 @@ function MyLayout() {
       </div>
 
       {/*Bottom Mobile Dash*/}
-      <div class={bottomDashSty({ hidden: !layoutState.bottomDash.visible, dev: DEV })} />
+      <div class={bottomDashSty({ 
+        hidden: !layoutState.bottomDash.visible, 
+        mobileOnly: BOTTOM_DASH_ONLY_ON_MOBILE,
+        dev: DEV 
+      })} />
     </div>
   );
 }
