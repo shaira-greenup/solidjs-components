@@ -73,7 +73,7 @@ function MyLayout() {
             }}
           >
             {/* Application grid icon */}
-            <ApplicationGridIcon />
+            <ApplicationGridIcon isActive={layoutState.drawer.visible} />
             <span class="text-white text-sm font-medium select-none">
               Applications
             </span>
