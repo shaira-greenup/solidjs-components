@@ -97,8 +97,8 @@ const overlay = tv({
     "bg-black/50",
     // Z-index
     Z_INDICES.overlay,
-    // Animation
-    "transition-opacity duration-300 ease-in-out",
+    // Animation (Must smoothly adjust for hiding nav when drawer open, so keep consistent)
+    ANIMATION,
     // Responsive
     "md:hidden",
   ],
@@ -109,7 +109,9 @@ const overlay = tv({
     },
     blur: {
       true: "backdrop-blur-sm",
-      false: "",
+    },
+    bottomDashVisible: {
+      true: "mb-bottom_dash",
     },
   },
 });
@@ -235,6 +237,8 @@ const bottomDash = tv({
     "h-bottom_dash  w-full",
     // Animation
     ANIMATION,
+    // Z Index
+    Z_INDICES.mobileDrawer,
   ],
   variants: {
     hidden: {
@@ -391,6 +395,7 @@ function MyLayout() {
         class={overlay({
           visible: isDrawerVisible(),
           blur: true,
+          bottomDashVisible: isBottomVisible(),
         })}
         onclick={() => setIsDrawerVisible(false)}
       />
