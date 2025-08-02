@@ -1,5 +1,7 @@
 import { createEffect, createSignal, For, JSXElement, onMount } from "solid-js";
+import { tv } from "tailwind-variants";
 import "./app.css";
+const DEV = false;
 
 export default function Home() {
   return (
@@ -57,11 +59,200 @@ const Z_INDICES = {
   sidebar: "z-10",
 };
 
+// It may be decessary to ensure all animations align
+const ANIMATION = "transition-all duration-300 ease-in-out";
+const navbar = tv({
+  base: [
+    // colors
+    "bg-base-300 shadow-sm",
+    // Positioning
+    "fixed",
+    // Size
+    "inset-x-0 h-top_header top-0",
+    // Z
+    Z_INDICES.bottomHeader,
+    // Animations
+    ANIMATION,
+  ],
+  variants: {
+    visible: {
+      true: "translate-y-0",
+      false: "-translate-y-full",
+    },
+    dev: {
+      true: "bg-blue-500/50 border border-blue-600",
+    },
+  },
+});
+
+const button = tv({
+  base: "flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 px-4 h-full transition-colors",
+});
+
+const overlay = tv({
+  base: [
+    // Positioning
+    "fixed inset-0",
+    // Background & Effects
+    "bg-black/50",
+    // Z-index
+    Z_INDICES.overlay,
+    // Animation
+    "transition-opacity duration-300 ease-in-out",
+    // Responsive
+    "md:hidden",
+  ],
+  variants: {
+    visible: {
+      true: "opacity-100 pointer-events-auto",
+      false: "opacity-0 pointer-events-none",
+    },
+    blur: {
+      true: "backdrop-blur-sm",
+      false: "",
+    },
+  },
+});
+
+const sidebar = tv({
+  base: [
+    // Colors
+    "bg-base-200 border-r border-gray-200 shadow-sm",
+    // Positioning
+    "fixed",
+    // Size
+    "w-3/4 md:w-auto",
+    // Sets top: 0 and bottom: 0 to stretch the sidebar full height
+    "inset-y-0",
+    // Extend to the bottom
+    "bottom-0",
+    // Z-index
+    Z_INDICES.mobileDrawer,
+
+    // Handle desktop
+    "md:w-sidebar_width",
+    "md:top-0",
+    "md:left-0",
+    "md:inset-y-0",
+    "md:z-10",
+  ],
+  variants: {
+    // Block animations when resizing
+    resizing: {
+      true: "transition-none",
+      false: "transition-translate duration-300 ease-in-out",
+    },
+    isVisible: {
+      true: "translate-x-0",
+      false: [
+        // Desktop
+        "md:-translate-x-full md:translate-y-0",
+        // Mobile
+        "-translate-x-full",
+      ],
+    },
+    bottomDashVisible: {
+      true: "mb-bottom_dash",
+      false: "mb-0",
+    },
+    topNavVisible: {
+      true: "mt-top_header",
+      false: "mt-0",
+    },
+    dev: {
+      true: "bg-green-500 border border-green-600",
+    },
+  },
+});
+
+const resizeHandle = tv({
+  base: [
+    // Visibility & Responsive
+    // Show on medium screens and up, hidden on mobile
+    // This creates a desktop-only resize handle since mobile uses touch gestures
+    "hidden md:block bg-transparent",
+    // Positioning
+    "absolute right-0 top-0",
+    // Sizing
+    "w-15 h-full",
+    // Styling & Interaction
+    "hover:bg-primary/50 cursor-col-resize transition-colors duration-200",
+    // Professional styling
+    "border-r border-gray-400",
+  ],
+  variants: {
+    dev: {
+      true: [
+        // Dev variant with translucent colors similar to MainContent and bottomDash
+        // "bg-blue-500/40 hover:bg-blue-600/60",
+        // "border-r border-blue-400",
+        // "w-2",
+        // Styling & Interaction
+        "bg-gray-400 hover:bg-gray-600 cursor-col-resize transition-colors",
+        // Wider
+        "w-10",
+      ],
+    },
+  },
+});
+const MainContent = tv({
+  base: [
+    // Color is helpful
+    "bg-base-100",
+    // Basic Layout
+    "flex justify-center items-center p-4",
+  ],
+  variants: {
+    drawerVisible: {
+      true: "md:ml-sidebar_width",
+    },
+    isResizing: {
+      false: ANIMATION,
+      true: "tranistion-none",
+    },
+    isTopVisible: {
+      true: "mt-top_header",
+    },
+    isBottomVisible: {
+      true: "mb-bottom_dash",
+    },
+    dev: {
+      true: [
+        // Translucent Colors
+        "bg-orange-600/50",
+      ],
+    },
+  },
+});
+
+const bottomDash = tv({
+  base: [
+    // colors
+    "bg-base-300",
+    // Position
+    "fixed bottom-0 left-0",
+    // Size
+    "h-bottom_dash  w-full",
+    // Animation
+    ANIMATION,
+  ],
+  variants: {
+    hidden: {
+      true: "translate-y-full",
+    },
+    dev: {
+      true: [
+        // Translucent colors
+        "bg-purple-600/40",
+      ],
+    },
+  },
+});
+
 function MyLayout() {
   const [drawerWidth, setDrawerWidth] = createSignal(256); // Default 256px (w-64)
   const [isTopVisible, setIsTopVisible] = createSignal(true);
   const [isDrawerVisible, setIsDrawerVisible] = createSignal(false);
-  const [isDrawerMaximized, setIsDrawerMaximized] = createSignal(false);
   const [isResizing, setIsResizing] = createSignal(false);
   // Optionally toggle the dash on mobile
   const [isBottomVisible, setIsBottomVisible] = createSignal(true);
@@ -173,38 +364,17 @@ function MyLayout() {
     });
   });
 
-  const DRAWER_BLUR = false;
-
   // .............................................................................
   return (
     <div>
       {/* Top Navbar */}
-      <div
-        classList={{
-          "bg-blue-500/50 border border-blue-600": true,
-          fixed: true,
-          "inset-x-0 h-top_header top-0": true,
-
-          [Z_INDICES.bottomHeader]: true,
-
-          // Allow Hiding Top
-          "-translate-y-full": !isTopVisible(),
-          "transition-all duration-300 ease-in-out": true,
-        }}
-      >
+      <div class={navbar({ visible: isTopVisible(), dev: DEV })}>
         <div class="h-full flex justify-center md:justify-start">
           {/* KDE Plasma-style start menu button */}
           <button
-            class="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 px-4 h-full transition-colors"
+            class={button()}
             onclick={() => {
               setIsDrawerVisible(!isDrawerVisible());
-            }}
-            oncontextmenu={(e) => {
-              // maximize height before opening
-              e.preventDefault();
-              setIsDrawerMaximized(!isDrawerMaximized());
-              setIsDrawerVisible(!isDrawerVisible());
-              // Right click handler - add your logic here
             }}
           >
             {/* Application grid icon */}
@@ -218,44 +388,22 @@ function MyLayout() {
 
       {/* Overlay */}
       <div
-        classList={{
-          "fixed inset-0": true,
-          "bg-black/50 ": true,
-          "backdrop-blur-sm": DRAWER_BLUR,
-          [Z_INDICES.overlay]: true,
-          "opacity-0 pointer-events-none": !isDrawerVisible(),
-          "opacity-100": isDrawerVisible(),
-          "pointer-events-auto": isDrawerVisible(),
-          "transition-opacity duration-300 ease-in-out": true,
-          "md:hidden": true,
-        }}
+        class={overlay({
+          visible: isDrawerVisible(),
+          blur: true,
+        })}
         onclick={() => setIsDrawerVisible(false)}
       />
 
       {/* Sidebar */}
       <div
-        classList={{
-          "bg-green-500 border border-green-600": true,
-          fixed: true,
-          "w-3/4 md:w-auto": true,
-          "inset-y-0": true,
-          "bottom-0": true,
-          "mt-top_header": isTopVisible(),
-          "-translate-x-full": !isDrawerVisible(),
-          [Z_INDICES.mobileDrawer]: true,
-
-          // Now Handle Desktop
-          "md:w-sidebar_width": true,
-          "md:top-0": true,
-          "md:left-0": true,
-          "md:inset-y-0": true,
-          "md:-translate-x-full md:translate-y-0": !isDrawerVisible(),
-          "mb-bottom_dash": isBottomVisible(),
-
-          // Animate movements
-          "transition-translate duration-300 ease-in-out": !isResizing(),
-          "transition-none": isResizing(),
-        }}
+        class={sidebar({
+          resizing: isResizing(),
+          isVisible: isDrawerVisible(),
+          bottomDashVisible: isBottomVisible(),
+          topNavVisible: isTopVisible(),
+          dev: DEV,
+        })}
       >
         <div class="flex flex-col h-full">
           <div class="flex-1 p-4 overflow-y-auto">
@@ -267,46 +415,25 @@ function MyLayout() {
           ref={resizeRef}
           onMouseDown={handleMouseDown}
           onTouchStart={handleTouchStart}
-          classList={{
-            // Visibility & Responsive
-            "hidden md:block": true,
-            // Positioning
-            "absolute right-0 top-0": true,
-            // Sizing
-            "w-10 h-full": true,
-            // Styling & Interaction
-            "bg-gray-400 hover:bg-gray-600 cursor-col-resize transition-colors": true,
-          }}
+          class={resizeHandle({ dev: DEV })}
         />
       </div>
 
       {/* Main Content */}
       <div
-        classList={{
-          // Color is helpful
-          "bg-orange-600/50": true,
-          // Basic Layout
-          "flex justify-center items-center p-4": true,
-          // Desktop Layout
-          "md:ml-sidebar_width": isDrawerVisible(),
-          "transition-all duration-300 ease-in-out": !isResizing(),
-          "transition-none": isResizing(),
-          "mt-top_header": isTopVisible(),
-          "mb-bottom_dash": isBottomVisible(),
-        }}
+        class={MainContent({
+          drawerVisible: isDrawerVisible(),
+          isResizing: isResizing(),
+          isTopVisible: isTopVisible(),
+          isBottomVisible: isBottomVisible(),
+          dev: DEV,
+        })}
       >
         <Article />
       </div>
 
       {/*Bottom Mobile Dash*/}
-      <div
-        classList={{
-          "bg-purple-600/50 fixed bottom-0 left-0 w-full h-bottom_dash": true,
-          "translate-y-full": !isBottomVisible(),
-          "transition-all duration-300 ease-in-out": true,
-          "sm:hidden": true,
-        }}
-      ></div>
+      <div class={bottomDash({ hidden: !isBottomVisible(), dev: DEV })} />
     </div>
   );
 }
