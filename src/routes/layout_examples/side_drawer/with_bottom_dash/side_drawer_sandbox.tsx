@@ -3,6 +3,7 @@ import { createStore } from "solid-js/store";
 import "./app.css";
 import {
   MainContentSty,
+  navbarSty,
   overlaySty,
   resizeHandleSty,
   sidebarSty,
@@ -11,7 +12,7 @@ import { resizeHandle } from "./directives/resize";
 import { createGlobalKeybindings } from "./hooks/createGlobalKeybindings";
 import Article from "./views/Article";
 import SidebarContent from "./views/SidebarContent";
-import Navbar from "./views/Navbar";
+import NavbarContent from "./views/Navbar";
 import BottomDash from "./views/BottomDash";
 import { LayoutState } from "./types/layout";
 import { BOTTOM_DASH_ONLY_ON_MOBILE } from "./config/constants";
@@ -27,7 +28,7 @@ export default function Home() {
 function MyLayout() {
   const MIN_WIDTH = 200;
   const MAX_WIDTH = 1024;
-  
+
   const [isDev, setIsDev] = createSignal(false);
 
   const [layoutState, setLayoutState] = createStore<LayoutState>({
@@ -66,12 +67,19 @@ function MyLayout() {
   return (
     <div>
       {/* Top Navbar */}
-      <Navbar 
-        layoutState={layoutState}
-        setLayoutState={setLayoutState}
-        isDev={isDev}
-        setIsDev={setIsDev}
-      />
+      <div
+        class={navbarSty({
+          visible: layoutState.topBar.visible,
+          dev: isDev(),
+        })}
+      >
+        <NavbarContent
+          layoutState={layoutState}
+          setLayoutState={setLayoutState}
+          isDev={isDev}
+          setIsDev={setIsDev}
+        />
+      </div>
 
       {/* Overlay */}
       <div
@@ -126,7 +134,7 @@ function MyLayout() {
       </div>
 
       {/*Bottom Mobile Dash*/}
-      <BottomDash 
+      <BottomDash
         layoutState={layoutState}
         setLayoutState={setLayoutState}
         mobileOnly={BOTTOM_DASH_ONLY_ON_MOBILE}

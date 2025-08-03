@@ -11,11 +11,9 @@ interface NavbarProps {
   setIsDev: (value: boolean) => void;
 }
 
-export default function Navbar(props: NavbarProps) {
+export default function NavbarContent(props: NavbarProps) {
   return (
-    <div class={navbarSty({ visible: props.layoutState.topBar.visible, dev: props.isDev() })}>
       <div class="h-full flex justify-center md:justify-start">
-        {/* KDE Plasma-style start menu button */}
         <button
           class={buttonSty()}
           onclick={() => {
@@ -28,7 +26,7 @@ export default function Navbar(props: NavbarProps) {
             Applications
           </span>
         </button>
-        
+
         {/* DEV Mode Toggle Button */}
         <button
           class="ml-auto px-3 py-1 text-xs bg-gray-600 hover:bg-gray-700 text-white rounded transition-colors"
@@ -37,6 +35,5 @@ export default function Navbar(props: NavbarProps) {
           DEV: {props.isDev() ? "ON" : "OFF"}
         </button>
       </div>
-    </div>
   );
 }
