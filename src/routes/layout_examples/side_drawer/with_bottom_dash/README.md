@@ -2,10 +2,36 @@
 
 This is fundamentally the same as ../side_drawer_polished.tsx with the addition of a bottom dash for mobile devices. This can be helpful for a quick access menu to toggle the sidebar etc.
 
-## Context Providers
+## Refactoring this into a library
+### Status
+It's not clear, to me, if this is desirable.
 
-### overview
-#### Implementation
+1. Separating it out, leads to more code
+    - State Variables
+        - Set up context provider
+        - Use context provider on client side
+    - Styling
+        - Tailwind and CSS variables. These variables can't be clobered, no matter how unlikely that may be
+            - Refactoring increases complexity.
+        - Styling
+            - There are both internal and external styles:
+
+                - Internal styles for e.g. translation-x-0 and fixed etc.
+                - External styles for e.g. `bg-base-100`
+
+              separating these add complexity to the layout and limit the capacity of users to adapt the style.
+2. Using it as a library is less convenient
+    - Seeing the styling all in one place is easy
+    - Having separate components called directly in the layout is a simple way to separate out the layout anyway.
+
+It may just be easier to copy the layout between projects. This provides more flexibility and simpler code in each project. At the expense of no centralized management of the layout, if the layout is remains no more complex than this, it may be a small price to pay though.
+
+
+
+### Context Providers
+
+#### overview
+##### Implementation
 
 In the Layout component, signals and stores are created:
 
@@ -76,7 +102,7 @@ function Layout(props: LayoutProps) {
 ```
 
 
-#### Usage from External Library
+##### Usage from External Library
 Now any child of of Layout can access these as a global variable, e.g.:
 
 
@@ -105,7 +131,7 @@ export default function Home() {
 
 ```
 
-### Reasoning Through Code
+#### Reasoning Through Code
 
 Say the user needs to find where the `layoutState` variable used in the `<Navbar` came from in the following code:
 

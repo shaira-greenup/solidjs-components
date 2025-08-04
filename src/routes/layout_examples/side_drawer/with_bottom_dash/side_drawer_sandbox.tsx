@@ -5,12 +5,23 @@ import SidebarContent from "./views/SidebarContent";
 import NavbarContentView from "./views/Navbar";
 import BottomDashView from "./views/BottomDash";
 import { BOTTOM_DASH_ONLY_ON_MOBILE } from "./config/constants";
+import { tv } from "tailwind-variants";
+
+const ANIMATION = "transition-all duration-200 ease-in-out";
+const navbarSty = tv({
+  base: [
+    // colors
+    "bg-base-300 shadow-sm",
+    // Animations
+    ANIMATION,
+  ],
+});
 
 export default function Home() {
   return (
     <main class="h-screen flex flex-col">
       <Layout>
-        <Layout.Navbar class="bg-red-300">
+        <Layout.Navbar class={navbarSty()}>
           <NavbarWrapper />
         </Layout.Navbar>
 

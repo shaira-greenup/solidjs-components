@@ -71,12 +71,8 @@ export const buttonSty = tv({
 
 export const sidebarSty = tv({
   base: [
-    // Colors
-    "bg-base-200 border-r border-gray-200 shadow-sm",
     // Positioning
     "fixed",
-    // Size
-    "w-3/4 md:w-auto",
     // Sets top: 0 and bottom: 0 to stretch the sidebar full height
     "inset-y-0",
     // Extend to the bottom
@@ -92,6 +88,17 @@ export const sidebarSty = tv({
     "md:z-10",
   ],
   variants: {
+    // Default Styling
+    default: {
+        true: [
+        // colors
+        "bg-base-300 shadow-sm",
+        // Animations
+        ANIMATION,
+        // Size (md is handled by --spacing_sidebar_width)
+        "w-3/4",
+        ]
+    },
     // Block animations when resizing
     resizing: {
       true: "transition-none",

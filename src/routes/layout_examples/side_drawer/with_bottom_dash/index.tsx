@@ -1,4 +1,13 @@
-import { createContext, useContext, createEffect, createSignal, onMount, JSX, Component, ParentComponent } from "solid-js";
+import {
+  createContext,
+  useContext,
+  createEffect,
+  createSignal,
+  onMount,
+  JSX,
+  Component,
+  ParentComponent,
+} from "solid-js";
 import { createStore, SetStoreFunction } from "solid-js/store";
 import "./app.css";
 import {
@@ -12,8 +21,6 @@ import { resizeHandle as _resizeHandle } from "./directives/resize";
 import { createGlobalKeybindings } from "./hooks/createGlobalKeybindings";
 import { LayoutState } from "./types/layout";
 import { BOTTOM_DASH_ONLY_ON_MOBILE } from "./config/constants";
-
-
 
 interface LayoutContextValue {
   layoutState: LayoutState;
@@ -88,9 +95,7 @@ function Layout(props: LayoutProps) {
 
   return (
     <LayoutContext.Provider value={contextValue}>
-      <div class={props.class}>
-        {props.children}
-      </div>
+      <div class={props.class}>{props.children}</div>
     </LayoutContext.Provider>
   );
 }
@@ -105,10 +110,10 @@ const Navbar: ParentComponent<CompoundComponentProps> = (props) => {
 
   return (
     <div
-      class={navbarSty({
+      class={`${navbarSty({
         visible: layoutState.topBar.visible,
         dev: isDev(),
-      })}
+      })} ${props.class || ""}`}
     >
       {props.children}
     </div>
@@ -116,7 +121,8 @@ const Navbar: ParentComponent<CompoundComponentProps> = (props) => {
 };
 
 const Sidebar: ParentComponent<CompoundComponentProps> = (props) => {
-  const { layoutState, setLayoutState, isDev, minWidth, maxWidth } = useLayoutContext();
+  const { layoutState, setLayoutState, isDev, minWidth, maxWidth } =
+    useLayoutContext();
 
   return (
     <>
@@ -142,9 +148,7 @@ const Sidebar: ParentComponent<CompoundComponentProps> = (props) => {
         })}
       >
         <div class="flex flex-col h-full">
-          <div class="flex-1 p-4 overflow-y-auto">
-            {props.children}
-          </div>
+          <div class="flex-1 p-4 overflow-y-auto">{props.children}</div>
         </div>
         {/* Resize Handle */}
         <div
@@ -180,12 +184,14 @@ const Main: ParentComponent<CompoundComponentProps> = (props) => {
   );
 };
 
-const BottomDash: ParentComponent<CompoundComponentProps & { mobileOnly?: boolean }> = (props) => {
+const BottomDash: ParentComponent<
+  CompoundComponentProps & { mobileOnly?: boolean }
+> = (props) => {
   const { layoutState, setLayoutState, isDev } = useLayoutContext();
 
   return (
     <div
-      class={`${props.class || ''} fixed bottom-0 left-0 right-0 ${props.mobileOnly ? 'lg:hidden' : ''} ${layoutState.bottomDash.visible ? '' : 'translate-y-full'}`}
+      class={`${props.class || ""} fixed bottom-0 left-0 right-0 ${props.mobileOnly ? "lg:hidden" : ""} ${layoutState.bottomDash.visible ? "" : "translate-y-full"}`}
     >
       {props.children}
     </div>
