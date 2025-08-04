@@ -226,7 +226,7 @@ export const bottomDashSty = tv({
      * Controls whether the bottom dash is only visible on mobile screens.
      * When true: Only shows on screens smaller than md breakpoint
      * When false: Shows on all screen sizes
-     * 
+     *
      * This variant allows quick migration between mobile-only and all-screen
      * behavior without refactoring the mb-bottom_dash adjustments throughout
      * the codebase.
