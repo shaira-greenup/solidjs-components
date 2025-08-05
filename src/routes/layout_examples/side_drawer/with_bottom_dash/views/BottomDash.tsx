@@ -16,17 +16,13 @@ interface BottomDashProps {
   isDev: boolean;
 }
 
-export default function BottomDash(props: BottomDashProps) {
+export default function BottomDashContent(props: BottomDashProps) {
   const iconClass = "w-6 h-6";
-  const buttonClass = "flex flex-col items-center justify-center flex-1 py-2 text-xs text-gray-600 hover:text-blue-600 transition-colors";
+  const buttonClass =
+    "flex flex-col items-center justify-center flex-1 py-2 text-xs text-gray-600 hover:text-blue-600 transition-colors";
 
   return (
-    <div class={bottomDashSty({
-      hidden: !props.layoutState.bottomDash.visible,
-      mobileOnly: props.mobileOnly,
-      dev: props.isDev,
-    })}>
-      <div class="flex items-center justify-around h-full px-4">
+    <div class="flex items-center justify-around h-full px-4">
       <Show when={!props.isDev}>
         <button class={buttonClass}>
           <Home class={iconClass} />
@@ -38,9 +34,15 @@ export default function BottomDash(props: BottomDashProps) {
           <span class="mt-1">Search</span>
         </button>
 
-        <button 
+        <button
           class={buttonClass}
-          onclick={() => props.setLayoutState("drawer", "visible", !props.layoutState.drawer.visible)}
+          onclick={() =>
+            props.setLayoutState(
+              "drawer",
+              "visible",
+              !props.layoutState.drawer.visible,
+            )
+          }
         >
           <Menu class={iconClass} />
           <span class="mt-1">Menu</span>
@@ -55,8 +57,7 @@ export default function BottomDash(props: BottomDashProps) {
           <Settings class={iconClass} />
           <span class="mt-1">Settings</span>
         </button>
-        </Show>
-      </div>
+      </Show>
     </div>
   );
 }
