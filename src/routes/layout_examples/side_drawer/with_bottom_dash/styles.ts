@@ -138,14 +138,14 @@ export const resizeHandleSty = tv({
     // Show on medium screens and up, hidden on mobile
     // This creates a desktop-only resize handle since mobile uses touch gestures
     "hidden md:block bg-transparent",
-    // Positioning
-    "absolute right-0 top-0",
+    // Positioning (offset to the right by the width
+    "absolute -right-10 top-0",
     // Sizing
-    "w-15 h-full",
+    "w-10 h-full",
     // Styling & Interaction
     "hover:bg-primary/50 cursor-col-resize transition-colors duration-200",
-    // Professional styling
-    "border-r border-gray-400",
+    // Border Styling
+    "border-l border-gray-400",
   ],
   variants: {
     dev: {
@@ -228,7 +228,7 @@ export const bottomDashSty = tv({
      * Controls whether the bottom dash is only visible on mobile screens.
      * When true: Only shows on screens smaller than md breakpoint
      * When false: Shows on all screen sizes
-     * 
+     *
      * This variant allows quick migration between mobile-only and all-screen
      * behavior without refactoring the mb-bottom_dash adjustments throughout
      * the codebase.

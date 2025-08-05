@@ -46,7 +46,7 @@ const Navbar = (props: { children: JSXElement }) => {
 
 // TODO should these elements be restricted?
 const Layout = (props: { children: JSXElement }) => {
-  const MIN_WIDTH = 200;
+  const MIN_WIDTH = 100;
   const MAX_WIDTH = 1024;
 
   const [isDev, setIsDev] = createSignal(false);
