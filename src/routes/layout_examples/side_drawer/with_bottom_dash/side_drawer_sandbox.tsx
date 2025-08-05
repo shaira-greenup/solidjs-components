@@ -48,4 +48,3 @@ const SidebarView = () => {
 
 
 // TODO Sidebar needs class for Overlay?
-// TODO Drag Handle needs to allow clicking the scroll
