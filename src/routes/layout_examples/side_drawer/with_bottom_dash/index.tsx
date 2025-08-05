@@ -30,7 +30,7 @@ import BottomDashContent from "./views/BottomDash";
 import { resizeHandle } from "./directives/resize";
 
 const Navbar = (props: { children: JSXElement }) => {
-  const { layoutState, setLayoutState, isDev, setIsDev } = getLayoutContext();
+  const { layoutState, isDev } = getLayoutContext();
 
   return (
     <div
@@ -140,7 +140,6 @@ const Sidebar = (props: { children: JSXElement }) => {
     layoutState,
     setLayoutState,
     isDev,
-    setIsDev,
     MIN_WIDTH,
     MAX_WIDTH,
     BottomDashOnlyMobile,
