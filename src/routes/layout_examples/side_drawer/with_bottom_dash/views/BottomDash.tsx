@@ -12,7 +12,6 @@ import { Show } from "solid-js";
 interface BottomDashProps {
   layoutState: LayoutState;
   setLayoutState: SetStoreFunction<LayoutState>;
-  mobileOnly: boolean;
   isDev: boolean;
 }
 

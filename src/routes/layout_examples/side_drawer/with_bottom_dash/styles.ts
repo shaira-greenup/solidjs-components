@@ -217,6 +217,8 @@ export const bottomDashSty = tv({
     ANIMATION,
     // Z Index
     Z_INDICES.mobileDrawer,
+    // Only show on mobile. This gets confusing as one must recator mb-bottom_dash
+    // across the codebase
   ],
   variants: {
     hidden: {

@@ -29,7 +29,7 @@ import BottomDashContent from "./views/BottomDash";
 // NOTE this is a required import due to use:resizeHandle
 import { resizeHandle } from "./directives/resize";
 
-const Navbar = () => {
+const Navbar = (props: { children: JSXElement }) => {
   const { layoutState, setLayoutState, isDev, setIsDev } = getLayoutContext();
 
   return (
@@ -39,12 +39,7 @@ const Navbar = () => {
         dev: isDev(),
       })}
     >
-      <NavbarContent
-        layoutState={layoutState}
-        setLayoutState={setLayoutState}
-        isDev={isDev}
-        setIsDev={setIsDev}
-      />
+      {props.children}
     </div>
   );
 };
@@ -97,7 +92,7 @@ const Layout = (props: { children: JSXElement }) => {
         setIsDev: setIsDev,
         MIN_WIDTH: MIN_WIDTH,
         MAX_WIDTH: MAX_WIDTH,
-        BottomDashOnlyMobile: true,
+        BottomDashOnlyMobile: false,
       }}
     >
       {props.children}
@@ -140,37 +135,43 @@ const Overlay = () => {
   );
 };
 
-const Sidebar = () => {
-  const { layoutState, setLayoutState, isDev, setIsDev, MIN_WIDTH, MAX_WIDTH } =
-    getLayoutContext();
+const Sidebar = (props: { children: JSXElement }) => {
+  const {
+    layoutState,
+    setLayoutState,
+    isDev,
+    setIsDev,
+    MIN_WIDTH,
+    MAX_WIDTH,
+    BottomDashOnlyMobile,
+  } = getLayoutContext();
 
   return (
-    <div
-      class={sidebarSty({
-        resizing: layoutState.drawer.isResizing,
-        isVisible: layoutState.drawer.visible,
-        bottomDashVisible: layoutState.bottomDash.visible,
-        bottomDashMobileOnly: BOTTOM_DASH_ONLY_ON_MOBILE,
-        topNavVisible: layoutState.topBar.visible,
-        dev: isDev(),
-      })}
-    >
-      <div class="flex flex-col h-full">
-        <div class="flex-1 p-4 overflow-y-auto">
-          <SidebarContent />
-        </div>
-      </div>
-      {/* Resize Handle */}
+    <>
+      <Overlay />
       <div
-        use:resizeHandle={{
-          layoutState,
-          setLayoutState,
-          minWidth: MIN_WIDTH,
-          maxWidth: MAX_WIDTH,
-        }}
-        class={resizeHandleSty({ dev: isDev() })}
-      />
-    </div>
+        class={sidebarSty({
+          resizing: layoutState.drawer.isResizing,
+          isVisible: layoutState.drawer.visible,
+          bottomDashVisible: layoutState.bottomDash.visible,
+          bottomDashMobileOnly: BottomDashOnlyMobile,
+          topNavVisible: layoutState.topBar.visible,
+          dev: isDev(),
+        })}
+      >
+        {props.children}
+        {/* Resize Handle */}
+        <div
+          use:resizeHandle={{
+            layoutState,
+            setLayoutState,
+            minWidth: MIN_WIDTH,
+            maxWidth: MAX_WIDTH,
+          }}
+          class={resizeHandleSty({ dev: isDev() })}
+        />
+      </div>
+    </>
   );
 };
 
@@ -188,15 +189,14 @@ const BottomDash = () => {
       <BottomDashContent
         layoutState={layoutState}
         setLayoutState={setLayoutState}
-        mobileOnly={BOTTOM_DASH_ONLY_ON_MOBILE}
         isDev={isDev()}
       />
     </div>
   );
 };
 
-const MainArea = () => {
-  const { layoutState, isDev } = getLayoutContext();
+const MainArea = (props: { children: JSXElement }) => {
+  const { layoutState, isDev, BottomDashOnlyMobile } = getLayoutContext();
   return (
     <div
       class={MainContentSty({
@@ -204,11 +204,11 @@ const MainArea = () => {
         isResizing: layoutState.drawer.isResizing,
         isTopVisible: layoutState.topBar.visible,
         isBottomVisible: layoutState.bottomDash.visible,
-        bottomDashMobileOnly: BOTTOM_DASH_ONLY_ON_MOBILE,
+        bottomDashMobileOnly: BottomDashOnlyMobile,
         dev: isDev(),
       })}
     >
-      <Article />
+      {props.children}
     </div>
   );
 };
