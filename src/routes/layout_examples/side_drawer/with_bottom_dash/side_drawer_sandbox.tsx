@@ -46,5 +46,4 @@ const SidebarView = () => {
   );
 };
 
-
 // TODO Sidebar needs class for Overlay?

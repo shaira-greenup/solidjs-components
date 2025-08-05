@@ -1,16 +1,6 @@
-import {
-  Accessor,
-  createContext,
-  createEffect,
-  createSignal,
-  JSXElement,
-  onMount,
-  Setter,
-  useContext,
-} from "solid-js";
-import { createStore, SetStoreFunction } from "solid-js/store";
+import { createEffect, createSignal, JSXElement, onMount } from "solid-js";
+import { createStore } from "solid-js/store";
 import "./app.css";
-import { BOTTOM_DASH_ONLY_ON_MOBILE } from "./config/constants";
 import { createGlobalKeybindings } from "./hooks/createGlobalKeybindings";
 import {
   bottomDashSty,
@@ -21,30 +11,11 @@ import {
   sidebarSty,
 } from "./styles";
 import { LayoutState } from "./types/layout";
-import Article from "./views/Article";
-import NavbarContent from "./views/Navbar";
-import SidebarContent from "./views/SidebarContent";
 import { getLayoutContext, LayoutContext } from "./contextTypes";
 import BottomDashContent from "./views/BottomDash";
 // NOTE this is a required import due to use:resizeHandle
 import { resizeHandle } from "./directives/resize";
 
-const Navbar = (props: { children: JSXElement }) => {
-  const { layoutState, isDev } = getLayoutContext();
-
-  return (
-    <div
-      class={navbarSty({
-        visible: layoutState.topBar.visible,
-        dev: isDev(),
-      })}
-    >
-      {props.children}
-    </div>
-  );
-};
-
-// TODO should these elements be restricted?
 const Layout = (props: { children: JSXElement }) => {
   const MIN_WIDTH = 100;
   const MAX_WIDTH = 1024;
@@ -100,38 +71,18 @@ const Layout = (props: { children: JSXElement }) => {
   );
 };
 
-/*
- * # NOTES
- * ## Desired Layout
- * - Mobile
- *   - Sidebar / Drawer Depending on Width
- *   - Bottom Dash for Quick Access
- *     - Can be hidden for convenience and circumstance (narrow AND short display)
- *     - This can also use translate-y to drop away, i.e. no worry about DOM bloat here, small size
- * - Desktop
- *   - Top Header Bar
- *     - Probably this should persist, it should have all user controls
- *   - Sidebar
- *     - Collapsible
- *         - Pushes content aside
- * ## Limitations
- * ## Depencency Map
- * 1. Mobile Drawer bottom- depends on visibility of bottom drawer AND screen size
- *     - Hence we've used a variant to hide this behind the BOTTOM_DASH_ONLY_ON_MOBILE variable
- */
-
-const Overlay = () => {
-  const { layoutState, setLayoutState } = getLayoutContext();
+const Navbar = (props: { children: JSXElement }) => {
+  const { layoutState, isDev } = getLayoutContext();
 
   return (
     <div
-      class={overlaySty({
-        visible: layoutState.drawer.visible,
-        blur: true,
-        bottomDashVisible: layoutState.bottomDash.visible,
+      class={navbarSty({
+        visible: layoutState.topBar.visible,
+        dev: isDev(),
       })}
-      onclick={() => setLayoutState("drawer", "visible", false)}
-    />
+    >
+      {props.children}
+    </div>
   );
 };
 
@@ -171,6 +122,21 @@ const Sidebar = (props: { children: JSXElement }) => {
         />
       </div>
     </>
+  );
+};
+
+const Overlay = () => {
+  const { layoutState, setLayoutState } = getLayoutContext();
+
+  return (
+    <div
+      class={overlaySty({
+        visible: layoutState.drawer.visible,
+        blur: true,
+        bottomDashVisible: layoutState.bottomDash.visible,
+      })}
+      onclick={() => setLayoutState("drawer", "visible", false)}
+    />
   );
 };
 
@@ -218,3 +184,23 @@ Layout.Sidebar = Sidebar;
 Layout.MainArea = MainArea;
 Layout.BottomDash = BottomDash;
 export default Layout;
+
+/*
+ * # NOTES
+ * ## Desired Layout
+ * - Mobile
+ *   - Sidebar / Drawer Depending on Width
+ *   - Bottom Dash for Quick Access
+ *     - Can be hidden for convenience and circumstance (narrow AND short display)
+ *     - This can also use translate-y to drop away, i.e. no worry about DOM bloat here, small size
+ * - Desktop
+ *   - Top Header Bar
+ *     - Probably this should persist, it should have all user controls
+ *   - Sidebar
+ *     - Collapsible
+ *         - Pushes content aside
+ * ## Limitations
+ * ## Depencency Map
+ * 1. Mobile Drawer bottom- depends on visibility of bottom drawer AND screen size
+ *     - Hence we've used a variant to hide this behind the BOTTOM_DASH_ONLY_ON_MOBILE variable
+ */
