@@ -1,6 +1,6 @@
-import { buttonSty, navbarSty } from "../styles";
-import ApplicationGridIcon from "../components/icons/ApplicationGrid";
+import ApplicationGridIcon from "../icons/ApplicationGrid";
 import { getLayoutContext } from "../LayoutContext";
+import { buttonSty } from "../styles";
 
 export default function NavbarContent() {
   // Get the necessary layout context
