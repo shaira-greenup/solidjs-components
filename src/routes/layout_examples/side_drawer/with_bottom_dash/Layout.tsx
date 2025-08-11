@@ -1,4 +1,4 @@
-import { createEffect, createSignal, For, onMount } from "solid-js";
+import { createEffect, createSignal, For, JSXElement, onMount } from "solid-js";
 import { createStore } from "solid-js/store";
 import "./app.css";
 import {
@@ -17,15 +17,7 @@ import BottomDash from "./views/BottomDash";
 import { LayoutState } from "./types/layout";
 import { BOTTOM_DASH_ONLY_ON_MOBILE } from "./config/constants";
 
-export default function Home() {
-  return (
-    <main class="h-screen flex flex-col">
-      <MyLayout />
-    </main>
-  );
-}
-
-function MyLayout() {
+function Layout() {
   const MIN_WIDTH = 200;
   const MAX_WIDTH = 1024;
 
@@ -166,3 +158,5 @@ function MyLayout() {
  * 1. Mobile Drawer bottom- depends on visibility of bottom drawer AND screen size
  *     - Hence we've used a variant to hide this behind the BOTTOM_DASH_ONLY_ON_MOBILE variable
  */
+
+ export default Layout;
