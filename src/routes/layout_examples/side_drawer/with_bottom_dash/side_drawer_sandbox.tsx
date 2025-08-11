@@ -115,7 +115,10 @@ function MyLayout() {
             minWidth: MIN_WIDTH,
             maxWidth: MAX_WIDTH,
           }}
-          class={resizeHandleSty({ dev: isDev() })}
+          class={resizeHandleSty({
+            dev: isDev(),
+            isVisible: layoutState.drawer.visible,
+          })}
         />
       </div>
 

@@ -26,6 +26,7 @@ body {
     --spacing-sidebar_width: 256;
     --spacing-bottom_dash: 4rem;
     --spacing-between_headers: calc(100dvh - var(--spacing-bottom_dash) - var(--spacing-top_header));
+    --spacing-handle_width: 2rem;
 }
 
 @layer components {
