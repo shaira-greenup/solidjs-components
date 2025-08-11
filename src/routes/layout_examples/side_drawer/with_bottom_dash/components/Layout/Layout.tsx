@@ -1,15 +1,8 @@
 import {
-  Accessor,
-  createContext,
   createEffect,
-  createSignal,
-  For,
   JSXElement,
   onMount,
-  Setter,
-  useContext,
 } from "solid-js";
-import { createStore, SetStoreFunction } from "solid-js/store";
 import "./app.css";
 import {
   MainContentSty,
@@ -18,13 +11,7 @@ import {
   resizeHandleSty,
   sidebarSty,
 } from "./styles";
-import { resizeHandle } from "./directives/resize";
 import { createGlobalKeybindings } from "./hooks/createGlobalKeybindings";
-import Article from "./views/Article";
-import SidebarContent from "./views/SidebarContent";
-import NavbarContent from "./views/Navbar";
-import BottomDash from "./views/BottomDash";
-import { LayoutState } from "./types/layout";
 import { BOTTOM_DASH_ONLY_ON_MOBILE } from "./config/constants";
 import { getLayoutContext } from "./LayoutContext";
 
@@ -42,7 +29,6 @@ function Layout(props: LayoutProps) {
   const layoutState = context.layoutState;
   const setLayoutState = context.setLayoutState;
   const isDev = context.isDev;
-  const setIsDev = context.setIsDev;
 
   // Set up global keybindings (work anywhere on the page, not just when component is focused)
   createGlobalKeybindings(layoutState, setLayoutState, {
