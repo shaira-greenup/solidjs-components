@@ -1,8 +1,4 @@
-import {
-  createEffect,
-  JSXElement,
-  onMount,
-} from "solid-js";
+import { createEffect, JSXElement, onMount } from "solid-js";
 import "./app.css";
 import {
   MainContentSty,
@@ -14,6 +10,8 @@ import {
 import { createGlobalKeybindings } from "./hooks/createGlobalKeybindings";
 import { BOTTOM_DASH_ONLY_ON_MOBILE } from "./config/constants";
 import { getLayoutContext } from "./LayoutContext";
+import { syncCssVars } from "./hooks/syncCSSVars";
+import { resizeHandle } from "./directives/resize";
 
 interface LayoutProps {
   NavbarContent: JSXElement;
@@ -37,14 +35,7 @@ function Layout(props: LayoutProps) {
   });
 
   /* Update the CSS Variable to adjust the layout  */
-  onMount(() => {
-    createEffect(() => {
-      document.documentElement.style.setProperty(
-        "--spacing-sidebar_width",
-        `${layoutState.drawer.width}px`,
-      );
-    });
-  });
+  syncCssVars(layoutState);
 
   // .............................................................................
   return (
