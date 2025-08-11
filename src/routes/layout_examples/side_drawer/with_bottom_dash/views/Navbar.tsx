@@ -1,39 +1,37 @@
 import { buttonSty, navbarSty } from "../styles";
 import ApplicationGridIcon from "../components/icons/ApplicationGrid";
-import type { SetStoreFunction } from "solid-js/store";
-import type { LayoutState } from "../types/layout";
-import type { Accessor } from "solid-js";
+import { getLayoutContext } from "../LayoutContext";
 
-interface NavbarProps {
-  layoutState: LayoutState;
-  setLayoutState: SetStoreFunction<LayoutState>;
-  isDev: Accessor<boolean>;
-  setIsDev: (value: boolean) => void;
-}
+export default function NavbarContent() {
+  // Get the necessary layout context
+  const context = getLayoutContext();
+  const layoutState = context.layoutState;
+  const setLayoutState = context.setLayoutState;
+  const isDev = context.isDev;
+  const setIsDev = context.setIsDev;
 
-export default function NavbarContent(props: NavbarProps) {
   return (
-      <div class="h-full flex justify-center md:justify-start">
-        <button
-          class={buttonSty()}
-          onclick={() => {
-            props.setLayoutState("drawer", "visible", !props.layoutState.drawer.visible);
-          }}
-        >
-          {/* Application grid icon */}
-          <ApplicationGridIcon isActive={props.layoutState.drawer.visible} />
-          <span class="text-white text-sm font-medium select-none">
-            Applications
-          </span>
-        </button>
+    <div class="h-full flex justify-center md:justify-start">
+      <button
+        class={buttonSty()}
+        onclick={() => {
+          setLayoutState("drawer", "visible", !layoutState.drawer.visible);
+        }}
+      >
+        {/* Application grid icon */}
+        <ApplicationGridIcon isActive={layoutState.drawer.visible} />
+        <span class="text-white text-sm font-medium select-none">
+          Applications
+        </span>
+      </button>
 
-        {/* DEV Mode Toggle Button */}
-        <button
-          class="ml-auto px-3 py-1 text-xs bg-gray-600 hover:bg-gray-700 text-white rounded transition-colors"
-          onclick={() => props.setIsDev(!props.isDev())}
-        >
-          DEV: {props.isDev() ? "ON" : "OFF"}
-        </button>
-      </div>
+      {/* DEV Mode Toggle Button */}
+      <button
+        class="ml-auto px-3 py-1 text-xs bg-gray-600 hover:bg-gray-700 text-white rounded transition-colors"
+        onclick={() => setIsDev(!isDev())}
+      >
+        DEV: {isDev() ? "ON" : "OFF"}
+      </button>
+    </div>
   );
 }

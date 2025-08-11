@@ -1,5 +1,15 @@
-import { createEffect, createSignal, For, JSXElement, onMount } from "solid-js";
-import { createStore } from "solid-js/store";
+import {
+  Accessor,
+  createContext,
+  createEffect,
+  createSignal,
+  For,
+  JSXElement,
+  onMount,
+  Setter,
+  useContext,
+} from "solid-js";
+import { createStore, SetStoreFunction } from "solid-js/store";
 import "./app.css";
 import {
   MainContentSty,
@@ -16,28 +26,23 @@ import NavbarContent from "./views/Navbar";
 import BottomDash from "./views/BottomDash";
 import { LayoutState } from "./types/layout";
 import { BOTTOM_DASH_ONLY_ON_MOBILE } from "./config/constants";
+import { getLayoutContext } from "./LayoutContext";
 
-function Layout() {
+interface LayoutProps {
+  NavbarContent: JSXElement;
+  sidebarContent: JSXElement;
+  children: JSXElement;
+  bottomDash: JSXElement;
+}
+
+function Layout(props: LayoutProps) {
   const MIN_WIDTH = 200;
   const MAX_WIDTH = 1024;
-
-  const [isDev, setIsDev] = createSignal(false);
-
-  const [layoutState, setLayoutState] = createStore<LayoutState>({
-    drawer: {
-      width: 256, // Default 256px (w-64)
-      visible: false,
-      isResizing: false,
-      startX: 0,
-      startWidth: 0,
-    },
-    topBar: {
-      visible: true,
-    },
-    bottomDash: {
-      visible: true,
-    },
-  });
+  const context = getLayoutContext();
+  const layoutState = context.layoutState;
+  const setLayoutState = context.setLayoutState;
+  const isDev = context.isDev;
+  const setIsDev = context.setIsDev;
 
   // Set up global keybindings (work anywhere on the page, not just when component is focused)
   createGlobalKeybindings(layoutState, setLayoutState, {
@@ -65,12 +70,7 @@ function Layout() {
           dev: isDev(),
         })}
       >
-        <NavbarContent
-          layoutState={layoutState}
-          setLayoutState={setLayoutState}
-          isDev={isDev}
-          setIsDev={setIsDev}
-        />
+        {props.NavbarContent}
       </div>
 
       {/* Overlay */}
@@ -95,9 +95,7 @@ function Layout() {
         })}
       >
         <div class="flex flex-col h-full">
-          <div class="flex-1 p-4 overflow-y-auto">
-            <SidebarContent />
-          </div>
+          <div class="flex-1 p-4 overflow-y-auto">{props.sidebarContent}</div>
         </div>
         {/* Resize Handle */}
         <div
@@ -125,16 +123,11 @@ function Layout() {
           dev: isDev(),
         })}
       >
-        <Article />
+        {props.children}
       </div>
 
       {/*Bottom Mobile Dash*/}
-      <BottomDash
-        layoutState={layoutState}
-        setLayoutState={setLayoutState}
-        mobileOnly={BOTTOM_DASH_ONLY_ON_MOBILE}
-        isDev={isDev()}
-      />
+      {props.bottomDash}
     </div>
   );
 }
@@ -159,4 +152,4 @@ function Layout() {
  *     - Hence we've used a variant to hide this behind the BOTTOM_DASH_ONLY_ON_MOBILE variable
  */
 
- export default Layout;
+export default Layout;
